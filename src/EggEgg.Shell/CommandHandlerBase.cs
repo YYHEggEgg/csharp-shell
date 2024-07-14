@@ -28,63 +28,72 @@ public abstract class CommandHandlerBase(ILogger logger) : IAutoCompleteHandler
     /// <remarks><seealso href="https://learn.microsoft.com/en-us/cpp/cpp/main-function-command-line-args?view=msvc-170#parsing-c-command-line-arguments">Parsing C++ command-line arguments</seealso></remarks>
     public static List<string> ParseAsArgs(string cmd)
     {
-        List<string> argv = [];
+        var argv = new List<string>();
+        var currentArg = new StringBuilder();
         bool inQuotes = false;
-        bool escaped = false;
-        string currentArg = "";
+        int backslashCount = 0;
 
-        foreach (char c in cmd)
+        for (int i = 0; i < cmd.Length; i++)
         {
-            if (c == ' ' || c == '\t')
+            char c = cmd[i];
+
+            if (c == '\\')
             {
-                if (inQuotes)
-                {
-                    currentArg += c;
-                }
-                else if (currentArg != "")
-                {
-                    argv.Add(currentArg);
-                    currentArg = "";
-                }
+                backslashCount++;
             }
             else if (c == '"')
             {
-                if (escaped)
-                {
-                    currentArg += c;
-                    escaped = false;
-                }
-                else
+                if (backslashCount % 2 == 0)
                 {
                     inQuotes = !inQuotes;
-                }
-            }
-            else if (c == '\\')
-            {
-                if (escaped)
-                {
-                    currentArg += c;
-                    escaped = false;
+                    // Add escaped quotes if inQuotes was true
+                    if (inQuotes && i > 0 && cmd[i - 1] == '"')
+                    {
+                        currentArg.Append('"');
+                    }
+                    // Add half of the backslashes that are not escaping the quote
+                    currentArg.Append('\\', backslashCount / 2);
+                    backslashCount = 0;
                 }
                 else
                 {
-                    escaped = true;
+                    // Odd number of backslashes means the quote is escaped
+                    currentArg.Append('\\', backslashCount / 2);
+                    currentArg.Append('"');
+                    backslashCount = 0;
                 }
             }
             else
             {
-                if (escaped)
+                if (backslashCount > 0)
                 {
-                    currentArg += '\\';
+                    currentArg.Append('\\', backslashCount);
+                    backslashCount = 0;
                 }
-                currentArg += c;
-                escaped = false;
+
+                if (char.IsWhiteSpace(c) && !inQuotes)
+                {
+                    if (currentArg.Length > 0)
+                    {
+                        argv.Add(currentArg.ToString());
+                        currentArg.Clear();
+                    }
+                }
+                else
+                {
+                    currentArg.Append(c);
+                }
             }
         }
 
-        if (currentArg != "")
+        if (backslashCount > 0)
         {
-            argv.Add(currentArg);
+            currentArg.Append('\\', backslashCount);
+        }
+
+        if (currentArg.Length > 0)
+        {
+            argv.Add(currentArg.ToString());
         }
 
         return argv;

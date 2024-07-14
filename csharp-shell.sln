@@ -11,6 +11,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ShellExample", "src\ShellEx
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ShellHostingExample", "src\ShellHostingExample\ShellHostingExample.csproj", "{2154AEC5-AD20-4CB6-AC0C-847A9E5C39BF}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EggEgg.Shell.Tests", "C:\Users\Admin\source\repos\YYHEggEgg\csharp-shell\src\EggEgg.Shell.Tests\EggEgg.Shell.Tests.csproj", "{F623361A-F590-4BFC-9FB0-C348B4B73EF6}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{2154AEC5-AD20-4CB6-AC0C-847A9E5C39BF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2154AEC5-AD20-4CB6-AC0C-847A9E5C39BF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2154AEC5-AD20-4CB6-AC0C-847A9E5C39BF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F623361A-F590-4BFC-9FB0-C348B4B73EF6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F623361A-F590-4BFC-9FB0-C348B4B73EF6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F623361A-F590-4BFC-9FB0-C348B4B73EF6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F623361A-F590-4BFC-9FB0-C348B4B73EF6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

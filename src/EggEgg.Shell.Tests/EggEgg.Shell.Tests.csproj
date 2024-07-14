@@ -22,4 +22,8 @@
     </PackageReference>
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="D:\repos\YYHEggEgg\csharp-shell\src\EggEgg.Shell\EggEgg.Shell.csproj" />
+  </ItemGroup>
+
 </Project>
