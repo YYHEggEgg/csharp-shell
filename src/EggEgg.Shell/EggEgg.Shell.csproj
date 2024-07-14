@@ -1,0 +1,44 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>net6.0;net8.0</TargetFrameworks>
+    <PublishAot Condition="$([MSBuild]::IsTargetFrameworkCompatible('$(TargetFramework)', 'net8.0'))">true</PublishAot>
+    <IsAotCompatible Condition="$([MSBuild]::IsTargetFrameworkCompatible('$(TargetFramework)', 'net8.0'))">true</IsAotCompatible>
+    <RootNamespace>YYHEggEgg.Shell</RootNamespace>
+    <LangVersion>Latest</LangVersion>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <GenerateDocumentationFile>True</GenerateDocumentationFile>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <ReadMeFile></ReadMeFile>
+    <Title>EggEgg.Shell</Title>
+    <Version>5.0.0-rc52-rc04</Version>
+    <Authors>YYHEggEgg</Authors>
+    <Company>YYHEggEgg</Company>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <Description>Provide easy and fully-armed command-based shell experience.</Description>
+    <Copyright>Copyright (c) 2024 EggEgg</Copyright>
+    <PackageProjectUrl>https://github.com/YYHEggEgg/csharp-shell</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/YYHEggEgg/csharp-shell</RepositoryUrl>
+    <PackageTags>Log;CLI;Shell</PackageTags>
+    <PackageReleaseNotes>Provide easy and fully-armed command-based shell experience.</PackageReleaseNotes>
+    <IncludeSymbols>True</IncludeSymbols>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <NeutralLanguage>en-US</NeutralLanguage>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="..\..\README.md">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="CommandLineParser" Version="2.9.1" />
+    <PackageReference Include="EggEgg.CSharp-Logger" Version="5.0.0-rc52" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="8.0.1" />
+  </ItemGroup>
+
+</Project>
