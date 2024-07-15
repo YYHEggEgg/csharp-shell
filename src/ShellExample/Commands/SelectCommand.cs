@@ -5,7 +5,7 @@ namespace YYHEggEgg.Shell.Example.Commands;
 
 public class SelectOption
 {
-    [Option('p', "prefix", Required = false, Default = "", MetaValue = "base-path", HelpText = "初始筛选对象使用的目录前缀。")]
+    [Option('p', "prefix", Required = false, Default = "", MetaValue = "base-path", HelpText = "The initial prefix.")]
     public required string IncludePrefix { get; set; }
 }
 

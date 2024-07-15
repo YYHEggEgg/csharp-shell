@@ -121,7 +121,7 @@ public abstract class HasSubCommandsHandlerBase : CommandHandlerBase
                 {
                     yield return $"    {helpline}";
                 }
-                yield return string.Empty;
+                // yield return string.Empty;
                 if (SubcommandAdditionalDescLinesMap?.TryGetValue(verbAttribute.Name, out var descLines) == true)
                 {
                     foreach (var line in descLines ?? [])

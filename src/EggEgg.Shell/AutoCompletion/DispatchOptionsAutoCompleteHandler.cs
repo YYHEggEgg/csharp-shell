@@ -1,5 +1,4 @@
-﻿using CommandLine;
-using YYHEggEgg.Logger;
+﻿using YYHEggEgg.Logger;
 
 namespace YYHEggEgg.Shell.AutoCompletion;
 

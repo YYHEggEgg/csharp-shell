@@ -318,8 +318,11 @@ public abstract class CommandHandlerBase(ILogger logger) : IAutoCompleteHandler
             var helpResult = GenerateFromCmdOption(property);
             if (helpResult == null) continue;
             helpResult = CustomizeOptionHelpResult(helpResult) ?? helpResult;
-            maxPrecendingLength = Math.Max(maxPrecendingLength, CalculatePrecendingLength(helpResult));
-            options.Add(helpResult);
+            foreach (var replacedHelpResult in helpResult.ReplaceWith ?? [helpResult])
+            {
+                maxPrecendingLength = Math.Max(maxPrecendingLength, CalculatePrecendingLength(helpResult));
+                options.Add(helpResult);
+            }
         }
         foreach (var optionResult in options)
         {
