@@ -19,7 +19,7 @@ public abstract class MainCommandLineBase
     protected Dictionary<string, CommandHandlerBase> _commandHandlers;
 
     /// <summary>
-    /// Get all command handlers for this application.
+    /// Get all command handlers for this application to register.
     /// </summary>
     /// <returns></returns>
     protected abstract IEnumerable<CommandHandlerBase> GetCommandHandlers();
@@ -27,12 +27,24 @@ public abstract class MainCommandLineBase
     /// Get a fallback handler for 'command name' that doesn't bind to one in <see cref="GetCommandHandlers()"/>.
     /// </summary>
     /// <returns></returns>
-    protected virtual CommandHandlerBase? GetGeneralOperationHandler() => null;
+    /// <remarks>
+    /// IMPORTANT: It will be invoked EVERY TIME when a new command starts executing, so consider reuse the same instance when implementing. <para/>
+    /// Another IMPORTANT: when a general handler's <see cref="CommandHandlerBase.GetSuggestions(string, int)"/>
+    /// is invoked, the given <c>text</c> will start with <see cref="CommandHandlerBase.CommandName"/>
+    /// (even though user never type them). This is due to compatibility demands
+    /// of the method <seealso cref="CommandHandlerBase.GetSuggestions(string, int)"/>.
+    /// </remarks>
+    protected virtual CommandHandlerBase? RefreshGeneralOperationHandler() => null;
     /// <summary>
-    /// Get the list of allowed 'command name' that doesn't bind to one in <see cref="GetCommandHandlers()"/> and can be handled by <see cref="GetGeneralOperationHandler()"/>.
+    /// Get the list of allowed 'command name' that doesn't bind to one in <see cref="GetCommandHandlers()"/> and can be handled by <see cref="RefreshGeneralOperationHandler()"/>.
     /// </summary>
-    /// <remarks>This list will be used for auto completion.</remarks>
-    protected virtual IEnumerable<string>? GetAllowedGeneralOperations() => null;
+    /// <remarks>
+    /// This list will be used ONLY for auto completion and won't affect what are thrown
+    /// to <see cref="RefreshGeneralOperationHandler()"/> (whenever defined, it will handle
+    /// all requests failed passed to a registered command handler).<para/>
+    /// IMPORTANT: It will be invoked EVERY TIME when a new command starts executing, so consider reuse the same instance when implementing.
+    /// </remarks>
+    protected virtual IEnumerable<string>? RefreshGeneralOperations() => null;
     /// <summary>
     /// The notice for welcome. When command line starts, the specified
     /// notice will be written to console as lines.
@@ -174,32 +186,22 @@ public abstract class MainCommandLineBase
             outerCancellationToken.Register(_commandLineCancellationTokenSource.Cancel);
         }
 
-        try
-        {
-            _unknownHandler = GetGeneralOperationHandler();
-        }
-        catch (Exception ex)
-        {
-            _logger.LogError(ex, "{methodName} failed. General operations will not be available.", nameof(GetGeneralOperationHandler));
-        }
         #endregion
 
         #region Auto Complete
-        IEnumerable<string>? generalOps = null;
-        try
+        _cmdAutoCmplHandler = new(_commandHandlers.Values, () =>
         {
-            generalOps = GetAllowedGeneralOperations();
-        }
-        catch (Exception ex)
-        {
-            _logger.LogError(ex, "{methodName} failed. General operations will not be included in Command Auto Completion.", nameof(GetAllowedGeneralOperations));
-        }
-
-        _cmdAutoCmplHandler = new(_commandHandlers.Values)
-        {
-            AdditionalAllowedNames = generalOps,
-        };
-        _optionsAutoCmplHandler = new(_commandHandlers.Values);
+            try
+            {
+                return RefreshGeneralOperations();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogDebug(ex, "{methodName} failed. General operations will not be included in Command Auto Completion.", nameof(RefreshGeneralOperations));
+                return null;
+            }
+        });
+        _optionsAutoCmplHandler = new(_commandHandlers.Values, () => _unknownHandler);
         var autoCmplHandler = new MultipleAutoCompleteChainHandler();
         autoCmplHandler.PushComponent(_cmdAutoCmplHandler);
         autoCmplHandler.PushComponent(new FilePathAutoCompleteHandler());
@@ -212,6 +214,17 @@ public abstract class MainCommandLineBase
         while (!cancellationToken.IsCancellationRequested)
         {
             WriteLines(StartNewCommandNotices);
+
+            #region Prepare for general operation
+            try
+            {
+                _unknownHandler = RefreshGeneralOperationHandler();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "{methodName} failed. General operations will not be available.", nameof(RefreshGeneralOperationHandler));
+            }
+            #endregion
 
             ConsoleWrapper.InputPrefix = WaitingInputPrompt;
             string cmd = (await ConsoleWrapper.ReadLineAsync(true, outerCancellationToken)).Trim();
@@ -238,12 +251,13 @@ public abstract class MainCommandLineBase
             else
             {
                 string argList = cmd[Math.Min(cmd.Length, sepindex + 1)..];
+                bool matchedHandler = _commandHandlers.TryGetValue(commandName, out var cmdhandle);
                 try
                 {
-                    if (!_commandHandlers.TryGetValue(commandName, out var cmdhandle))
+                    if (cmdhandle == null)
                     {
                         if (_unknownHandler == null) RefuseCommand(commandName);
-                        else await _unknownHandler.HandleAsync(argList);
+                        else await _unknownHandler.HandleAsync(cmd);
                         continue;
                     }
 
@@ -259,7 +273,8 @@ public abstract class MainCommandLineBase
                 }
                 catch (Exception ex)
                 {
-                    _logger.LogError(ex, "Encountered error when handling command '{commandName}'.", commandName);
+                    _logger.LogError(ex, "Encountered error when handling command '{commandName}'.",
+                        matchedHandler ? commandName : $"<{_unknownHandler?.CommandName} general operation>");
                 }
             }
         }

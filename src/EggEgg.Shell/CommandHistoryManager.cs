@@ -1,3 +1,5 @@
+using YYHEggEgg.Logger;
+
 namespace YYHEggEgg.Shell;
 
 /// <summary>
@@ -23,7 +25,9 @@ public class CommandHistoryManager(string historyFilePath)
         if (File.Exists(historyFilePath))
         {
             List<string> res = [];
-            foreach (var line in File.ReadLines(historyFilePath).TakeLast(HISTSIZE))
+            var maximumChars = ConsoleWrapper.HistoryMaximumChars;
+            foreach (var line in File.ReadLines(historyFilePath)
+                .Where(x => x.Length <= maximumChars).TakeLast(HISTSIZE))
             {
                 var separatorIdx = line.IndexOf(';');
                 if (separatorIdx >= 0) res.Add(line[separatorIdx..]);

@@ -12,7 +12,7 @@
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
     <ReadMeFile></ReadMeFile>
     <Title>EggEgg.Shell</Title>
-    <Version>5.0.0-rc52-rc06</Version>
+    <Version>5.0.0-rc07</Version>
     <Authors>YYHEggEgg</Authors>
     <Company>YYHEggEgg</Company>
     <PackageReadmeFile>README.md</PackageReadmeFile>
@@ -37,7 +37,7 @@
 
   <ItemGroup>
     <PackageReference Include="CommandLineParser" Version="2.9.1" />
-    <PackageReference Include="EggEgg.CSharp-Logger" Version="5.0.0-rc52" />
+    <PackageReference Include="EggEgg.CSharp-Logger" Version="5.0.0" />
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="8.0.1" />
   </ItemGroup>
 

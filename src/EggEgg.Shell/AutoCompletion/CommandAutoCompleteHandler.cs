@@ -7,14 +7,13 @@ namespace YYHEggEgg.Shell.AutoCompletion;
 /// Complete commands (the first word).
 /// </summary>
 /// <param name="commands"></param>
-public class CommandAutoCompleteHandler(IEnumerable<CommandHandlerBase> commands) : IAutoCompleteHandler
+/// <param name="getAdditionalAllowedNamesCallback">
+/// The additionally allowed names (though not commands).
+/// Used for <see cref="MainCommandLineBase.RefreshGeneralOperationHandler()"/>.
+/// </param>
+public class CommandAutoCompleteHandler(IEnumerable<CommandHandlerBase> commands, Func<IEnumerable<string>?> getAdditionalAllowedNamesCallback) : IAutoCompleteHandler
 {
     private readonly IEnumerable<string> _commandNames = commands.Select(x => x.CommandName);
-    /// <summary>
-    /// The additionally allowed names (though not commands).
-    /// Used for <see cref="MainCommandLineBase.GetGeneralOperationHandler()"/>.
-    /// </summary>
-    public IEnumerable<string>? AdditionalAllowedNames { get; set; }
 
     private static IEnumerable<string> MatchByName(IEnumerable<string> strings, string text, int index)
     {
@@ -30,9 +29,10 @@ public class CommandAutoCompleteHandler(IEnumerable<CommandHandlerBase> commands
     {
         if (text.Contains(' ')) return new();
         var matches = MatchByName(_commandNames, text, index);
-        if (AdditionalAllowedNames != null)
+        var additionalAllowedNames = getAdditionalAllowedNamesCallback();
+        if (additionalAllowedNames != null)
         {
-            matches = matches.Concat(MatchByName(AdditionalAllowedNames, text, index));
+            matches = matches.Concat(MatchByName(additionalAllowedNames, text, index));
         }
         return new()
         {
