@@ -13,9 +13,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ShellHostingExample", "src\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EggEgg.Shell.Tests", "C:\Users\Admin\source\repos\YYHEggEgg\csharp-shell\src\EggEgg.Shell.Tests\EggEgg.Shell.Tests.csproj", "{F623361A-F590-4BFC-9FB0-C348B4B73EF6}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{CA931D07-0DFA-495E-859B-65A33135D671}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EggEgg.Shell.Benchmark", "src\EggEgg.Shell.Benchmark\EggEgg.Shell.Benchmark.csproj", "{D25F633E-CEA3-462E-9AD4-A55B275335A7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EggEgg.Shell.Benchmark", "src\EggEgg.Shell.Benchmark\EggEgg.Shell.Benchmark.csproj", "{D25F633E-CEA3-462E-9AD4-A55B275335A7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -53,8 +51,5 @@ Global
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {7FF5CA6F-0372-4042-A12B-6A4FFB220C47}
-	EndGlobalSection
-	GlobalSection(NestedProjects) = preSolution
-		{D25F633E-CEA3-462E-9AD4-A55B275335A7} = {CA931D07-0DFA-495E-859B-65A33135D671}
 	EndGlobalSection
 EndGlobal

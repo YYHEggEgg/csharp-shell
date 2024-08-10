@@ -119,7 +119,14 @@ public abstract class CommandHandlerBase(ILogger logger) : IAutoCompleteHandler
     /// Command Handler.
     /// </summary>
     /// <param name="argList">The received args, without the precending <see cref="CommandName"/>.</param>
-    public abstract Task HandleAsync(string argList);
+    /// <param name="cancellationToken">
+    /// The cancellation token.
+    /// Command execution will be canceled if:<para/>
+    /// - The program is closing (though it's not guaranteed that a graceful cancellation can always be performed);<para/>
+    /// - The non-user executor requested this to be canceled.
+    /// </param>
+    /// <returns>Whether this command succeeded to recognize input and finish its task. This return type doesn't mean inheritor shouldn't throw an exception when meeting failure.</returns>
+    public abstract Task<bool> HandleAsync(string argList, CancellationToken cancellationToken = default);
     /// <summary>
     /// Perform essential CleanUp while program is exiting gracefully.
     /// </summary>

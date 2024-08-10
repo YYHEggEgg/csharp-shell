@@ -13,10 +13,10 @@ public class RepeatCommand : CommandHandlerBase
             "repeat <anything>"
         ];
 
-    public override Task HandleAsync(string argList)
+    public override Task<bool> HandleAsync(string argList, CancellationToken cancellationToken)
     {
         _logger.LogInformation("{}", argList);
         _logger.LogInformation("args list: [ {} ]", ParseAsArgs(argList));
-        return Task.CompletedTask;
+        return Task.FromResult(true);
     }
 }

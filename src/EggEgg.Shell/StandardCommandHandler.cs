@@ -23,7 +23,7 @@ public abstract class StandardCommandHandler<[DynamicallyAccessedMembers(Dynamic
     /// </summary>
     /// <param name="o"></param>
     /// <returns></returns>
-    public abstract Task HandleAsync(TCmdOption o);
+    public abstract Task<bool> HandleAsync(TCmdOption o, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Handle the errors happened in the command args parsing. In most cases, it don't need to be overriden.
@@ -37,17 +37,22 @@ public abstract class StandardCommandHandler<[DynamicallyAccessedMembers(Dynamic
     }
 
     /// <inheritdoc/>
-    public override async Task HandleAsync(string argList)
+    public override async Task<bool> HandleAsync(string argList, CancellationToken cancellationToken = default)
     {
         var args = ParseAsArgs(argList);
         var cmd_parser = DefaultCommandsParser;
+        bool result = false;
         try
         {
             await cmd_parser.ParseArguments<TCmdOption>(args)
                 .WithNotParsed(errs => HandleInvalidUsage(errs))
-                .WithParsedAsync(opt => HandleAsync(opt));
+                .WithParsedAsync(async (opt) =>
+                {
+                    result = await HandleAsync(opt);
+                });
         }
         catch (AccessViolationException) { }
+        return result;
     }
 
     private readonly OptionsAutoCompleteHandler<TCmdOption> _standardAutoCompleteHandler = new();

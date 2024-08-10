@@ -22,21 +22,27 @@ public abstract class HasSubCommandsHandlerBase<[DynamicallyAccessedMembers(Dyna
     /// Handler for this subcommand.
     /// </summary>
     /// <param name="o">Option apply to this subcommand.</param>
+    /// <param name="cancellationToken">
+    /// The cancellation token.
+    /// Command execution will be canceled if:<para/>
+    /// - The program is closing (though it's not guaranteed that a graceful cancellation can always be performed);<para/>
+    /// - The non-user executor requested this to be canceled.
+    /// </param>
     /// <returns></returns>
-    public abstract Task HandleAsync(TCmdOption1 o);
+    public abstract Task<bool> HandleAsync(TCmdOption1 o, CancellationToken cancellationToken = default);
 
     /// <inheritdoc/>
-    public override async Task HandleAsync(string argList)
+    public override async Task<bool> HandleAsync(string argList, CancellationToken cancellationToken = default)
     {
         var args = ParseAsArgs(argList);
-        await DefaultCommandsParser.ParseArguments<TCmdOption1>(args)
+        return await DefaultCommandsParser.ParseArguments<TCmdOption1>(args)
             .MapResult(
                 async (TCmdOption1 opt) => await HandleAsync(opt),
                 error =>
                 {
                     OutputInvalidUsage(error);
                     ShowUsage();
-                    return Task.CompletedTask;
+                    return Task.FromResult(false);
                 });
     }
 }
@@ -56,16 +62,16 @@ public abstract class HasSubCommandsHandlerBase<[DynamicallyAccessedMembers(Dyna
     {
     }
 
-    /// <inheritdoc cref="HasSubCommandsHandlerBase{TCmdOption1}.HandleAsync(TCmdOption1)"/>
-    public abstract Task HandleAsync(TCmdOption1 o);
-    /// <inheritdoc cref="HasSubCommandsHandlerBase{TCmdOption1}.HandleAsync(TCmdOption1)"/>
-    public abstract Task HandleAsync(TCmdOption2 o);
+    /// <inheritdoc cref="HasSubCommandsHandlerBase{TCmdOption1}.HandleAsync(TCmdOption1, CancellationToken)"/>
+    public abstract Task<bool> HandleAsync(TCmdOption1 o, CancellationToken cancellationToken = default);
+    /// <inheritdoc cref="HasSubCommandsHandlerBase{TCmdOption1}.HandleAsync(TCmdOption1, CancellationToken)"/>
+    public abstract Task<bool> HandleAsync(TCmdOption2 o, CancellationToken cancellationToken = default);
 
     /// <inheritdoc/>
-    public override async Task HandleAsync(string argList)
+    public override async Task<bool> HandleAsync(string argList, CancellationToken cancellationToken = default)
     {
         var args = ParseAsArgs(argList);
-        await DefaultCommandsParser.ParseArguments<TCmdOption1, TCmdOption2>(args)
+        return await DefaultCommandsParser.ParseArguments<TCmdOption1, TCmdOption2>(args)
             .MapResult(
                 async (TCmdOption1 opt) => await HandleAsync(opt),
                 async (TCmdOption2 opt) => await HandleAsync(opt),
@@ -73,7 +79,7 @@ public abstract class HasSubCommandsHandlerBase<[DynamicallyAccessedMembers(Dyna
                 {
                     OutputInvalidUsage(error);
                     ShowUsage();
-                    return Task.CompletedTask;
+                    return Task.FromResult(false);
                 });
     }
 }
@@ -92,18 +98,18 @@ public abstract class HasSubCommandsHandlerBase<[DynamicallyAccessedMembers(Dyna
     {
     }
 
-    /// <inheritdoc cref="HasSubCommandsHandlerBase{TCmdOption1}.HandleAsync(TCmdOption1)"/>
-    public abstract Task HandleAsync(TCmdOption1 o);
-    /// <inheritdoc cref="HasSubCommandsHandlerBase{TCmdOption1}.HandleAsync(TCmdOption1)"/>
-    public abstract Task HandleAsync(TCmdOption2 o);
-    /// <inheritdoc cref="HasSubCommandsHandlerBase{TCmdOption1}.HandleAsync(TCmdOption1)"/>
-    public abstract Task HandleAsync(TCmdOption3 o);
+    /// <inheritdoc cref="HasSubCommandsHandlerBase{TCmdOption1}.HandleAsync(TCmdOption1, CancellationToken)"/>
+    public abstract Task<bool> HandleAsync(TCmdOption1 o, CancellationToken cancellationToken = default);
+    /// <inheritdoc cref="HasSubCommandsHandlerBase{TCmdOption1}.HandleAsync(TCmdOption1, CancellationToken)"/>
+    public abstract Task<bool> HandleAsync(TCmdOption2 o, CancellationToken cancellationToken = default);
+    /// <inheritdoc cref="HasSubCommandsHandlerBase{TCmdOption1}.HandleAsync(TCmdOption1, CancellationToken)"/>
+    public abstract Task<bool> HandleAsync(TCmdOption3 o, CancellationToken cancellationToken = default);
 
     /// <inheritdoc/>
-    public override async Task HandleAsync(string argList)
+    public override async Task<bool> HandleAsync(string argList, CancellationToken cancellationToken = default)
     {
         var args = ParseAsArgs(argList);
-        await DefaultCommandsParser.ParseArguments<TCmdOption1, TCmdOption2, TCmdOption3>(args)
+        return await DefaultCommandsParser.ParseArguments<TCmdOption1, TCmdOption2, TCmdOption3>(args)
             .MapResult(
                 async (TCmdOption1 opt) => await HandleAsync(opt),
                 async (TCmdOption2 opt) => await HandleAsync(opt),
@@ -112,7 +118,7 @@ public abstract class HasSubCommandsHandlerBase<[DynamicallyAccessedMembers(Dyna
                 {
                     OutputInvalidUsage(error);
                     ShowUsage();
-                    return Task.CompletedTask;
+                    return Task.FromResult(false);
                 });
     }
 }
@@ -137,20 +143,20 @@ public abstract class HasSubCommandsHandlerBase<[DynamicallyAccessedMembers(Dyna
     {
     }
 
-    /// <inheritdoc cref="HasSubCommandsHandlerBase{TCmdOption1}.HandleAsync(TCmdOption1)"/>
-    public abstract Task HandleAsync(TCmdOption1 o);
-    /// <inheritdoc cref="HasSubCommandsHandlerBase{TCmdOption1}.HandleAsync(TCmdOption1)"/>
-    public abstract Task HandleAsync(TCmdOption2 o);
-    /// <inheritdoc cref="HasSubCommandsHandlerBase{TCmdOption1}.HandleAsync(TCmdOption1)"/>
-    public abstract Task HandleAsync(TCmdOption3 o);
-    /// <inheritdoc cref="HasSubCommandsHandlerBase{TCmdOption1}.HandleAsync(TCmdOption1)"/>
-    public abstract Task HandleAsync(TCmdOption4 o);
+    /// <inheritdoc cref="HasSubCommandsHandlerBase{TCmdOption1}.HandleAsync(TCmdOption1, CancellationToken)"/>
+    public abstract Task<bool> HandleAsync(TCmdOption1 o, CancellationToken cancellationToken = default);
+    /// <inheritdoc cref="HasSubCommandsHandlerBase{TCmdOption1}.HandleAsync(TCmdOption1, CancellationToken)"/>
+    public abstract Task<bool> HandleAsync(TCmdOption2 o, CancellationToken cancellationToken = default);
+    /// <inheritdoc cref="HasSubCommandsHandlerBase{TCmdOption1}.HandleAsync(TCmdOption1, CancellationToken)"/>
+    public abstract Task<bool> HandleAsync(TCmdOption3 o, CancellationToken cancellationToken = default);
+    /// <inheritdoc cref="HasSubCommandsHandlerBase{TCmdOption1}.HandleAsync(TCmdOption1, CancellationToken)"/>
+    public abstract Task<bool> HandleAsync(TCmdOption4 o, CancellationToken cancellationToken = default);
 
     /// <inheritdoc/>
-    public override async Task HandleAsync(string argList)
+    public override async Task<bool> HandleAsync(string argList, CancellationToken cancellationToken = default)
     {
         var args = ParseAsArgs(argList);
-        await DefaultCommandsParser.ParseArguments<TCmdOption1, TCmdOption2, TCmdOption3, TCmdOption4>(args)
+        return await DefaultCommandsParser.ParseArguments<TCmdOption1, TCmdOption2, TCmdOption3, TCmdOption4>(args)
             .MapResult(
                 async (TCmdOption1 opt) => await HandleAsync(opt),
                 async (TCmdOption2 opt) => await HandleAsync(opt),
@@ -160,7 +166,7 @@ public abstract class HasSubCommandsHandlerBase<[DynamicallyAccessedMembers(Dyna
                 {
                     OutputInvalidUsage(error);
                     ShowUsage();
-                    return Task.CompletedTask;
+                    return Task.FromResult(false);
                 });
     }
 }
@@ -186,22 +192,22 @@ public abstract class HasSubCommandsHandlerBase<[DynamicallyAccessedMembers(Dyna
     {
     }
 
-    /// <inheritdoc cref="HasSubCommandsHandlerBase{TCmdOption1}.HandleAsync(TCmdOption1)"/>
-    public abstract Task HandleAsync(TCmdOption1 o);
-    /// <inheritdoc cref="HasSubCommandsHandlerBase{TCmdOption1}.HandleAsync(TCmdOption1)"/>
-    public abstract Task HandleAsync(TCmdOption2 o);
-    /// <inheritdoc cref="HasSubCommandsHandlerBase{TCmdOption1}.HandleAsync(TCmdOption1)"/>
-    public abstract Task HandleAsync(TCmdOption3 o);
-    /// <inheritdoc cref="HasSubCommandsHandlerBase{TCmdOption1}.HandleAsync(TCmdOption1)"/>
-    public abstract Task HandleAsync(TCmdOption4 o);
-    /// <inheritdoc cref="HasSubCommandsHandlerBase{TCmdOption1}.HandleAsync(TCmdOption1)"/>
-    public abstract Task HandleAsync(TCmdOption5 o);
+    /// <inheritdoc cref="HasSubCommandsHandlerBase{TCmdOption1}.HandleAsync(TCmdOption1, CancellationToken)"/>
+    public abstract Task<bool> HandleAsync(TCmdOption1 o, CancellationToken cancellationToken = default);
+    /// <inheritdoc cref="HasSubCommandsHandlerBase{TCmdOption1}.HandleAsync(TCmdOption1, CancellationToken)"/>
+    public abstract Task<bool> HandleAsync(TCmdOption2 o, CancellationToken cancellationToken = default);
+    /// <inheritdoc cref="HasSubCommandsHandlerBase{TCmdOption1}.HandleAsync(TCmdOption1, CancellationToken)"/>
+    public abstract Task<bool> HandleAsync(TCmdOption3 o, CancellationToken cancellationToken = default);
+    /// <inheritdoc cref="HasSubCommandsHandlerBase{TCmdOption1}.HandleAsync(TCmdOption1, CancellationToken)"/>
+    public abstract Task<bool> HandleAsync(TCmdOption4 o, CancellationToken cancellationToken = default);
+    /// <inheritdoc cref="HasSubCommandsHandlerBase{TCmdOption1}.HandleAsync(TCmdOption1, CancellationToken)"/>
+    public abstract Task<bool> HandleAsync(TCmdOption5 o, CancellationToken cancellationToken = default);
 
     /// <inheritdoc/>
-    public override async Task HandleAsync(string argList)
+    public override async Task<bool> HandleAsync(string argList, CancellationToken cancellationToken = default)
     {
         var args = ParseAsArgs(argList);
-        await DefaultCommandsParser.ParseArguments<TCmdOption1, TCmdOption2, TCmdOption3, TCmdOption4, TCmdOption5>(args)
+        return await DefaultCommandsParser.ParseArguments<TCmdOption1, TCmdOption2, TCmdOption3, TCmdOption4, TCmdOption5>(args)
             .MapResult(
                 async (TCmdOption1 opt) => await HandleAsync(opt),
                 async (TCmdOption2 opt) => await HandleAsync(opt),
@@ -212,7 +218,7 @@ public abstract class HasSubCommandsHandlerBase<[DynamicallyAccessedMembers(Dyna
                 {
                     OutputInvalidUsage(error);
                     ShowUsage();
-                    return Task.CompletedTask;
+                    return Task.FromResult(false);
                 });
     }
 }
@@ -239,24 +245,24 @@ public abstract class HasSubCommandsHandlerBase<[DynamicallyAccessedMembers(Dyna
     {
     }
 
-    /// <inheritdoc cref="HasSubCommandsHandlerBase{TCmdOption1}.HandleAsync(TCmdOption1)"/>
-    public abstract Task HandleAsync(TCmdOption1 o);
-    /// <inheritdoc cref="HasSubCommandsHandlerBase{TCmdOption1}.HandleAsync(TCmdOption1)"/>
-    public abstract Task HandleAsync(TCmdOption2 o);
-    /// <inheritdoc cref="HasSubCommandsHandlerBase{TCmdOption1}.HandleAsync(TCmdOption1)"/>
-    public abstract Task HandleAsync(TCmdOption3 o);
-    /// <inheritdoc cref="HasSubCommandsHandlerBase{TCmdOption1}.HandleAsync(TCmdOption1)"/>
-    public abstract Task HandleAsync(TCmdOption4 o);
-    /// <inheritdoc cref="HasSubCommandsHandlerBase{TCmdOption1}.HandleAsync(TCmdOption1)"/>
-    public abstract Task HandleAsync(TCmdOption5 o);
-    /// <inheritdoc cref="HasSubCommandsHandlerBase{TCmdOption1}.HandleAsync(TCmdOption1)"/>
-    public abstract Task HandleAsync(TCmdOption6 o);
+    /// <inheritdoc cref="HasSubCommandsHandlerBase{TCmdOption1}.HandleAsync(TCmdOption1, CancellationToken)"/>
+    public abstract Task<bool> HandleAsync(TCmdOption1 o, CancellationToken cancellationToken = default);
+    /// <inheritdoc cref="HasSubCommandsHandlerBase{TCmdOption1}.HandleAsync(TCmdOption1, CancellationToken)"/>
+    public abstract Task<bool> HandleAsync(TCmdOption2 o, CancellationToken cancellationToken = default);
+    /// <inheritdoc cref="HasSubCommandsHandlerBase{TCmdOption1}.HandleAsync(TCmdOption1, CancellationToken)"/>
+    public abstract Task<bool> HandleAsync(TCmdOption3 o, CancellationToken cancellationToken = default);
+    /// <inheritdoc cref="HasSubCommandsHandlerBase{TCmdOption1}.HandleAsync(TCmdOption1, CancellationToken)"/>
+    public abstract Task<bool> HandleAsync(TCmdOption4 o, CancellationToken cancellationToken = default);
+    /// <inheritdoc cref="HasSubCommandsHandlerBase{TCmdOption1}.HandleAsync(TCmdOption1, CancellationToken)"/>
+    public abstract Task<bool> HandleAsync(TCmdOption5 o, CancellationToken cancellationToken = default);
+    /// <inheritdoc cref="HasSubCommandsHandlerBase{TCmdOption1}.HandleAsync(TCmdOption1, CancellationToken)"/>
+    public abstract Task<bool> HandleAsync(TCmdOption6 o, CancellationToken cancellationToken = default);
 
     /// <inheritdoc/>
-    public override async Task HandleAsync(string argList)
+    public override async Task<bool> HandleAsync(string argList, CancellationToken cancellationToken = default)
     {
         var args = ParseAsArgs(argList);
-        await DefaultCommandsParser.ParseArguments<TCmdOption1, TCmdOption2, TCmdOption3, TCmdOption4, TCmdOption5, TCmdOption6>(args)
+        return await DefaultCommandsParser.ParseArguments<TCmdOption1, TCmdOption2, TCmdOption3, TCmdOption4, TCmdOption5, TCmdOption6>(args)
             .MapResult(
                 async (TCmdOption1 opt) => await HandleAsync(opt),
                 async (TCmdOption2 opt) => await HandleAsync(opt),
@@ -268,7 +274,7 @@ public abstract class HasSubCommandsHandlerBase<[DynamicallyAccessedMembers(Dyna
                 {
                     OutputInvalidUsage(error);
                     ShowUsage();
-                    return Task.CompletedTask;
+                    return Task.FromResult(false);
                 });
     }
 }
@@ -296,26 +302,26 @@ public abstract class HasSubCommandsHandlerBase<[DynamicallyAccessedMembers(Dyna
     {
     }
 
-    /// <inheritdoc cref="HasSubCommandsHandlerBase{TCmdOption1}.HandleAsync(TCmdOption1)"/>
-    public abstract Task HandleAsync(TCmdOption1 o);
-    /// <inheritdoc cref="HasSubCommandsHandlerBase{TCmdOption1}.HandleAsync(TCmdOption1)"/>
-    public abstract Task HandleAsync(TCmdOption2 o);
-    /// <inheritdoc cref="HasSubCommandsHandlerBase{TCmdOption1}.HandleAsync(TCmdOption1)"/>
-    public abstract Task HandleAsync(TCmdOption3 o);
-    /// <inheritdoc cref="HasSubCommandsHandlerBase{TCmdOption1}.HandleAsync(TCmdOption1)"/>
-    public abstract Task HandleAsync(TCmdOption4 o);
-    /// <inheritdoc cref="HasSubCommandsHandlerBase{TCmdOption1}.HandleAsync(TCmdOption1)"/>
-    public abstract Task HandleAsync(TCmdOption5 o);
-    /// <inheritdoc cref="HasSubCommandsHandlerBase{TCmdOption1}.HandleAsync(TCmdOption1)"/>
-    public abstract Task HandleAsync(TCmdOption6 o);
-    /// <inheritdoc cref="HasSubCommandsHandlerBase{TCmdOption1}.HandleAsync(TCmdOption1)"/>
-    public abstract Task HandleAsync(TCmdOption7 o);
+    /// <inheritdoc cref="HasSubCommandsHandlerBase{TCmdOption1}.HandleAsync(TCmdOption1, CancellationToken)"/>
+    public abstract Task<bool> HandleAsync(TCmdOption1 o, CancellationToken cancellationToken = default);
+    /// <inheritdoc cref="HasSubCommandsHandlerBase{TCmdOption1}.HandleAsync(TCmdOption1, CancellationToken)"/>
+    public abstract Task<bool> HandleAsync(TCmdOption2 o, CancellationToken cancellationToken = default);
+    /// <inheritdoc cref="HasSubCommandsHandlerBase{TCmdOption1}.HandleAsync(TCmdOption1, CancellationToken)"/>
+    public abstract Task<bool> HandleAsync(TCmdOption3 o, CancellationToken cancellationToken = default);
+    /// <inheritdoc cref="HasSubCommandsHandlerBase{TCmdOption1}.HandleAsync(TCmdOption1, CancellationToken)"/>
+    public abstract Task<bool> HandleAsync(TCmdOption4 o, CancellationToken cancellationToken = default);
+    /// <inheritdoc cref="HasSubCommandsHandlerBase{TCmdOption1}.HandleAsync(TCmdOption1, CancellationToken)"/>
+    public abstract Task<bool> HandleAsync(TCmdOption5 o, CancellationToken cancellationToken = default);
+    /// <inheritdoc cref="HasSubCommandsHandlerBase{TCmdOption1}.HandleAsync(TCmdOption1, CancellationToken)"/>
+    public abstract Task<bool> HandleAsync(TCmdOption6 o, CancellationToken cancellationToken = default);
+    /// <inheritdoc cref="HasSubCommandsHandlerBase{TCmdOption1}.HandleAsync(TCmdOption1, CancellationToken)"/>
+    public abstract Task<bool> HandleAsync(TCmdOption7 o, CancellationToken cancellationToken = default);
 
     /// <inheritdoc/>
-    public override async Task HandleAsync(string argList)
+    public override async Task<bool> HandleAsync(string argList, CancellationToken cancellationToken = default)
     {
         var args = ParseAsArgs(argList);
-        await DefaultCommandsParser.ParseArguments<TCmdOption1, TCmdOption2, TCmdOption3, TCmdOption4, TCmdOption5, TCmdOption6, TCmdOption7>(args)
+        return await DefaultCommandsParser.ParseArguments<TCmdOption1, TCmdOption2, TCmdOption3, TCmdOption4, TCmdOption5, TCmdOption6, TCmdOption7>(args)
             .MapResult(
                 async (TCmdOption1 opt) => await HandleAsync(opt),
                 async (TCmdOption2 opt) => await HandleAsync(opt),
@@ -328,7 +334,7 @@ public abstract class HasSubCommandsHandlerBase<[DynamicallyAccessedMembers(Dyna
                 {
                     OutputInvalidUsage(error);
                     ShowUsage();
-                    return Task.CompletedTask;
+                    return Task.FromResult(false);
                 });
     }
 }
@@ -357,28 +363,28 @@ public abstract class HasSubCommandsHandlerBase<[DynamicallyAccessedMembers(Dyna
     {
     }
 
-    /// <inheritdoc cref="HasSubCommandsHandlerBase{TCmdOption1}.HandleAsync(TCmdOption1)"/>
-    public abstract Task HandleAsync(TCmdOption1 o);
-    /// <inheritdoc cref="HasSubCommandsHandlerBase{TCmdOption1}.HandleAsync(TCmdOption1)"/>
-    public abstract Task HandleAsync(TCmdOption2 o);
-    /// <inheritdoc cref="HasSubCommandsHandlerBase{TCmdOption1}.HandleAsync(TCmdOption1)"/>
-    public abstract Task HandleAsync(TCmdOption3 o);
-    /// <inheritdoc cref="HasSubCommandsHandlerBase{TCmdOption1}.HandleAsync(TCmdOption1)"/>
-    public abstract Task HandleAsync(TCmdOption4 o);
-    /// <inheritdoc cref="HasSubCommandsHandlerBase{TCmdOption1}.HandleAsync(TCmdOption1)"/>
-    public abstract Task HandleAsync(TCmdOption5 o);
-    /// <inheritdoc cref="HasSubCommandsHandlerBase{TCmdOption1}.HandleAsync(TCmdOption1)"/>
-    public abstract Task HandleAsync(TCmdOption6 o);
-    /// <inheritdoc cref="HasSubCommandsHandlerBase{TCmdOption1}.HandleAsync(TCmdOption1)"/>
-    public abstract Task HandleAsync(TCmdOption7 o);
-    /// <inheritdoc cref="HasSubCommandsHandlerBase{TCmdOption1}.HandleAsync(TCmdOption1)"/>
-    public abstract Task HandleAsync(TCmdOption8 o);
+    /// <inheritdoc cref="HasSubCommandsHandlerBase{TCmdOption1}.HandleAsync(TCmdOption1, CancellationToken)"/>
+    public abstract Task<bool> HandleAsync(TCmdOption1 o, CancellationToken cancellationToken = default);
+    /// <inheritdoc cref="HasSubCommandsHandlerBase{TCmdOption1}.HandleAsync(TCmdOption1, CancellationToken)"/>
+    public abstract Task<bool> HandleAsync(TCmdOption2 o, CancellationToken cancellationToken = default);
+    /// <inheritdoc cref="HasSubCommandsHandlerBase{TCmdOption1}.HandleAsync(TCmdOption1, CancellationToken)"/>
+    public abstract Task<bool> HandleAsync(TCmdOption3 o, CancellationToken cancellationToken = default);
+    /// <inheritdoc cref="HasSubCommandsHandlerBase{TCmdOption1}.HandleAsync(TCmdOption1, CancellationToken)"/>
+    public abstract Task<bool> HandleAsync(TCmdOption4 o, CancellationToken cancellationToken = default);
+    /// <inheritdoc cref="HasSubCommandsHandlerBase{TCmdOption1}.HandleAsync(TCmdOption1, CancellationToken)"/>
+    public abstract Task<bool> HandleAsync(TCmdOption5 o, CancellationToken cancellationToken = default);
+    /// <inheritdoc cref="HasSubCommandsHandlerBase{TCmdOption1}.HandleAsync(TCmdOption1, CancellationToken)"/>
+    public abstract Task<bool> HandleAsync(TCmdOption6 o, CancellationToken cancellationToken = default);
+    /// <inheritdoc cref="HasSubCommandsHandlerBase{TCmdOption1}.HandleAsync(TCmdOption1, CancellationToken)"/>
+    public abstract Task<bool> HandleAsync(TCmdOption7 o, CancellationToken cancellationToken = default);
+    /// <inheritdoc cref="HasSubCommandsHandlerBase{TCmdOption1}.HandleAsync(TCmdOption1, CancellationToken)"/>
+    public abstract Task<bool> HandleAsync(TCmdOption8 o, CancellationToken cancellationToken = default);
 
     /// <inheritdoc/>
-    public override async Task HandleAsync(string argList)
+    public override async Task<bool> HandleAsync(string argList, CancellationToken cancellationToken = default)
     {
         var args = ParseAsArgs(argList);
-        await DefaultCommandsParser.ParseArguments<TCmdOption1, TCmdOption2, TCmdOption3, TCmdOption4, TCmdOption5, TCmdOption6, TCmdOption7, TCmdOption8>(args)
+        return await DefaultCommandsParser.ParseArguments<TCmdOption1, TCmdOption2, TCmdOption3, TCmdOption4, TCmdOption5, TCmdOption6, TCmdOption7, TCmdOption8>(args)
             .MapResult(
                 async (TCmdOption1 opt) => await HandleAsync(opt),
                 async (TCmdOption2 opt) => await HandleAsync(opt),
@@ -392,7 +398,7 @@ public abstract class HasSubCommandsHandlerBase<[DynamicallyAccessedMembers(Dyna
                 {
                     OutputInvalidUsage(error);
                     ShowUsage();
-                    return Task.CompletedTask;
+                    return Task.FromResult(false);
                 });
     }
 }
@@ -422,30 +428,30 @@ public abstract class HasSubCommandsHandlerBase<[DynamicallyAccessedMembers(Dyna
     {
     }
 
-    /// <inheritdoc cref="HasSubCommandsHandlerBase{TCmdOption1}.HandleAsync(TCmdOption1)"/>
-    public abstract Task HandleAsync(TCmdOption1 o);
-    /// <inheritdoc cref="HasSubCommandsHandlerBase{TCmdOption1}.HandleAsync(TCmdOption1)"/>
-    public abstract Task HandleAsync(TCmdOption2 o);
-    /// <inheritdoc cref="HasSubCommandsHandlerBase{TCmdOption1}.HandleAsync(TCmdOption1)"/>
-    public abstract Task HandleAsync(TCmdOption3 o);
-    /// <inheritdoc cref="HasSubCommandsHandlerBase{TCmdOption1}.HandleAsync(TCmdOption1)"/>
-    public abstract Task HandleAsync(TCmdOption4 o);
-    /// <inheritdoc cref="HasSubCommandsHandlerBase{TCmdOption1}.HandleAsync(TCmdOption1)"/>
-    public abstract Task HandleAsync(TCmdOption5 o);
-    /// <inheritdoc cref="HasSubCommandsHandlerBase{TCmdOption1}.HandleAsync(TCmdOption1)"/>
-    public abstract Task HandleAsync(TCmdOption6 o);
-    /// <inheritdoc cref="HasSubCommandsHandlerBase{TCmdOption1}.HandleAsync(TCmdOption1)"/>
-    public abstract Task HandleAsync(TCmdOption7 o);
-    /// <inheritdoc cref="HasSubCommandsHandlerBase{TCmdOption1}.HandleAsync(TCmdOption1)"/>
-    public abstract Task HandleAsync(TCmdOption8 o);
-    /// <inheritdoc cref="HasSubCommandsHandlerBase{TCmdOption1}.HandleAsync(TCmdOption1)"/>
-    public abstract Task HandleAsync(TCmdOption9 o);
+    /// <inheritdoc cref="HasSubCommandsHandlerBase{TCmdOption1}.HandleAsync(TCmdOption1, CancellationToken)"/>
+    public abstract Task<bool> HandleAsync(TCmdOption1 o, CancellationToken cancellationToken = default);
+    /// <inheritdoc cref="HasSubCommandsHandlerBase{TCmdOption1}.HandleAsync(TCmdOption1, CancellationToken)"/>
+    public abstract Task<bool> HandleAsync(TCmdOption2 o, CancellationToken cancellationToken = default);
+    /// <inheritdoc cref="HasSubCommandsHandlerBase{TCmdOption1}.HandleAsync(TCmdOption1, CancellationToken)"/>
+    public abstract Task<bool> HandleAsync(TCmdOption3 o, CancellationToken cancellationToken = default);
+    /// <inheritdoc cref="HasSubCommandsHandlerBase{TCmdOption1}.HandleAsync(TCmdOption1, CancellationToken)"/>
+    public abstract Task<bool> HandleAsync(TCmdOption4 o, CancellationToken cancellationToken = default);
+    /// <inheritdoc cref="HasSubCommandsHandlerBase{TCmdOption1}.HandleAsync(TCmdOption1, CancellationToken)"/>
+    public abstract Task<bool> HandleAsync(TCmdOption5 o, CancellationToken cancellationToken = default);
+    /// <inheritdoc cref="HasSubCommandsHandlerBase{TCmdOption1}.HandleAsync(TCmdOption1, CancellationToken)"/>
+    public abstract Task<bool> HandleAsync(TCmdOption6 o, CancellationToken cancellationToken = default);
+    /// <inheritdoc cref="HasSubCommandsHandlerBase{TCmdOption1}.HandleAsync(TCmdOption1, CancellationToken)"/>
+    public abstract Task<bool> HandleAsync(TCmdOption7 o, CancellationToken cancellationToken = default);
+    /// <inheritdoc cref="HasSubCommandsHandlerBase{TCmdOption1}.HandleAsync(TCmdOption1, CancellationToken)"/>
+    public abstract Task<bool> HandleAsync(TCmdOption8 o, CancellationToken cancellationToken = default);
+    /// <inheritdoc cref="HasSubCommandsHandlerBase{TCmdOption1}.HandleAsync(TCmdOption1, CancellationToken)"/>
+    public abstract Task<bool> HandleAsync(TCmdOption9 o, CancellationToken cancellationToken = default);
 
     /// <inheritdoc/>
-    public override async Task HandleAsync(string argList)
+    public override async Task<bool> HandleAsync(string argList, CancellationToken cancellationToken = default)
     {
         var args = ParseAsArgs(argList);
-        await DefaultCommandsParser.ParseArguments<TCmdOption1, TCmdOption2, TCmdOption3, TCmdOption4, TCmdOption5, TCmdOption6, TCmdOption7, TCmdOption8, TCmdOption9>(args)
+        return await DefaultCommandsParser.ParseArguments<TCmdOption1, TCmdOption2, TCmdOption3, TCmdOption4, TCmdOption5, TCmdOption6, TCmdOption7, TCmdOption8, TCmdOption9>(args)
             .MapResult(
                 async (TCmdOption1 opt) => await HandleAsync(opt),
                 async (TCmdOption2 opt) => await HandleAsync(opt),
@@ -460,7 +466,7 @@ public abstract class HasSubCommandsHandlerBase<[DynamicallyAccessedMembers(Dyna
                 {
                     OutputInvalidUsage(error);
                     ShowUsage();
-                    return Task.CompletedTask;
+                    return Task.FromResult(false);
                 });
     }
 }
@@ -491,32 +497,32 @@ public abstract class HasSubCommandsHandlerBase<[DynamicallyAccessedMembers(Dyna
     {
     }
 
-    /// <inheritdoc cref="HasSubCommandsHandlerBase{TCmdOption1}.HandleAsync(TCmdOption1)"/>
-    public abstract Task HandleAsync(TCmdOption1 o);
-    /// <inheritdoc cref="HasSubCommandsHandlerBase{TCmdOption1}.HandleAsync(TCmdOption1)"/>
-    public abstract Task HandleAsync(TCmdOption2 o);
-    /// <inheritdoc cref="HasSubCommandsHandlerBase{TCmdOption1}.HandleAsync(TCmdOption1)"/>
-    public abstract Task HandleAsync(TCmdOption3 o);
-    /// <inheritdoc cref="HasSubCommandsHandlerBase{TCmdOption1}.HandleAsync(TCmdOption1)"/>
-    public abstract Task HandleAsync(TCmdOption4 o);
-    /// <inheritdoc cref="HasSubCommandsHandlerBase{TCmdOption1}.HandleAsync(TCmdOption1)"/>
-    public abstract Task HandleAsync(TCmdOption5 o);
-    /// <inheritdoc cref="HasSubCommandsHandlerBase{TCmdOption1}.HandleAsync(TCmdOption1)"/>
-    public abstract Task HandleAsync(TCmdOption6 o);
-    /// <inheritdoc cref="HasSubCommandsHandlerBase{TCmdOption1}.HandleAsync(TCmdOption1)"/>
-    public abstract Task HandleAsync(TCmdOption7 o);
-    /// <inheritdoc cref="HasSubCommandsHandlerBase{TCmdOption1}.HandleAsync(TCmdOption1)"/>
-    public abstract Task HandleAsync(TCmdOption8 o);
-    /// <inheritdoc cref="HasSubCommandsHandlerBase{TCmdOption1}.HandleAsync(TCmdOption1)"/>
-    public abstract Task HandleAsync(TCmdOption9 o);
-    /// <inheritdoc cref="HasSubCommandsHandlerBase{TCmdOption1}.HandleAsync(TCmdOption1)"/>
-    public abstract Task HandleAsync(TCmdOption10 o);
+    /// <inheritdoc cref="HasSubCommandsHandlerBase{TCmdOption1}.HandleAsync(TCmdOption1, CancellationToken)"/>
+    public abstract Task<bool> HandleAsync(TCmdOption1 o, CancellationToken cancellationToken = default);
+    /// <inheritdoc cref="HasSubCommandsHandlerBase{TCmdOption1}.HandleAsync(TCmdOption1, CancellationToken)"/>
+    public abstract Task<bool> HandleAsync(TCmdOption2 o, CancellationToken cancellationToken = default);
+    /// <inheritdoc cref="HasSubCommandsHandlerBase{TCmdOption1}.HandleAsync(TCmdOption1, CancellationToken)"/>
+    public abstract Task<bool> HandleAsync(TCmdOption3 o, CancellationToken cancellationToken = default);
+    /// <inheritdoc cref="HasSubCommandsHandlerBase{TCmdOption1}.HandleAsync(TCmdOption1, CancellationToken)"/>
+    public abstract Task<bool> HandleAsync(TCmdOption4 o, CancellationToken cancellationToken = default);
+    /// <inheritdoc cref="HasSubCommandsHandlerBase{TCmdOption1}.HandleAsync(TCmdOption1, CancellationToken)"/>
+    public abstract Task<bool> HandleAsync(TCmdOption5 o, CancellationToken cancellationToken = default);
+    /// <inheritdoc cref="HasSubCommandsHandlerBase{TCmdOption1}.HandleAsync(TCmdOption1, CancellationToken)"/>
+    public abstract Task<bool> HandleAsync(TCmdOption6 o, CancellationToken cancellationToken = default);
+    /// <inheritdoc cref="HasSubCommandsHandlerBase{TCmdOption1}.HandleAsync(TCmdOption1, CancellationToken)"/>
+    public abstract Task<bool> HandleAsync(TCmdOption7 o, CancellationToken cancellationToken = default);
+    /// <inheritdoc cref="HasSubCommandsHandlerBase{TCmdOption1}.HandleAsync(TCmdOption1, CancellationToken)"/>
+    public abstract Task<bool> HandleAsync(TCmdOption8 o, CancellationToken cancellationToken = default);
+    /// <inheritdoc cref="HasSubCommandsHandlerBase{TCmdOption1}.HandleAsync(TCmdOption1, CancellationToken)"/>
+    public abstract Task<bool> HandleAsync(TCmdOption9 o, CancellationToken cancellationToken = default);
+    /// <inheritdoc cref="HasSubCommandsHandlerBase{TCmdOption1}.HandleAsync(TCmdOption1, CancellationToken)"/>
+    public abstract Task<bool> HandleAsync(TCmdOption10 o, CancellationToken cancellationToken = default);
 
     /// <inheritdoc/>
-    public override async Task HandleAsync(string argList)
+    public override async Task<bool> HandleAsync(string argList, CancellationToken cancellationToken = default)
     {
         var args = ParseAsArgs(argList);
-        await DefaultCommandsParser.ParseArguments<TCmdOption1, TCmdOption2, TCmdOption3, TCmdOption4, TCmdOption5, TCmdOption6, TCmdOption7, TCmdOption8, TCmdOption9, TCmdOption10>(args)
+        return await DefaultCommandsParser.ParseArguments<TCmdOption1, TCmdOption2, TCmdOption3, TCmdOption4, TCmdOption5, TCmdOption6, TCmdOption7, TCmdOption8, TCmdOption9, TCmdOption10>(args)
             .MapResult(
                 async (TCmdOption1 opt) => await HandleAsync(opt),
                 async (TCmdOption2 opt) => await HandleAsync(opt),
@@ -532,7 +538,7 @@ public abstract class HasSubCommandsHandlerBase<[DynamicallyAccessedMembers(Dyna
                 {
                     OutputInvalidUsage(error);
                     ShowUsage();
-                    return Task.CompletedTask;
+                    return Task.FromResult(false);
                 });
     }
 }
@@ -564,34 +570,34 @@ public abstract class HasSubCommandsHandlerBase<[DynamicallyAccessedMembers(Dyna
     {
     }
 
-    /// <inheritdoc cref="HasSubCommandsHandlerBase{TCmdOption1}.HandleAsync(TCmdOption1)"/>
-    public abstract Task HandleAsync(TCmdOption1 o);
-    /// <inheritdoc cref="HasSubCommandsHandlerBase{TCmdOption1}.HandleAsync(TCmdOption1)"/>
-    public abstract Task HandleAsync(TCmdOption2 o);
-    /// <inheritdoc cref="HasSubCommandsHandlerBase{TCmdOption1}.HandleAsync(TCmdOption1)"/>
-    public abstract Task HandleAsync(TCmdOption3 o);
-    /// <inheritdoc cref="HasSubCommandsHandlerBase{TCmdOption1}.HandleAsync(TCmdOption1)"/>
-    public abstract Task HandleAsync(TCmdOption4 o);
-    /// <inheritdoc cref="HasSubCommandsHandlerBase{TCmdOption1}.HandleAsync(TCmdOption1)"/>
-    public abstract Task HandleAsync(TCmdOption5 o);
-    /// <inheritdoc cref="HasSubCommandsHandlerBase{TCmdOption1}.HandleAsync(TCmdOption1)"/>
-    public abstract Task HandleAsync(TCmdOption6 o);
-    /// <inheritdoc cref="HasSubCommandsHandlerBase{TCmdOption1}.HandleAsync(TCmdOption1)"/>
-    public abstract Task HandleAsync(TCmdOption7 o);
-    /// <inheritdoc cref="HasSubCommandsHandlerBase{TCmdOption1}.HandleAsync(TCmdOption1)"/>
-    public abstract Task HandleAsync(TCmdOption8 o);
-    /// <inheritdoc cref="HasSubCommandsHandlerBase{TCmdOption1}.HandleAsync(TCmdOption1)"/>
-    public abstract Task HandleAsync(TCmdOption9 o);
-    /// <inheritdoc cref="HasSubCommandsHandlerBase{TCmdOption1}.HandleAsync(TCmdOption1)"/>
-    public abstract Task HandleAsync(TCmdOption10 o);
-    /// <inheritdoc cref="HasSubCommandsHandlerBase{TCmdOption1}.HandleAsync(TCmdOption1)"/>
-    public abstract Task HandleAsync(TCmdOption11 o);
+    /// <inheritdoc cref="HasSubCommandsHandlerBase{TCmdOption1}.HandleAsync(TCmdOption1, CancellationToken)"/>
+    public abstract Task<bool> HandleAsync(TCmdOption1 o, CancellationToken cancellationToken = default);
+    /// <inheritdoc cref="HasSubCommandsHandlerBase{TCmdOption1}.HandleAsync(TCmdOption1, CancellationToken)"/>
+    public abstract Task<bool> HandleAsync(TCmdOption2 o, CancellationToken cancellationToken = default);
+    /// <inheritdoc cref="HasSubCommandsHandlerBase{TCmdOption1}.HandleAsync(TCmdOption1, CancellationToken)"/>
+    public abstract Task<bool> HandleAsync(TCmdOption3 o, CancellationToken cancellationToken = default);
+    /// <inheritdoc cref="HasSubCommandsHandlerBase{TCmdOption1}.HandleAsync(TCmdOption1, CancellationToken)"/>
+    public abstract Task<bool> HandleAsync(TCmdOption4 o, CancellationToken cancellationToken = default);
+    /// <inheritdoc cref="HasSubCommandsHandlerBase{TCmdOption1}.HandleAsync(TCmdOption1, CancellationToken)"/>
+    public abstract Task<bool> HandleAsync(TCmdOption5 o, CancellationToken cancellationToken = default);
+    /// <inheritdoc cref="HasSubCommandsHandlerBase{TCmdOption1}.HandleAsync(TCmdOption1, CancellationToken)"/>
+    public abstract Task<bool> HandleAsync(TCmdOption6 o, CancellationToken cancellationToken = default);
+    /// <inheritdoc cref="HasSubCommandsHandlerBase{TCmdOption1}.HandleAsync(TCmdOption1, CancellationToken)"/>
+    public abstract Task<bool> HandleAsync(TCmdOption7 o, CancellationToken cancellationToken = default);
+    /// <inheritdoc cref="HasSubCommandsHandlerBase{TCmdOption1}.HandleAsync(TCmdOption1, CancellationToken)"/>
+    public abstract Task<bool> HandleAsync(TCmdOption8 o, CancellationToken cancellationToken = default);
+    /// <inheritdoc cref="HasSubCommandsHandlerBase{TCmdOption1}.HandleAsync(TCmdOption1, CancellationToken)"/>
+    public abstract Task<bool> HandleAsync(TCmdOption9 o, CancellationToken cancellationToken = default);
+    /// <inheritdoc cref="HasSubCommandsHandlerBase{TCmdOption1}.HandleAsync(TCmdOption1, CancellationToken)"/>
+    public abstract Task<bool> HandleAsync(TCmdOption10 o, CancellationToken cancellationToken = default);
+    /// <inheritdoc cref="HasSubCommandsHandlerBase{TCmdOption1}.HandleAsync(TCmdOption1, CancellationToken)"/>
+    public abstract Task<bool> HandleAsync(TCmdOption11 o, CancellationToken cancellationToken = default);
 
     /// <inheritdoc/>
-    public override async Task HandleAsync(string argList)
+    public override async Task<bool> HandleAsync(string argList, CancellationToken cancellationToken = default)
     {
         var args = ParseAsArgs(argList);
-        await DefaultCommandsParser.ParseArguments<TCmdOption1, TCmdOption2, TCmdOption3, TCmdOption4, TCmdOption5, TCmdOption6, TCmdOption7, TCmdOption8, TCmdOption9, TCmdOption10, TCmdOption11>(args)
+        return await DefaultCommandsParser.ParseArguments<TCmdOption1, TCmdOption2, TCmdOption3, TCmdOption4, TCmdOption5, TCmdOption6, TCmdOption7, TCmdOption8, TCmdOption9, TCmdOption10, TCmdOption11>(args)
             .MapResult(
                 async (TCmdOption1 opt) => await HandleAsync(opt),
                 async (TCmdOption2 opt) => await HandleAsync(opt),
@@ -608,7 +614,7 @@ public abstract class HasSubCommandsHandlerBase<[DynamicallyAccessedMembers(Dyna
                 {
                     OutputInvalidUsage(error);
                     ShowUsage();
-                    return Task.CompletedTask;
+                    return Task.FromResult(false);
                 });
     }
 }
@@ -641,36 +647,36 @@ public abstract class HasSubCommandsHandlerBase<[DynamicallyAccessedMembers(Dyna
     {
     }
 
-    /// <inheritdoc cref="HasSubCommandsHandlerBase{TCmdOption1}.HandleAsync(TCmdOption1)"/>
-    public abstract Task HandleAsync(TCmdOption1 o);
-    /// <inheritdoc cref="HasSubCommandsHandlerBase{TCmdOption1}.HandleAsync(TCmdOption1)"/>
-    public abstract Task HandleAsync(TCmdOption2 o);
-    /// <inheritdoc cref="HasSubCommandsHandlerBase{TCmdOption1}.HandleAsync(TCmdOption1)"/>
-    public abstract Task HandleAsync(TCmdOption3 o);
-    /// <inheritdoc cref="HasSubCommandsHandlerBase{TCmdOption1}.HandleAsync(TCmdOption1)"/>
-    public abstract Task HandleAsync(TCmdOption4 o);
-    /// <inheritdoc cref="HasSubCommandsHandlerBase{TCmdOption1}.HandleAsync(TCmdOption1)"/>
-    public abstract Task HandleAsync(TCmdOption5 o);
-    /// <inheritdoc cref="HasSubCommandsHandlerBase{TCmdOption1}.HandleAsync(TCmdOption1)"/>
-    public abstract Task HandleAsync(TCmdOption6 o);
-    /// <inheritdoc cref="HasSubCommandsHandlerBase{TCmdOption1}.HandleAsync(TCmdOption1)"/>
-    public abstract Task HandleAsync(TCmdOption7 o);
-    /// <inheritdoc cref="HasSubCommandsHandlerBase{TCmdOption1}.HandleAsync(TCmdOption1)"/>
-    public abstract Task HandleAsync(TCmdOption8 o);
-    /// <inheritdoc cref="HasSubCommandsHandlerBase{TCmdOption1}.HandleAsync(TCmdOption1)"/>
-    public abstract Task HandleAsync(TCmdOption9 o);
-    /// <inheritdoc cref="HasSubCommandsHandlerBase{TCmdOption1}.HandleAsync(TCmdOption1)"/>
-    public abstract Task HandleAsync(TCmdOption10 o);
-    /// <inheritdoc cref="HasSubCommandsHandlerBase{TCmdOption1}.HandleAsync(TCmdOption1)"/>
-    public abstract Task HandleAsync(TCmdOption11 o);
-    /// <inheritdoc cref="HasSubCommandsHandlerBase{TCmdOption1}.HandleAsync(TCmdOption1)"/>
-    public abstract Task HandleAsync(TCmdOption12 o);
+    /// <inheritdoc cref="HasSubCommandsHandlerBase{TCmdOption1}.HandleAsync(TCmdOption1, CancellationToken)"/>
+    public abstract Task<bool> HandleAsync(TCmdOption1 o, CancellationToken cancellationToken = default);
+    /// <inheritdoc cref="HasSubCommandsHandlerBase{TCmdOption1}.HandleAsync(TCmdOption1, CancellationToken)"/>
+    public abstract Task<bool> HandleAsync(TCmdOption2 o, CancellationToken cancellationToken = default);
+    /// <inheritdoc cref="HasSubCommandsHandlerBase{TCmdOption1}.HandleAsync(TCmdOption1, CancellationToken)"/>
+    public abstract Task<bool> HandleAsync(TCmdOption3 o, CancellationToken cancellationToken = default);
+    /// <inheritdoc cref="HasSubCommandsHandlerBase{TCmdOption1}.HandleAsync(TCmdOption1, CancellationToken)"/>
+    public abstract Task<bool> HandleAsync(TCmdOption4 o, CancellationToken cancellationToken = default);
+    /// <inheritdoc cref="HasSubCommandsHandlerBase{TCmdOption1}.HandleAsync(TCmdOption1, CancellationToken)"/>
+    public abstract Task<bool> HandleAsync(TCmdOption5 o, CancellationToken cancellationToken = default);
+    /// <inheritdoc cref="HasSubCommandsHandlerBase{TCmdOption1}.HandleAsync(TCmdOption1, CancellationToken)"/>
+    public abstract Task<bool> HandleAsync(TCmdOption6 o, CancellationToken cancellationToken = default);
+    /// <inheritdoc cref="HasSubCommandsHandlerBase{TCmdOption1}.HandleAsync(TCmdOption1, CancellationToken)"/>
+    public abstract Task<bool> HandleAsync(TCmdOption7 o, CancellationToken cancellationToken = default);
+    /// <inheritdoc cref="HasSubCommandsHandlerBase{TCmdOption1}.HandleAsync(TCmdOption1, CancellationToken)"/>
+    public abstract Task<bool> HandleAsync(TCmdOption8 o, CancellationToken cancellationToken = default);
+    /// <inheritdoc cref="HasSubCommandsHandlerBase{TCmdOption1}.HandleAsync(TCmdOption1, CancellationToken)"/>
+    public abstract Task<bool> HandleAsync(TCmdOption9 o, CancellationToken cancellationToken = default);
+    /// <inheritdoc cref="HasSubCommandsHandlerBase{TCmdOption1}.HandleAsync(TCmdOption1, CancellationToken)"/>
+    public abstract Task<bool> HandleAsync(TCmdOption10 o, CancellationToken cancellationToken = default);
+    /// <inheritdoc cref="HasSubCommandsHandlerBase{TCmdOption1}.HandleAsync(TCmdOption1, CancellationToken)"/>
+    public abstract Task<bool> HandleAsync(TCmdOption11 o, CancellationToken cancellationToken = default);
+    /// <inheritdoc cref="HasSubCommandsHandlerBase{TCmdOption1}.HandleAsync(TCmdOption1, CancellationToken)"/>
+    public abstract Task<bool> HandleAsync(TCmdOption12 o, CancellationToken cancellationToken = default);
 
     /// <inheritdoc/>
-    public override async Task HandleAsync(string argList)
+    public override async Task<bool> HandleAsync(string argList, CancellationToken cancellationToken = default)
     {
         var args = ParseAsArgs(argList);
-        await DefaultCommandsParser.ParseArguments<TCmdOption1, TCmdOption2, TCmdOption3, TCmdOption4, TCmdOption5, TCmdOption6, TCmdOption7, TCmdOption8, TCmdOption9, TCmdOption10, TCmdOption11, TCmdOption12>(args)
+        return await DefaultCommandsParser.ParseArguments<TCmdOption1, TCmdOption2, TCmdOption3, TCmdOption4, TCmdOption5, TCmdOption6, TCmdOption7, TCmdOption8, TCmdOption9, TCmdOption10, TCmdOption11, TCmdOption12>(args)
             .MapResult(
                 async (TCmdOption1 opt) => await HandleAsync(opt),
                 async (TCmdOption2 opt) => await HandleAsync(opt),
@@ -688,7 +694,7 @@ public abstract class HasSubCommandsHandlerBase<[DynamicallyAccessedMembers(Dyna
                 {
                     OutputInvalidUsage(error);
                     ShowUsage();
-                    return Task.CompletedTask;
+                    return Task.FromResult(false);
                 });
     }
 }
@@ -722,38 +728,38 @@ public abstract class HasSubCommandsHandlerBase<[DynamicallyAccessedMembers(Dyna
     {
     }
 
-    /// <inheritdoc cref="HasSubCommandsHandlerBase{TCmdOption1}.HandleAsync(TCmdOption1)"/>
-    public abstract Task HandleAsync(TCmdOption1 o);
-    /// <inheritdoc cref="HasSubCommandsHandlerBase{TCmdOption1}.HandleAsync(TCmdOption1)"/>
-    public abstract Task HandleAsync(TCmdOption2 o);
-    /// <inheritdoc cref="HasSubCommandsHandlerBase{TCmdOption1}.HandleAsync(TCmdOption1)"/>
-    public abstract Task HandleAsync(TCmdOption3 o);
-    /// <inheritdoc cref="HasSubCommandsHandlerBase{TCmdOption1}.HandleAsync(TCmdOption1)"/>
-    public abstract Task HandleAsync(TCmdOption4 o);
-    /// <inheritdoc cref="HasSubCommandsHandlerBase{TCmdOption1}.HandleAsync(TCmdOption1)"/>
-    public abstract Task HandleAsync(TCmdOption5 o);
-    /// <inheritdoc cref="HasSubCommandsHandlerBase{TCmdOption1}.HandleAsync(TCmdOption1)"/>
-    public abstract Task HandleAsync(TCmdOption6 o);
-    /// <inheritdoc cref="HasSubCommandsHandlerBase{TCmdOption1}.HandleAsync(TCmdOption1)"/>
-    public abstract Task HandleAsync(TCmdOption7 o);
-    /// <inheritdoc cref="HasSubCommandsHandlerBase{TCmdOption1}.HandleAsync(TCmdOption1)"/>
-    public abstract Task HandleAsync(TCmdOption8 o);
-    /// <inheritdoc cref="HasSubCommandsHandlerBase{TCmdOption1}.HandleAsync(TCmdOption1)"/>
-    public abstract Task HandleAsync(TCmdOption9 o);
-    /// <inheritdoc cref="HasSubCommandsHandlerBase{TCmdOption1}.HandleAsync(TCmdOption1)"/>
-    public abstract Task HandleAsync(TCmdOption10 o);
-    /// <inheritdoc cref="HasSubCommandsHandlerBase{TCmdOption1}.HandleAsync(TCmdOption1)"/>
-    public abstract Task HandleAsync(TCmdOption11 o);
-    /// <inheritdoc cref="HasSubCommandsHandlerBase{TCmdOption1}.HandleAsync(TCmdOption1)"/>
-    public abstract Task HandleAsync(TCmdOption12 o);
-    /// <inheritdoc cref="HasSubCommandsHandlerBase{TCmdOption1}.HandleAsync(TCmdOption1)"/>
-    public abstract Task HandleAsync(TCmdOption13 o);
+    /// <inheritdoc cref="HasSubCommandsHandlerBase{TCmdOption1}.HandleAsync(TCmdOption1, CancellationToken)"/>
+    public abstract Task<bool> HandleAsync(TCmdOption1 o, CancellationToken cancellationToken = default);
+    /// <inheritdoc cref="HasSubCommandsHandlerBase{TCmdOption1}.HandleAsync(TCmdOption1, CancellationToken)"/>
+    public abstract Task<bool> HandleAsync(TCmdOption2 o, CancellationToken cancellationToken = default);
+    /// <inheritdoc cref="HasSubCommandsHandlerBase{TCmdOption1}.HandleAsync(TCmdOption1, CancellationToken)"/>
+    public abstract Task<bool> HandleAsync(TCmdOption3 o, CancellationToken cancellationToken = default);
+    /// <inheritdoc cref="HasSubCommandsHandlerBase{TCmdOption1}.HandleAsync(TCmdOption1, CancellationToken)"/>
+    public abstract Task<bool> HandleAsync(TCmdOption4 o, CancellationToken cancellationToken = default);
+    /// <inheritdoc cref="HasSubCommandsHandlerBase{TCmdOption1}.HandleAsync(TCmdOption1, CancellationToken)"/>
+    public abstract Task<bool> HandleAsync(TCmdOption5 o, CancellationToken cancellationToken = default);
+    /// <inheritdoc cref="HasSubCommandsHandlerBase{TCmdOption1}.HandleAsync(TCmdOption1, CancellationToken)"/>
+    public abstract Task<bool> HandleAsync(TCmdOption6 o, CancellationToken cancellationToken = default);
+    /// <inheritdoc cref="HasSubCommandsHandlerBase{TCmdOption1}.HandleAsync(TCmdOption1, CancellationToken)"/>
+    public abstract Task<bool> HandleAsync(TCmdOption7 o, CancellationToken cancellationToken = default);
+    /// <inheritdoc cref="HasSubCommandsHandlerBase{TCmdOption1}.HandleAsync(TCmdOption1, CancellationToken)"/>
+    public abstract Task<bool> HandleAsync(TCmdOption8 o, CancellationToken cancellationToken = default);
+    /// <inheritdoc cref="HasSubCommandsHandlerBase{TCmdOption1}.HandleAsync(TCmdOption1, CancellationToken)"/>
+    public abstract Task<bool> HandleAsync(TCmdOption9 o, CancellationToken cancellationToken = default);
+    /// <inheritdoc cref="HasSubCommandsHandlerBase{TCmdOption1}.HandleAsync(TCmdOption1, CancellationToken)"/>
+    public abstract Task<bool> HandleAsync(TCmdOption10 o, CancellationToken cancellationToken = default);
+    /// <inheritdoc cref="HasSubCommandsHandlerBase{TCmdOption1}.HandleAsync(TCmdOption1, CancellationToken)"/>
+    public abstract Task<bool> HandleAsync(TCmdOption11 o, CancellationToken cancellationToken = default);
+    /// <inheritdoc cref="HasSubCommandsHandlerBase{TCmdOption1}.HandleAsync(TCmdOption1, CancellationToken)"/>
+    public abstract Task<bool> HandleAsync(TCmdOption12 o, CancellationToken cancellationToken = default);
+    /// <inheritdoc cref="HasSubCommandsHandlerBase{TCmdOption1}.HandleAsync(TCmdOption1, CancellationToken)"/>
+    public abstract Task<bool> HandleAsync(TCmdOption13 o, CancellationToken cancellationToken = default);
 
     /// <inheritdoc/>
-    public override async Task HandleAsync(string argList)
+    public override async Task<bool> HandleAsync(string argList, CancellationToken cancellationToken = default)
     {
         var args = ParseAsArgs(argList);
-        await DefaultCommandsParser.ParseArguments<TCmdOption1, TCmdOption2, TCmdOption3, TCmdOption4, TCmdOption5, TCmdOption6, TCmdOption7, TCmdOption8, TCmdOption9, TCmdOption10, TCmdOption11, TCmdOption12, TCmdOption13>(args)
+        return await DefaultCommandsParser.ParseArguments<TCmdOption1, TCmdOption2, TCmdOption3, TCmdOption4, TCmdOption5, TCmdOption6, TCmdOption7, TCmdOption8, TCmdOption9, TCmdOption10, TCmdOption11, TCmdOption12, TCmdOption13>(args)
             .MapResult(
                 async (TCmdOption1 opt) => await HandleAsync(opt),
                 async (TCmdOption2 opt) => await HandleAsync(opt),
@@ -772,7 +778,7 @@ public abstract class HasSubCommandsHandlerBase<[DynamicallyAccessedMembers(Dyna
                 {
                     OutputInvalidUsage(error);
                     ShowUsage();
-                    return Task.CompletedTask;
+                    return Task.FromResult(false);
                 });
     }
 }
@@ -807,40 +813,40 @@ public abstract class HasSubCommandsHandlerBase<[DynamicallyAccessedMembers(Dyna
     {
     }
 
-    /// <inheritdoc cref="HasSubCommandsHandlerBase{TCmdOption1}.HandleAsync(TCmdOption1)"/>
-    public abstract Task HandleAsync(TCmdOption1 o);
-    /// <inheritdoc cref="HasSubCommandsHandlerBase{TCmdOption1}.HandleAsync(TCmdOption1)"/>
-    public abstract Task HandleAsync(TCmdOption2 o);
-    /// <inheritdoc cref="HasSubCommandsHandlerBase{TCmdOption1}.HandleAsync(TCmdOption1)"/>
-    public abstract Task HandleAsync(TCmdOption3 o);
-    /// <inheritdoc cref="HasSubCommandsHandlerBase{TCmdOption1}.HandleAsync(TCmdOption1)"/>
-    public abstract Task HandleAsync(TCmdOption4 o);
-    /// <inheritdoc cref="HasSubCommandsHandlerBase{TCmdOption1}.HandleAsync(TCmdOption1)"/>
-    public abstract Task HandleAsync(TCmdOption5 o);
-    /// <inheritdoc cref="HasSubCommandsHandlerBase{TCmdOption1}.HandleAsync(TCmdOption1)"/>
-    public abstract Task HandleAsync(TCmdOption6 o);
-    /// <inheritdoc cref="HasSubCommandsHandlerBase{TCmdOption1}.HandleAsync(TCmdOption1)"/>
-    public abstract Task HandleAsync(TCmdOption7 o);
-    /// <inheritdoc cref="HasSubCommandsHandlerBase{TCmdOption1}.HandleAsync(TCmdOption1)"/>
-    public abstract Task HandleAsync(TCmdOption8 o);
-    /// <inheritdoc cref="HasSubCommandsHandlerBase{TCmdOption1}.HandleAsync(TCmdOption1)"/>
-    public abstract Task HandleAsync(TCmdOption9 o);
-    /// <inheritdoc cref="HasSubCommandsHandlerBase{TCmdOption1}.HandleAsync(TCmdOption1)"/>
-    public abstract Task HandleAsync(TCmdOption10 o);
-    /// <inheritdoc cref="HasSubCommandsHandlerBase{TCmdOption1}.HandleAsync(TCmdOption1)"/>
-    public abstract Task HandleAsync(TCmdOption11 o);
-    /// <inheritdoc cref="HasSubCommandsHandlerBase{TCmdOption1}.HandleAsync(TCmdOption1)"/>
-    public abstract Task HandleAsync(TCmdOption12 o);
-    /// <inheritdoc cref="HasSubCommandsHandlerBase{TCmdOption1}.HandleAsync(TCmdOption1)"/>
-    public abstract Task HandleAsync(TCmdOption13 o);
-    /// <inheritdoc cref="HasSubCommandsHandlerBase{TCmdOption1}.HandleAsync(TCmdOption1)"/>
-    public abstract Task HandleAsync(TCmdOption14 o);
+    /// <inheritdoc cref="HasSubCommandsHandlerBase{TCmdOption1}.HandleAsync(TCmdOption1, CancellationToken)"/>
+    public abstract Task<bool> HandleAsync(TCmdOption1 o, CancellationToken cancellationToken = default);
+    /// <inheritdoc cref="HasSubCommandsHandlerBase{TCmdOption1}.HandleAsync(TCmdOption1, CancellationToken)"/>
+    public abstract Task<bool> HandleAsync(TCmdOption2 o, CancellationToken cancellationToken = default);
+    /// <inheritdoc cref="HasSubCommandsHandlerBase{TCmdOption1}.HandleAsync(TCmdOption1, CancellationToken)"/>
+    public abstract Task<bool> HandleAsync(TCmdOption3 o, CancellationToken cancellationToken = default);
+    /// <inheritdoc cref="HasSubCommandsHandlerBase{TCmdOption1}.HandleAsync(TCmdOption1, CancellationToken)"/>
+    public abstract Task<bool> HandleAsync(TCmdOption4 o, CancellationToken cancellationToken = default);
+    /// <inheritdoc cref="HasSubCommandsHandlerBase{TCmdOption1}.HandleAsync(TCmdOption1, CancellationToken)"/>
+    public abstract Task<bool> HandleAsync(TCmdOption5 o, CancellationToken cancellationToken = default);
+    /// <inheritdoc cref="HasSubCommandsHandlerBase{TCmdOption1}.HandleAsync(TCmdOption1, CancellationToken)"/>
+    public abstract Task<bool> HandleAsync(TCmdOption6 o, CancellationToken cancellationToken = default);
+    /// <inheritdoc cref="HasSubCommandsHandlerBase{TCmdOption1}.HandleAsync(TCmdOption1, CancellationToken)"/>
+    public abstract Task<bool> HandleAsync(TCmdOption7 o, CancellationToken cancellationToken = default);
+    /// <inheritdoc cref="HasSubCommandsHandlerBase{TCmdOption1}.HandleAsync(TCmdOption1, CancellationToken)"/>
+    public abstract Task<bool> HandleAsync(TCmdOption8 o, CancellationToken cancellationToken = default);
+    /// <inheritdoc cref="HasSubCommandsHandlerBase{TCmdOption1}.HandleAsync(TCmdOption1, CancellationToken)"/>
+    public abstract Task<bool> HandleAsync(TCmdOption9 o, CancellationToken cancellationToken = default);
+    /// <inheritdoc cref="HasSubCommandsHandlerBase{TCmdOption1}.HandleAsync(TCmdOption1, CancellationToken)"/>
+    public abstract Task<bool> HandleAsync(TCmdOption10 o, CancellationToken cancellationToken = default);
+    /// <inheritdoc cref="HasSubCommandsHandlerBase{TCmdOption1}.HandleAsync(TCmdOption1, CancellationToken)"/>
+    public abstract Task<bool> HandleAsync(TCmdOption11 o, CancellationToken cancellationToken = default);
+    /// <inheritdoc cref="HasSubCommandsHandlerBase{TCmdOption1}.HandleAsync(TCmdOption1, CancellationToken)"/>
+    public abstract Task<bool> HandleAsync(TCmdOption12 o, CancellationToken cancellationToken = default);
+    /// <inheritdoc cref="HasSubCommandsHandlerBase{TCmdOption1}.HandleAsync(TCmdOption1, CancellationToken)"/>
+    public abstract Task<bool> HandleAsync(TCmdOption13 o, CancellationToken cancellationToken = default);
+    /// <inheritdoc cref="HasSubCommandsHandlerBase{TCmdOption1}.HandleAsync(TCmdOption1, CancellationToken)"/>
+    public abstract Task<bool> HandleAsync(TCmdOption14 o, CancellationToken cancellationToken = default);
 
     /// <inheritdoc/>
-    public override async Task HandleAsync(string argList)
+    public override async Task<bool> HandleAsync(string argList, CancellationToken cancellationToken = default)
     {
         var args = ParseAsArgs(argList);
-        await DefaultCommandsParser.ParseArguments<TCmdOption1, TCmdOption2, TCmdOption3, TCmdOption4, TCmdOption5, TCmdOption6, TCmdOption7, TCmdOption8, TCmdOption9, TCmdOption10, TCmdOption11, TCmdOption12, TCmdOption13, TCmdOption14>(args)
+        return await DefaultCommandsParser.ParseArguments<TCmdOption1, TCmdOption2, TCmdOption3, TCmdOption4, TCmdOption5, TCmdOption6, TCmdOption7, TCmdOption8, TCmdOption9, TCmdOption10, TCmdOption11, TCmdOption12, TCmdOption13, TCmdOption14>(args)
             .MapResult(
                 async (TCmdOption1 opt) => await HandleAsync(opt),
                 async (TCmdOption2 opt) => await HandleAsync(opt),
@@ -860,7 +866,7 @@ public abstract class HasSubCommandsHandlerBase<[DynamicallyAccessedMembers(Dyna
                 {
                     OutputInvalidUsage(error);
                     ShowUsage();
-                    return Task.CompletedTask;
+                    return Task.FromResult(false);
                 });
     }
 }
@@ -896,42 +902,42 @@ public abstract class HasSubCommandsHandlerBase<[DynamicallyAccessedMembers(Dyna
     {
     }
 
-    /// <inheritdoc cref="HasSubCommandsHandlerBase{TCmdOption1}.HandleAsync(TCmdOption1)"/>
-    public abstract Task HandleAsync(TCmdOption1 o);
-    /// <inheritdoc cref="HasSubCommandsHandlerBase{TCmdOption1}.HandleAsync(TCmdOption1)"/>
-    public abstract Task HandleAsync(TCmdOption2 o);
-    /// <inheritdoc cref="HasSubCommandsHandlerBase{TCmdOption1}.HandleAsync(TCmdOption1)"/>
-    public abstract Task HandleAsync(TCmdOption3 o);
-    /// <inheritdoc cref="HasSubCommandsHandlerBase{TCmdOption1}.HandleAsync(TCmdOption1)"/>
-    public abstract Task HandleAsync(TCmdOption4 o);
-    /// <inheritdoc cref="HasSubCommandsHandlerBase{TCmdOption1}.HandleAsync(TCmdOption1)"/>
-    public abstract Task HandleAsync(TCmdOption5 o);
-    /// <inheritdoc cref="HasSubCommandsHandlerBase{TCmdOption1}.HandleAsync(TCmdOption1)"/>
-    public abstract Task HandleAsync(TCmdOption6 o);
-    /// <inheritdoc cref="HasSubCommandsHandlerBase{TCmdOption1}.HandleAsync(TCmdOption1)"/>
-    public abstract Task HandleAsync(TCmdOption7 o);
-    /// <inheritdoc cref="HasSubCommandsHandlerBase{TCmdOption1}.HandleAsync(TCmdOption1)"/>
-    public abstract Task HandleAsync(TCmdOption8 o);
-    /// <inheritdoc cref="HasSubCommandsHandlerBase{TCmdOption1}.HandleAsync(TCmdOption1)"/>
-    public abstract Task HandleAsync(TCmdOption9 o);
-    /// <inheritdoc cref="HasSubCommandsHandlerBase{TCmdOption1}.HandleAsync(TCmdOption1)"/>
-    public abstract Task HandleAsync(TCmdOption10 o);
-    /// <inheritdoc cref="HasSubCommandsHandlerBase{TCmdOption1}.HandleAsync(TCmdOption1)"/>
-    public abstract Task HandleAsync(TCmdOption11 o);
-    /// <inheritdoc cref="HasSubCommandsHandlerBase{TCmdOption1}.HandleAsync(TCmdOption1)"/>
-    public abstract Task HandleAsync(TCmdOption12 o);
-    /// <inheritdoc cref="HasSubCommandsHandlerBase{TCmdOption1}.HandleAsync(TCmdOption1)"/>
-    public abstract Task HandleAsync(TCmdOption13 o);
-    /// <inheritdoc cref="HasSubCommandsHandlerBase{TCmdOption1}.HandleAsync(TCmdOption1)"/>
-    public abstract Task HandleAsync(TCmdOption14 o);
-    /// <inheritdoc cref="HasSubCommandsHandlerBase{TCmdOption1}.HandleAsync(TCmdOption1)"/>
-    public abstract Task HandleAsync(TCmdOption15 o);
+    /// <inheritdoc cref="HasSubCommandsHandlerBase{TCmdOption1}.HandleAsync(TCmdOption1, CancellationToken)"/>
+    public abstract Task<bool> HandleAsync(TCmdOption1 o, CancellationToken cancellationToken = default);
+    /// <inheritdoc cref="HasSubCommandsHandlerBase{TCmdOption1}.HandleAsync(TCmdOption1, CancellationToken)"/>
+    public abstract Task<bool> HandleAsync(TCmdOption2 o, CancellationToken cancellationToken = default);
+    /// <inheritdoc cref="HasSubCommandsHandlerBase{TCmdOption1}.HandleAsync(TCmdOption1, CancellationToken)"/>
+    public abstract Task<bool> HandleAsync(TCmdOption3 o, CancellationToken cancellationToken = default);
+    /// <inheritdoc cref="HasSubCommandsHandlerBase{TCmdOption1}.HandleAsync(TCmdOption1, CancellationToken)"/>
+    public abstract Task<bool> HandleAsync(TCmdOption4 o, CancellationToken cancellationToken = default);
+    /// <inheritdoc cref="HasSubCommandsHandlerBase{TCmdOption1}.HandleAsync(TCmdOption1, CancellationToken)"/>
+    public abstract Task<bool> HandleAsync(TCmdOption5 o, CancellationToken cancellationToken = default);
+    /// <inheritdoc cref="HasSubCommandsHandlerBase{TCmdOption1}.HandleAsync(TCmdOption1, CancellationToken)"/>
+    public abstract Task<bool> HandleAsync(TCmdOption6 o, CancellationToken cancellationToken = default);
+    /// <inheritdoc cref="HasSubCommandsHandlerBase{TCmdOption1}.HandleAsync(TCmdOption1, CancellationToken)"/>
+    public abstract Task<bool> HandleAsync(TCmdOption7 o, CancellationToken cancellationToken = default);
+    /// <inheritdoc cref="HasSubCommandsHandlerBase{TCmdOption1}.HandleAsync(TCmdOption1, CancellationToken)"/>
+    public abstract Task<bool> HandleAsync(TCmdOption8 o, CancellationToken cancellationToken = default);
+    /// <inheritdoc cref="HasSubCommandsHandlerBase{TCmdOption1}.HandleAsync(TCmdOption1, CancellationToken)"/>
+    public abstract Task<bool> HandleAsync(TCmdOption9 o, CancellationToken cancellationToken = default);
+    /// <inheritdoc cref="HasSubCommandsHandlerBase{TCmdOption1}.HandleAsync(TCmdOption1, CancellationToken)"/>
+    public abstract Task<bool> HandleAsync(TCmdOption10 o, CancellationToken cancellationToken = default);
+    /// <inheritdoc cref="HasSubCommandsHandlerBase{TCmdOption1}.HandleAsync(TCmdOption1, CancellationToken)"/>
+    public abstract Task<bool> HandleAsync(TCmdOption11 o, CancellationToken cancellationToken = default);
+    /// <inheritdoc cref="HasSubCommandsHandlerBase{TCmdOption1}.HandleAsync(TCmdOption1, CancellationToken)"/>
+    public abstract Task<bool> HandleAsync(TCmdOption12 o, CancellationToken cancellationToken = default);
+    /// <inheritdoc cref="HasSubCommandsHandlerBase{TCmdOption1}.HandleAsync(TCmdOption1, CancellationToken)"/>
+    public abstract Task<bool> HandleAsync(TCmdOption13 o, CancellationToken cancellationToken = default);
+    /// <inheritdoc cref="HasSubCommandsHandlerBase{TCmdOption1}.HandleAsync(TCmdOption1, CancellationToken)"/>
+    public abstract Task<bool> HandleAsync(TCmdOption14 o, CancellationToken cancellationToken = default);
+    /// <inheritdoc cref="HasSubCommandsHandlerBase{TCmdOption1}.HandleAsync(TCmdOption1, CancellationToken)"/>
+    public abstract Task<bool> HandleAsync(TCmdOption15 o, CancellationToken cancellationToken = default);
 
     /// <inheritdoc/>
-    public override async Task HandleAsync(string argList)
+    public override async Task<bool> HandleAsync(string argList, CancellationToken cancellationToken = default)
     {
         var args = ParseAsArgs(argList);
-        await DefaultCommandsParser.ParseArguments<TCmdOption1, TCmdOption2, TCmdOption3, TCmdOption4, TCmdOption5, TCmdOption6, TCmdOption7, TCmdOption8, TCmdOption9, TCmdOption10, TCmdOption11, TCmdOption12, TCmdOption13, TCmdOption14, TCmdOption15>(args)
+        return await DefaultCommandsParser.ParseArguments<TCmdOption1, TCmdOption2, TCmdOption3, TCmdOption4, TCmdOption5, TCmdOption6, TCmdOption7, TCmdOption8, TCmdOption9, TCmdOption10, TCmdOption11, TCmdOption12, TCmdOption13, TCmdOption14, TCmdOption15>(args)
             .MapResult(
                 async (TCmdOption1 opt) => await HandleAsync(opt),
                 async (TCmdOption2 opt) => await HandleAsync(opt),
@@ -952,7 +958,7 @@ public abstract class HasSubCommandsHandlerBase<[DynamicallyAccessedMembers(Dyna
                 {
                     OutputInvalidUsage(error);
                     ShowUsage();
-                    return Task.CompletedTask;
+                    return Task.FromResult(false);
                 });
     }
 }
@@ -989,44 +995,44 @@ public abstract class HasSubCommandsHandlerBase<[DynamicallyAccessedMembers(Dyna
     {
     }
 
-    /// <inheritdoc cref="HasSubCommandsHandlerBase{TCmdOption1}.HandleAsync(TCmdOption1)"/>
-    public abstract Task HandleAsync(TCmdOption1 o);
-    /// <inheritdoc cref="HasSubCommandsHandlerBase{TCmdOption1}.HandleAsync(TCmdOption1)"/>
-    public abstract Task HandleAsync(TCmdOption2 o);
-    /// <inheritdoc cref="HasSubCommandsHandlerBase{TCmdOption1}.HandleAsync(TCmdOption1)"/>
-    public abstract Task HandleAsync(TCmdOption3 o);
-    /// <inheritdoc cref="HasSubCommandsHandlerBase{TCmdOption1}.HandleAsync(TCmdOption1)"/>
-    public abstract Task HandleAsync(TCmdOption4 o);
-    /// <inheritdoc cref="HasSubCommandsHandlerBase{TCmdOption1}.HandleAsync(TCmdOption1)"/>
-    public abstract Task HandleAsync(TCmdOption5 o);
-    /// <inheritdoc cref="HasSubCommandsHandlerBase{TCmdOption1}.HandleAsync(TCmdOption1)"/>
-    public abstract Task HandleAsync(TCmdOption6 o);
-    /// <inheritdoc cref="HasSubCommandsHandlerBase{TCmdOption1}.HandleAsync(TCmdOption1)"/>
-    public abstract Task HandleAsync(TCmdOption7 o);
-    /// <inheritdoc cref="HasSubCommandsHandlerBase{TCmdOption1}.HandleAsync(TCmdOption1)"/>
-    public abstract Task HandleAsync(TCmdOption8 o);
-    /// <inheritdoc cref="HasSubCommandsHandlerBase{TCmdOption1}.HandleAsync(TCmdOption1)"/>
-    public abstract Task HandleAsync(TCmdOption9 o);
-    /// <inheritdoc cref="HasSubCommandsHandlerBase{TCmdOption1}.HandleAsync(TCmdOption1)"/>
-    public abstract Task HandleAsync(TCmdOption10 o);
-    /// <inheritdoc cref="HasSubCommandsHandlerBase{TCmdOption1}.HandleAsync(TCmdOption1)"/>
-    public abstract Task HandleAsync(TCmdOption11 o);
-    /// <inheritdoc cref="HasSubCommandsHandlerBase{TCmdOption1}.HandleAsync(TCmdOption1)"/>
-    public abstract Task HandleAsync(TCmdOption12 o);
-    /// <inheritdoc cref="HasSubCommandsHandlerBase{TCmdOption1}.HandleAsync(TCmdOption1)"/>
-    public abstract Task HandleAsync(TCmdOption13 o);
-    /// <inheritdoc cref="HasSubCommandsHandlerBase{TCmdOption1}.HandleAsync(TCmdOption1)"/>
-    public abstract Task HandleAsync(TCmdOption14 o);
-    /// <inheritdoc cref="HasSubCommandsHandlerBase{TCmdOption1}.HandleAsync(TCmdOption1)"/>
-    public abstract Task HandleAsync(TCmdOption15 o);
-    /// <inheritdoc cref="HasSubCommandsHandlerBase{TCmdOption1}.HandleAsync(TCmdOption1)"/>
-    public abstract Task HandleAsync(TCmdOption16 o);
+    /// <inheritdoc cref="HasSubCommandsHandlerBase{TCmdOption1}.HandleAsync(TCmdOption1, CancellationToken)"/>
+    public abstract Task<bool> HandleAsync(TCmdOption1 o, CancellationToken cancellationToken = default);
+    /// <inheritdoc cref="HasSubCommandsHandlerBase{TCmdOption1}.HandleAsync(TCmdOption1, CancellationToken)"/>
+    public abstract Task<bool> HandleAsync(TCmdOption2 o, CancellationToken cancellationToken = default);
+    /// <inheritdoc cref="HasSubCommandsHandlerBase{TCmdOption1}.HandleAsync(TCmdOption1, CancellationToken)"/>
+    public abstract Task<bool> HandleAsync(TCmdOption3 o, CancellationToken cancellationToken = default);
+    /// <inheritdoc cref="HasSubCommandsHandlerBase{TCmdOption1}.HandleAsync(TCmdOption1, CancellationToken)"/>
+    public abstract Task<bool> HandleAsync(TCmdOption4 o, CancellationToken cancellationToken = default);
+    /// <inheritdoc cref="HasSubCommandsHandlerBase{TCmdOption1}.HandleAsync(TCmdOption1, CancellationToken)"/>
+    public abstract Task<bool> HandleAsync(TCmdOption5 o, CancellationToken cancellationToken = default);
+    /// <inheritdoc cref="HasSubCommandsHandlerBase{TCmdOption1}.HandleAsync(TCmdOption1, CancellationToken)"/>
+    public abstract Task<bool> HandleAsync(TCmdOption6 o, CancellationToken cancellationToken = default);
+    /// <inheritdoc cref="HasSubCommandsHandlerBase{TCmdOption1}.HandleAsync(TCmdOption1, CancellationToken)"/>
+    public abstract Task<bool> HandleAsync(TCmdOption7 o, CancellationToken cancellationToken = default);
+    /// <inheritdoc cref="HasSubCommandsHandlerBase{TCmdOption1}.HandleAsync(TCmdOption1, CancellationToken)"/>
+    public abstract Task<bool> HandleAsync(TCmdOption8 o, CancellationToken cancellationToken = default);
+    /// <inheritdoc cref="HasSubCommandsHandlerBase{TCmdOption1}.HandleAsync(TCmdOption1, CancellationToken)"/>
+    public abstract Task<bool> HandleAsync(TCmdOption9 o, CancellationToken cancellationToken = default);
+    /// <inheritdoc cref="HasSubCommandsHandlerBase{TCmdOption1}.HandleAsync(TCmdOption1, CancellationToken)"/>
+    public abstract Task<bool> HandleAsync(TCmdOption10 o, CancellationToken cancellationToken = default);
+    /// <inheritdoc cref="HasSubCommandsHandlerBase{TCmdOption1}.HandleAsync(TCmdOption1, CancellationToken)"/>
+    public abstract Task<bool> HandleAsync(TCmdOption11 o, CancellationToken cancellationToken = default);
+    /// <inheritdoc cref="HasSubCommandsHandlerBase{TCmdOption1}.HandleAsync(TCmdOption1, CancellationToken)"/>
+    public abstract Task<bool> HandleAsync(TCmdOption12 o, CancellationToken cancellationToken = default);
+    /// <inheritdoc cref="HasSubCommandsHandlerBase{TCmdOption1}.HandleAsync(TCmdOption1, CancellationToken)"/>
+    public abstract Task<bool> HandleAsync(TCmdOption13 o, CancellationToken cancellationToken = default);
+    /// <inheritdoc cref="HasSubCommandsHandlerBase{TCmdOption1}.HandleAsync(TCmdOption1, CancellationToken)"/>
+    public abstract Task<bool> HandleAsync(TCmdOption14 o, CancellationToken cancellationToken = default);
+    /// <inheritdoc cref="HasSubCommandsHandlerBase{TCmdOption1}.HandleAsync(TCmdOption1, CancellationToken)"/>
+    public abstract Task<bool> HandleAsync(TCmdOption15 o, CancellationToken cancellationToken = default);
+    /// <inheritdoc cref="HasSubCommandsHandlerBase{TCmdOption1}.HandleAsync(TCmdOption1, CancellationToken)"/>
+    public abstract Task<bool> HandleAsync(TCmdOption16 o, CancellationToken cancellationToken = default);
 
     /// <inheritdoc/>
-    public override async Task HandleAsync(string argList)
+    public override async Task<bool> HandleAsync(string argList, CancellationToken cancellationToken = default)
     {
         var args = ParseAsArgs(argList);
-        await DefaultCommandsParser.ParseArguments<TCmdOption1, TCmdOption2, TCmdOption3, TCmdOption4, TCmdOption5, TCmdOption6, TCmdOption7, TCmdOption8, TCmdOption9, TCmdOption10, TCmdOption11, TCmdOption12, TCmdOption13, TCmdOption14, TCmdOption15, TCmdOption16>(args)
+        return await DefaultCommandsParser.ParseArguments<TCmdOption1, TCmdOption2, TCmdOption3, TCmdOption4, TCmdOption5, TCmdOption6, TCmdOption7, TCmdOption8, TCmdOption9, TCmdOption10, TCmdOption11, TCmdOption12, TCmdOption13, TCmdOption14, TCmdOption15, TCmdOption16>(args)
             .MapResult(
                 async (TCmdOption1 opt) => await HandleAsync(opt),
                 async (TCmdOption2 opt) => await HandleAsync(opt),
@@ -1048,7 +1054,7 @@ public abstract class HasSubCommandsHandlerBase<[DynamicallyAccessedMembers(Dyna
                 {
                     OutputInvalidUsage(error);
                     ShowUsage();
-                    return Task.CompletedTask;
+                    return Task.FromResult(false);
                 });
     }
 }

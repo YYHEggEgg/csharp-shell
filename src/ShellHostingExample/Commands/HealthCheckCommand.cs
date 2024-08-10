@@ -29,19 +29,24 @@ public class HealthCheckCommand(ILogger<HealthCheckCommand> logger) : HasSubComm
 
     public override string Description => "Run service Health Check.";
 
-    public override Task HandleAsync(HealthCheckRunOptions o)
+    public override Task<bool> HandleAsync(HealthCheckRunOptions o, CancellationToken cancellationToken)
     {
         _logger.LogInformation("You requested health check, CheckChecksumIntegrity: {bool}, CheckDeadRef: {bool}, CheckMultiDef: {bool}, CheckDuplicateObject: {bool}", o.CheckChecksumIntegrity, o.CheckDeadRef, o.CheckMultiDef, o.CheckDuplicateObject);
-        return Task.CompletedTask;
+        return Task.FromResult(true);
     }
 
-    public override async Task HandleAsync(HealthCheckCancelOptions o)
+    public override async Task<bool> HandleAsync(HealthCheckCancelOptions o, CancellationToken cancellationToken)
     {
         _logger.LogInformation("Are you sure to continue?");
         ConsoleWrapper.InputPrefix = "Type 'y' or 'n': ";
         var result = await ConsoleWrapper.ReadLineAsync();
         if (result.ToLower() == "y")
             _logger.LogInformation("Cancellation requested.");
-        else _logger.LogInformation("User refused to continue.");
+        else
+        {
+            _logger.LogInformation("User refused to continue.");
+            return false;
+        }
+        return true;
     }
 }
