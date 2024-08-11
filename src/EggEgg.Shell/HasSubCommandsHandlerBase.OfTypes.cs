@@ -28,7 +28,7 @@ public abstract class HasSubCommandsHandlerBase<[DynamicallyAccessedMembers(Dyna
     /// - The program is closing (though it's not guaranteed that a graceful cancellation can always be performed);<para/>
     /// - The non-user executor requested this to be canceled.
     /// </param>
-    /// <returns></returns>
+    /// <inheritdoc cref="HandleAsync(string, CancellationToken)"/>
     public abstract Task<bool> HandleAsync(TCmdOption1 o, CancellationToken cancellationToken = default);
 
     /// <inheritdoc/>

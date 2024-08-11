@@ -39,7 +39,7 @@ public class HealthCheckCommand(ILogger<HealthCheckCommand> logger) : HasSubComm
     {
         _logger.LogInformation("Are you sure to continue?");
         ConsoleWrapper.InputPrefix = "Type 'y' or 'n': ";
-        var result = await ConsoleWrapper.ReadLineAsync();
+        var result = await ConsoleWrapper.ReadLineAsync(cancellationToken: cancellationToken);
         if (result.ToLower() == "y")
             _logger.LogInformation("Cancellation requested.");
         else

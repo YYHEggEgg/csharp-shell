@@ -1,5 +1,4 @@
 ﻿using YYHEggEgg.Logger;
-using YYHEggEgg.Shell.MainCLI;
 
 namespace YYHEggEgg.Shell.AutoCompletion;
 
@@ -17,10 +16,15 @@ public class DispatchOptionsAutoCompleteHandler(IEnumerable<CommandHandlerBase> 
         if (separatorIdx < 0) return new();
         var commandName = text[..separatorIdx];
         var handler = handlers.Where(x => x.CommandName == commandName).FirstOrDefault();
-        if (handler != null) handler.GetSuggestions(text, index);
+        if (handler != null) return handler.GetSuggestions(text, index);
         
         var generalOpHandler = getGeneralOpHandlerCallback();
         if (generalOpHandler == null) return new();
-        return generalOpHandler.GetSuggestions($"{commandName} {text}", index);
+        var generalOpAlias = generalOpHandler.CommandName;
+        var res = generalOpHandler.GetSuggestions($"{generalOpAlias} {text}", index);
+        res.StartIndex -= generalOpAlias.Length;
+        res.EndIndex -= generalOpAlias.Length;
+        if (res.StartIndex < 0) return new();
+        else return res;
     }
 }

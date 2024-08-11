@@ -7,7 +7,7 @@ using YYHEggEgg.Shell.AutoCompletion;
 namespace YYHEggEgg.Shell;
 
 /// <summary>
-/// A more standard command handle using <see cref="Parser"/>.
+/// A more standard command handler using <see cref="Parser"/>.
 /// </summary>
 /// <typeparam name="TCmdOption"></typeparam>
 public abstract class StandardCommandHandler<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties)] TCmdOption>(ILogger logger) : CommandHandlerBase(logger)
@@ -22,6 +22,7 @@ public abstract class StandardCommandHandler<[DynamicallyAccessedMembers(Dynamic
     /// Command Handler, using <typeparamref name="TCmdOption"/>.
     /// </summary>
     /// <param name="o"></param>
+    /// <param name="cancellationToken"></param>
     /// <returns></returns>
     public abstract Task<bool> HandleAsync(TCmdOption o, CancellationToken cancellationToken = default);
 

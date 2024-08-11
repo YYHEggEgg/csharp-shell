@@ -4,6 +4,9 @@ using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 using System.Text;
 using YYHEggEgg.Logger;
+using YYHEggEgg.Shell.Exceptions;
+using YYHEggEgg.Shell.MainCLI;
+using YYHEggEgg.Shell.Model;
 
 namespace YYHEggEgg.Shell;
 
@@ -26,10 +29,13 @@ public abstract class CommandHandlerBase(ILogger logger) : IAutoCompleteHandler
     /// <param name="cmd"></param>
     /// <returns></returns>
     /// <remarks><seealso href="https://learn.microsoft.com/en-us/cpp/cpp/main-function-command-line-args?view=msvc-170#parsing-c-command-line-arguments">Parsing C++ command-line arguments</seealso></remarks>
-    public static List<string> ParseAsArgs(string cmd)
+    public static CmdLineParseResult ParseCmd(string cmd)
     {
         var argv = new List<string>();
+        var rawStrings = new List<CmdLineRawString>();
         var currentArg = new StringBuilder();
+        var currentRawString = new StringBuilder();
+        var curStartIndex = 0;
         bool inQuotes = false;
         int backslashCount = 0;
 
@@ -76,14 +82,24 @@ public abstract class CommandHandlerBase(ILogger logger) : IAutoCompleteHandler
                     if (currentArg.Length > 0)
                     {
                         argv.Add(currentArg.ToString());
+                        rawStrings.Add(new(currentRawString.ToString(), curStartIndex));
                         currentArg.Clear();
+                        currentRawString.Clear();
+                        curStartIndex = i + 1;
                     }
+                    else
+                    {
+                        curStartIndex++;
+                    }
+                    continue;
                 }
                 else
                 {
                     currentArg.Append(c);
                 }
             }
+
+            currentRawString.Append(c);
         }
 
         if (backslashCount > 0)
@@ -95,9 +111,20 @@ public abstract class CommandHandlerBase(ILogger logger) : IAutoCompleteHandler
         {
             argv.Add(currentArg.ToString());
         }
+        if (currentRawString.Length > 0)
+        {
+            rawStrings.Add(new(currentRawString.ToString(), curStartIndex));
+        }
 
-        return argv;
+        return new()
+        {
+            ParsedArgv = argv,
+            RawStringInfos = rawStrings,
+        };
     }
+
+    /// <inheritdoc cref="ParseCmd(string)"/>
+    public static List<string> ParseAsArgs(string cmd) => ParseCmd(cmd).ParsedArgv;
 
     /// <summary>
     /// The Command Name for user to invoke your command (the first word in their command).
@@ -137,6 +164,8 @@ public abstract class CommandHandlerBase(ILogger logger) : IAutoCompleteHandler
     /// stopping application.
     /// </remarks>
     public virtual void CleanUp() { }
+
+    internal MainCommandLineBase? OwnerCli = null;
 
     /// <summary>
     /// Show command name and description in one line.
@@ -372,5 +401,21 @@ public abstract class CommandHandlerBase(ILogger logger) : IAutoCompleteHandler
             "Boolean" => isValue ? "true|false" : null,
             _ => "value",
         };
+    }
+
+    /// <summary>
+    /// Invoke another command with the raw command input.
+    /// </summary>
+    /// <param name="cmd">The raw command input, with full command name and options.</param>
+    /// <param name="cancellationToken"></param>
+    /// <returns>Whether the command succeeded. Notice that when the command don't want to be invoked from non-user caller, a <see cref="RejectedCommandCallException"/> is thrown instead of returning false.</returns>
+    /// <exception cref="RejectedCommandCallException">The invoked command rejected invocation because it is configured to do so.</exception>
+    protected async Task<bool> InvokeCommandAsync(string cmd, CancellationToken cancellationToken = default)
+    {
+        if (OwnerCli == null)
+        {
+            throw new InvalidOperationException("You must register Command Handler to a MainCommandLineBase and run it before invoking other commands.");
+        }
+        return await OwnerCli.NonUserInvokeCommandAsync(this, cmd, cancellationToken);
     }
 }

@@ -11,7 +11,7 @@
     <GenerateDocumentationFile>True</GenerateDocumentationFile>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
     <Title>EggEgg.Shell.Hosting</Title>
-    <Version>5.0.0-rc07</Version>
+    <Version>5.0.0-rc09</Version>
     <Authors>YYHEggEgg</Authors>
     <Company>YYHEggEgg</Company>
     <PackageReadmeFile>README.md</PackageReadmeFile>

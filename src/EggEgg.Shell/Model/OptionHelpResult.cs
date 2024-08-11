@@ -1,6 +1,6 @@
 ﻿using CommandLine;
 
-namespace YYHEggEgg.Shell;
+namespace YYHEggEgg.Shell.Model;
 
 /// <summary>
 /// The parsed result for generating usage from one option property.

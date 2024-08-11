@@ -1,5 +1,4 @@
 ﻿using YYHEggEgg.Logger;
-using YYHEggEgg.Shell.MainCLI;
 
 namespace YYHEggEgg.Shell.AutoCompletion;
 
@@ -7,11 +6,8 @@ namespace YYHEggEgg.Shell.AutoCompletion;
 /// Complete commands (the first word).
 /// </summary>
 /// <param name="commands"></param>
-/// <param name="getAdditionalAllowedNamesCallback">
-/// The additionally allowed names (though not commands).
-/// Used for <see cref="MainCommandLineBase.RefreshGeneralOperationHandler()"/>.
-/// </param>
-public class CommandAutoCompleteHandler(IEnumerable<CommandHandlerBase> commands, Func<IEnumerable<string>?> getAdditionalAllowedNamesCallback) : IAutoCompleteHandler
+/// <param name="getGeneralOpHandlerCallback"></param>
+public class CommandAutoCompleteHandler(IEnumerable<CommandHandlerBase> commands, Func<CommandHandlerBase?> getGeneralOpHandlerCallback) : IAutoCompleteHandler
 {
     private readonly IEnumerable<string> _commandNames = commands.Select(x => x.CommandName);
 
@@ -29,10 +25,18 @@ public class CommandAutoCompleteHandler(IEnumerable<CommandHandlerBase> commands
     {
         if (text.Contains(' ')) return new();
         var matches = MatchByName(_commandNames, text, index);
-        var additionalAllowedNames = getAdditionalAllowedNamesCallback();
-        if (additionalAllowedNames != null)
+
+        var generalOpHandler = getGeneralOpHandlerCallback();
+        if (generalOpHandler != null)
         {
-            matches = matches.Concat(MatchByName(additionalAllowedNames, text, index));
+            var generalOpAlias = generalOpHandler.CommandName;
+            var res = generalOpHandler.GetSuggestions($"{generalOpAlias} {text}", index);
+            res.StartIndex -= generalOpAlias.Length;
+            res.EndIndex -= generalOpAlias.Length;
+            if (res.StartIndex >= 0 && res.Suggestions != null)
+            {
+                matches = matches.Concat(res.Suggestions);
+            }
         }
         return new()
         {

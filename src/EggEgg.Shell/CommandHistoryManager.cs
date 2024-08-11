@@ -30,7 +30,7 @@ public class CommandHistoryManager(string historyFilePath)
                 .Where(x => x.Length <= maximumChars).TakeLast(HISTSIZE))
             {
                 var separatorIdx = line.IndexOf(';');
-                if (separatorIdx >= 0) res.Add(line[separatorIdx..]);
+                if (separatorIdx >= 0) res.Add(line[(separatorIdx + 1)..]);
                 else res.Add(line);
             }
             return res;

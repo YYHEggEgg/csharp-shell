@@ -55,10 +55,10 @@ With no more than 50 lines, you have a basic shell with all features mentioned b
 
       public override string Description => "Query the files status.";
 
-      public override Task HandleAsync(SelectOption o)
+      public override Task<bool> HandleAsync(SelectOption o, CancellationToken cancellationToken)
       {
           _logger.LogInformation("You typed prefix: {prefix}", o.IncludePrefix);
-          return Task.CompletedTask;
+          return Task.FromResult(true);
       }
   }
   ```

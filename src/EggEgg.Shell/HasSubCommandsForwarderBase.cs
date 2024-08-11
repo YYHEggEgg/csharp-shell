@@ -1,25 +1,30 @@
-using CommandLine;
+﻿using CommandLine;
 using Microsoft.Extensions.Logging;
 using System.Reflection;
 using YYHEggEgg.Logger;
+using YYHEggEgg.Shell.Attributes;
 using YYHEggEgg.Shell.AutoCompletion;
+using YYHEggEgg.Shell.Model;
 
 namespace YYHEggEgg.Shell;
 
 /// <summary>
-/// Define the base of handlers with multiple subcommands.
+/// Define the base of command forwarder with multiple subcommands.
+/// <seealso cref="CommandForwarderBase">What's a Command Forwarder</seealso>
 /// </summary>
-public abstract class HasSubCommandsHandlerBase : CommandHandlerBase
+public abstract class HasSubCommandsForwarderBase : CommandForwarderBase
 {
     private readonly Dictionary<string, OptionsAutoCompleteHandler> _autoCmplHandlersMap;
     private readonly Dictionary<string, string> _subCommandAliasesMap;
+    private readonly SuggestionSlave _privateSlave;
     /// <summary>
     /// The provided type parameters of option types.
     /// </summary>
     protected readonly IEnumerable<Type> _subCommandOptionTypes;
-    internal HasSubCommandsHandlerBase(ILogger logger, IEnumerable<Type> optionTypes)
+    internal HasSubCommandsForwarderBase(ILogger logger, IEnumerable<Type> optionTypes)
         : base(logger)
     {
+        _privateSlave = new(CommandName, logger, optionTypes);
         _autoCmplHandlersMap = [];
         _subCommandAliasesMap = [];
         _subCommandOptionTypes = optionTypes;
@@ -44,31 +49,9 @@ public abstract class HasSubCommandsHandlerBase : CommandHandlerBase
     }
 
     /// <inheritdoc/>
-    public override SuggestionResult GetSuggestions(string text, int index)
+    public override SuggestionResult GetSuggestionsForOptions(string text, int index)
     {
-        var args = ParseAsArgs(text);
-        if (index <= args[0].Length) return new();
-        var subCommand = args.Count > 1 ? args[1] : string.Empty;
-
-        if (args.Count > 2 || (args.Count == 2 && text[index - 1] == ' '))
-        {
-            if (!_subCommandAliasesMap.TryGetValue(subCommand, out var subCommandDef) && !_subCommandAliasesMap.TryGetValue(string.Empty, out subCommandDef))
-                return new();
-            var subCommandHandler = _autoCmplHandlersMap[subCommandDef];
-            return subCommandHandler.GetSuggestions(text, index);
-        }
-
-        // Fill out subcommand
-        var subStartLimit = text[(args[0].Length + 1)..index];
-        var subEndLimit = text[index..];
-        return new SuggestionResult
-        {
-            Suggestions = (from subCommandName in _autoCmplHandlersMap.Keys
-                           where subCommandName.StartsWith(subStartLimit) && subCommandName.EndsWith(subEndLimit)
-                           select subCommandName).ToList(),
-            StartIndex = args[0].Length + 1,
-            EndIndex = -1,
-        };
+        return _privateSlave.GetSuggestions(text, index);
     }
 
     /// <summary>
@@ -79,24 +62,6 @@ public abstract class HasSubCommandsHandlerBase : CommandHandlerBase
     /// The additional description of this (whole) command. Added to the end of <see cref="UsageLines"/>.
     /// </summary>
     protected virtual IEnumerable<string>? AdditionalDescLines => null;
-
-    /// <summary>
-    /// Util method: Get the description of one subcommand.
-    /// </summary>
-    /// <param name="verbAttribute"></param>
-    /// <returns></returns>
-    public static string GetVerbIntroLine(VerbAttribute verbAttribute)
-    {
-        var introLine = $"  command {verbAttribute.Name}";
-        if (verbAttribute.Aliases != null && verbAttribute.Aliases.Length > 0)
-        {
-            introLine += $", {string.Join(", ", verbAttribute.Aliases)}";
-        }
-        if (verbAttribute.IsDefault) introLine += " (default):";
-        else introLine += ":";
-        introLine += $" {verbAttribute.HelpText}";
-        return introLine;
-    }
 
     /// <inheritdoc/>
     public override IEnumerable<string> UsageLines
@@ -116,8 +81,8 @@ public abstract class HasSubCommandsHandlerBase : CommandHandlerBase
 
                 var verbAttribute = optionType.GetCustomAttribute<VerbAttribute>();
                 if (verbAttribute == null) continue;
-                yield return GetVerbIntroLine(verbAttribute);
-                yield return $"    {CommandName} {verbAttribute.Name} [options]";
+                yield return HasSubCommandsHandlerBase.GetVerbIntroLine(verbAttribute);
+                yield return $"    {GetCommandUsageIntroLine(optionType, $"{CommandName} {verbAttribute.Name}", Separator)}";
 
                 foreach (var helpline in GetCmdOptionsHelpStrings(optionType))
                 {
@@ -133,6 +98,40 @@ public abstract class HasSubCommandsHandlerBase : CommandHandlerBase
             yield return string.Empty;
             foreach (var line in AdditionalDescLines ?? [])
                 yield return line;
+        }
+    }
+
+    /// <inheritdoc cref="StandardCommandForwarder{TCmdOption}.ForwardCmdArgumentShield(TCmdOption, string?)"/>
+    protected virtual bool ForwardCmdArgumentShield<TCmdOption>(TCmdOption o, string? forwardedCmd)
+        where TCmdOption : ForwardCommandOptionBase, new()
+    {
+        switch (o.AllowForwardCmd)
+        {
+            case ArgumentStatus.Disallowed:
+                if (!string.IsNullOrWhiteSpace(forwardedCmd))
+                    _logger.LogWarning("This command expects no value for forwarded command, but it is provided. Content after separator '{separator}' will be ignored.", Separator);
+                break;
+            case ArgumentStatus.Required:
+                if (string.IsNullOrWhiteSpace(forwardedCmd))
+                {
+                    _logger.LogError("This command requires value for forwarded command, but it does not exist. Please join separator '{separator}' and add a command after it.", Separator);
+                    return false;
+                }
+                break;
+        }
+        return true;
+    }
+
+    [DoNotRegisterCommand]
+    private class SuggestionSlave(string commandName, ILogger logger, IEnumerable<Type> optionTypes) : HasSubCommandsHandlerBase(logger, optionTypes)
+    {
+        public override string CommandName => commandName;
+
+        public override string Description => throw new NotImplementedException();
+
+        public override Task<bool> HandleAsync(string argList, CancellationToken cancellationToken = default)
+        {
+            throw new NotImplementedException();
         }
     }
 }

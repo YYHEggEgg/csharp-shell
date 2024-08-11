@@ -2,6 +2,7 @@ using System.Security.Cryptography;
 using System.Text;
 using CommandLine;
 using TextCopy;
+using YYHEggEgg.Shell.Model;
 
 namespace YYHEggEgg.Shell.Benchmark.Commands;
 
@@ -157,37 +158,37 @@ public class ComplexCommand : HasSubCommandsHandlerBase<RsaEncryptOption, RsaDec
     public override string CommandName => "Complex";
     public override string Description => "Complex command.";
 
-    public override Task HandleAsync(RsaEncryptOption o)
+    public override Task<bool> HandleAsync(RsaEncryptOption o, CancellationToken cancellationToken)
     {
         throw new NotImplementedException();
     }
 
-    public override Task HandleAsync(RsaDecryptOption o)
+    public override Task<bool> HandleAsync(RsaDecryptOption o, CancellationToken cancellationToken)
     {
         throw new NotImplementedException();
     }
 
-    public override Task HandleAsync(RsaSignOption o)
+    public override Task<bool> HandleAsync(RsaSignOption o, CancellationToken cancellationToken)
     {
         throw new NotImplementedException();
     }
 
-    public override Task HandleAsync(RsaVerifyOption o)
+    public override Task<bool> HandleAsync(RsaVerifyOption o, CancellationToken cancellationToken)
     {
         throw new NotImplementedException();
     }
 
-    public override Task HandleAsync(RsaGetKeyTypeOption o)
+    public override Task<bool> HandleAsync(RsaGetKeyTypeOption o, CancellationToken cancellationToken)
     {
         throw new NotImplementedException();
     }
 
-    public override Task HandleAsync(RsaKeyGenOption o)
+    public override Task<bool> HandleAsync(RsaKeyGenOption o, CancellationToken cancellationToken)
     {
         throw new NotImplementedException();
     }
 
-    public override Task HandleAsync(RsaKeyConvertOption o)
+    public override Task<bool> HandleAsync(RsaKeyConvertOption o, CancellationToken cancellationToken)
     {
         throw new NotImplementedException();
     }

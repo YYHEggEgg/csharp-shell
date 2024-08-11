@@ -1,6 +1,8 @@
 ﻿using CommandLine;
 using Microsoft.Extensions.Logging;
 using YYHEggEgg.Logger;
+using YYHEggEgg.Shell.Attributes;
+using YYHEggEgg.Shell.Model;
 
 namespace YYHEggEgg.Shell.Example.Commands;
 
@@ -23,6 +25,7 @@ public class HealthCheckCancelOptions
 
 }
 
+[CommandNonUserCall(CallerAccess.AllowEveryone)]
 public class HealthCheckCommand : HasSubCommandsHandlerBase<HealthCheckRunOptions, HealthCheckCancelOptions>
 {
     public override string CommandName => "healthcheck";
@@ -39,7 +42,7 @@ public class HealthCheckCommand : HasSubCommandsHandlerBase<HealthCheckRunOption
     {
         _logger.LogInformation("Are you sure to continue?");
         ConsoleWrapper.InputPrefix = "Type 'y' or 'n': ";
-        var result = await ConsoleWrapper.ReadLineAsync();
+        var result = await ConsoleWrapper.ReadLineAsync(cancellationToken: cancellationToken);
         if (result.ToLower() == "y")
             _logger.LogInformation("Cancellation requested.");
         else

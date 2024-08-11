@@ -12,7 +12,7 @@
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
     <ReadMeFile></ReadMeFile>
     <Title>EggEgg.Shell</Title>
-    <Version>5.0.0-rc07</Version>
+    <Version>5.0.0-rc09</Version>
     <Authors>YYHEggEgg</Authors>
     <Company>YYHEggEgg</Company>
     <PackageReadmeFile>README.md</PackageReadmeFile>
@@ -33,6 +33,7 @@
       <Pack>True</Pack>
       <PackagePath>\</PackagePath>
     </None>
+    <None Include="HasSubCommandsForwarderBase.OfTypes.cs" />
   </ItemGroup>
 
   <ItemGroup>

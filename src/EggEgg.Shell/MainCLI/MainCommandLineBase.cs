@@ -1,6 +1,11 @@
 ﻿using Microsoft.Extensions.Logging;
+using System.Diagnostics.CodeAnalysis;
+using System.Reflection;
 using YYHEggEgg.Logger;
+using YYHEggEgg.Shell.Attributes;
 using YYHEggEgg.Shell.AutoCompletion;
+using YYHEggEgg.Shell.Exceptions;
+using YYHEggEgg.Shell.Model;
 
 namespace YYHEggEgg.Shell.MainCLI;
 
@@ -24,27 +29,17 @@ public abstract class MainCommandLineBase
     /// <returns></returns>
     protected abstract IEnumerable<CommandHandlerBase> GetCommandHandlers();
     /// <summary>
-    /// Get a fallback handler for 'command name' that doesn't bind to one in <see cref="GetCommandHandlers()"/>.
+    /// Get a fallback targetHandler for 'command name' that doesn't bind to one in <see cref="GetCommandHandlers()"/>.
     /// </summary>
     /// <returns></returns>
     /// <remarks>
     /// IMPORTANT: It will be invoked EVERY TIME when a new command starts executing, so consider reuse the same instance when implementing. <para/>
-    /// Another IMPORTANT: when a general handler's <see cref="CommandHandlerBase.GetSuggestions(string, int)"/>
+    /// Another IMPORTANT: when a general targetHandler's <see cref="CommandHandlerBase.GetSuggestions(string, int)"/>
     /// is invoked, the given <c>text</c> will start with <see cref="CommandHandlerBase.CommandName"/>
     /// (even though user never type them). This is due to compatibility demands
     /// of the method <seealso cref="CommandHandlerBase.GetSuggestions(string, int)"/>.
     /// </remarks>
     protected virtual CommandHandlerBase? RefreshGeneralOperationHandler() => null;
-    /// <summary>
-    /// Get the list of allowed 'command name' that doesn't bind to one in <see cref="GetCommandHandlers()"/> and can be handled by <see cref="RefreshGeneralOperationHandler()"/>.
-    /// </summary>
-    /// <remarks>
-    /// This list will be used ONLY for auto completion and won't affect what are thrown
-    /// to <see cref="RefreshGeneralOperationHandler()"/> (whenever defined, it will handle
-    /// all requests failed passed to a registered command handler).<para/>
-    /// IMPORTANT: It will be invoked EVERY TIME when a new command starts executing, so consider reuse the same instance when implementing.
-    /// </remarks>
-    protected virtual IEnumerable<string>? RefreshGeneralOperations() => null;
     /// <summary>
     /// The notice for welcome. When command line starts, the specified
     /// notice will be written to console as lines.
@@ -72,8 +67,6 @@ public abstract class MainCommandLineBase
     /// </summary>
     protected virtual string? CommandHistoryFilePath => null;
 
-    private CommandAutoCompleteHandler? _cmdAutoCmplHandler;
-    private DispatchOptionsAutoCompleteHandler? _optionsAutoCmplHandler;
     private CommandHistoryManager? _historyManager;
     private CommandHandlerBase? _unknownHandler;
 
@@ -133,14 +126,21 @@ public abstract class MainCommandLineBase
     {
         foreach (var handler in _commandHandlers.Values)
         {
-            handler.ShowDescription();
+            try
+            {
+                handler.ShowDescription();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Command '{outCommandName}' failed to load description.", handler.CommandName);
+            }
         }
         _logger.LogInformation("Type [command] help to get more detailed usage.");
     }
 
     private void RefuseCommand(string commandName)
     {
-        _logger.LogInformation("Invalid command: {commandName}.", commandName);
+        _logger.LogInformation("Invalid command: {outCommandName}.", commandName);
     }
 
     /// <summary>
@@ -180,7 +180,11 @@ public abstract class MainCommandLineBase
 
         #region Prepare Commands
         Started = true;
-        _commandHandlers = new(GetCommandHandlers().Select(x => new KeyValuePair<string, CommandHandlerBase>(x.CommandName, x)));
+        _commandHandlers = new(GetCommandHandlers().Select(x =>
+        {
+            x.OwnerCli = this;
+            return new KeyValuePair<string, CommandHandlerBase>(x.CommandName, x);
+        }));
         if (outerCancellationToken != default)
         {
             outerCancellationToken.Register(_commandLineCancellationTokenSource.Cancel);
@@ -189,27 +193,9 @@ public abstract class MainCommandLineBase
         #endregion
 
         #region Auto Complete
-        _cmdAutoCmplHandler = new(_commandHandlers.Values, () =>
-        {
-            try
-            {
-                return RefreshGeneralOperations();
-            }
-            catch (Exception ex)
-            {
-                _logger.LogDebug(ex, "{methodName} failed. General operations will not be included in Command Auto Completion.", nameof(RefreshGeneralOperations));
-                return null;
-            }
-        });
-        _optionsAutoCmplHandler = new(_commandHandlers.Values, () => _unknownHandler);
-        var autoCmplHandler = new MultipleAutoCompleteChainHandler();
-        autoCmplHandler.PushComponent(_cmdAutoCmplHandler);
-        autoCmplHandler.PushComponent(new FilePathAutoCompleteHandler());
-        autoCmplHandler.PushComponent(_optionsAutoCmplHandler);
-        ConsoleWrapper.AutoCompleteHandler = autoCmplHandler;
+        ConsoleWrapper.AutoCompleteHandler = GetDefaultAutoCompleteHandlerCore(_ => true);
         #endregion
 
-        var helpstrings = CommandHandlerBase.HelpStrings;
         var cancellationToken = _commandLineCancellationTokenSource.Token;
         while (!cancellationToken.IsCancellationRequested)
         {
@@ -222,7 +208,7 @@ public abstract class MainCommandLineBase
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "{methodName} failed. General operations will not be available.", nameof(RefreshGeneralOperationHandler));
+                _logger.LogError(ex, "{methodName} failed. General operation and its auto-complete will not be available.", nameof(RefreshGeneralOperationHandler));
             }
             #endregion
 
@@ -240,44 +226,123 @@ public abstract class MainCommandLineBase
                 continue;
             }
 
-            int sepindex = cmd.IndexOf(' ');
-            if (sepindex == -1) sepindex = cmd.Length;
-            string commandName = cmd[..sepindex];
-            if (helpstrings.Contains(commandName))
+            var tryResult = TryGetCommandHandler(cmd, out var cmdhandle, out var commandName, out var argList);
+            if (tryResult != GetCommandHandlerResult.Success)
             {
-                ShowHelps();
                 continue;
             }
-            else
-            {
-                string argList = cmd[Math.Min(cmd.Length, sepindex + 1)..];
-                bool matchedHandler = _commandHandlers.TryGetValue(commandName, out var cmdhandle);
-                try
-                {
-                    if (cmdhandle == null)
-                    {
-                        if (_unknownHandler == null) RefuseCommand(commandName);
-                        else await _unknownHandler.HandleAsync(cmd);
-                        continue;
-                    }
+            ConsoleWrapper.InputPrefix = string.Empty;
+            await InvokeCommandCoreAsync(cmdhandle, commandName, argList, cancellationToken);
+        }
+    }
 
-                    if (helpstrings.Contains(argList.Trim().ToLower()))
+    private GetCommandHandlerResult TryGetCommandHandler(string cmd, out CommandHandlerBase handler,
+        out string outCommandName, out string argList)
+    {
+        handler = null!;
+        argList = null!;
+        outCommandName = null!;
+
+        var helpstrings = CommandHandlerBase.HelpStrings;
+        int sepindex = cmd.IndexOf(' ');
+        if (sepindex == -1) sepindex = cmd.Length;
+        var commandName = cmd[..sepindex].TrimStart();
+        if (helpstrings.Contains(commandName))
+        {
+            ShowHelps();
+            return GetCommandHandlerResult.ShownHelp;
+        }
+        else
+        {
+            bool matchedHandler = _commandHandlers.TryGetValue(commandName, out var cmdhandle);
+            try
+            {
+                if (cmdhandle == null)
+                {
+                    outCommandName = $"<{_unknownHandler?.CommandName} general operation>";
+                    if (_unknownHandler == null)
                     {
-                        cmdhandle.ShowUsage();
+                        RefuseCommand(commandName);
+                        return GetCommandHandlerResult.Failed;
                     }
                     else
                     {
-                        ConsoleWrapper.InputPrefix = string.Empty;
-                        await cmdhandle.HandleAsync(argList);
+                        handler = _unknownHandler;
+                        argList = cmd;
+                        return GetCommandHandlerResult.Success;
                     }
                 }
-                catch (Exception ex)
+
+                argList = cmd[Math.Min(cmd.Length, sepindex + 1)..];
+                if (helpstrings.Contains(argList.Trim().ToLower()))
                 {
-                    _logger.LogError(ex, "Encountered error when handling command '{commandName}'.",
-                        matchedHandler ? commandName : $"<{_unknownHandler?.CommandName} general operation>");
+                    cmdhandle.ShowUsage();
+                    return GetCommandHandlerResult.ShownHelp;
+                }
+                else
+                {
+                    handler = cmdhandle;
+                    outCommandName = commandName;
+                    return GetCommandHandlerResult.Success;
                 }
             }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Encountered error when handling command '{outCommandName}' (Get Usage string).", outCommandName);
+                return GetCommandHandlerResult.Failed;
+            }
         }
+    }
+
+    private async Task<bool> InvokeCommandCoreAsync(CommandHandlerBase cmdhandle, string commandName, string argList, CancellationToken cancellationToken)
+    {
+        try
+        {
+            return await cmdhandle.HandleAsync(argList, cancellationToken);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Encountered error when handling command '{outCommandName}'.", commandName);
+            return false;
+        }
+    }
+
+    private static bool CheckNonUserInvokeCommandPermission(CommandHandlerBase cmdIdentity, string throwExCommandName, Type targetHandlerType, bool throwOnNotPermitted)
+    {
+        var callAttribute = targetHandlerType.GetCustomAttribute<CommandNonUserCallAttribute>();
+        if (callAttribute == null)
+        {
+            // The default behaviour is not allowing non-user call.
+            if (throwOnNotPermitted) throw new RejectedCommandCallException(cmdIdentity.CommandName, throwExCommandName);
+            return false;
+        }
+        var cmdType = cmdIdentity.GetType();
+        switch (callAttribute.CallerPolicy)
+        {
+            case CallerAccess.AllowOtherCommands:
+                if (callAttribute.IncludedAccessors?.Contains(cmdType) == true) break;
+                else goto case CallerAccess.OnlyUserInput;
+            case CallerAccess.AllowEveryone:
+                break;
+            case CallerAccess.OnlyUserInput:
+            default:
+                if (throwOnNotPermitted) throw new RejectedCommandCallException(cmdIdentity.CommandName, throwExCommandName, callAttribute.CallerPolicy);
+                return false;
+        }
+        return true;
+    }
+
+    internal async Task<bool> NonUserInvokeCommandAsync(CommandHandlerBase cmdIdentity, string cmd, CancellationToken cancellationToken)
+    {
+        var tryResult = TryGetCommandHandler(cmd, out var handler, out var commandName, out var argList);
+        if (tryResult != GetCommandHandlerResult.Success)
+        {
+            return tryResult != GetCommandHandlerResult.Failed;
+        }
+
+        CheckNonUserInvokeCommandPermission(cmdIdentity, commandName, handler.GetType(), true);
+
+        return await InvokeCommandCoreAsync(handler, commandName, argList, cancellationToken);
     }
 
     /// <summary>
@@ -293,7 +358,7 @@ public abstract class MainCommandLineBase
     }
 
     /// <summary>
-    /// Invoke each command handler's <see cref="CommandHandlerBase.CleanUp()"/>.
+    /// Invoke each command targetHandler's <see cref="CommandHandlerBase.CleanUp()"/>.
     /// </summary>
     /// <remarks>You can manage the CleanUp order by overriding this method.</remarks>
     protected virtual void PerformCommandsCleanUp()
@@ -310,5 +375,31 @@ public abstract class MainCommandLineBase
                 _logger.LogError(ex, "Cleanup of command {type} failed:.", commandHandler.GetType());
             }
         }
+    }
+
+    private IAutoCompleteHandler GetDefaultAutoCompleteHandlerCore(Func<Type, bool> predicate)
+    {
+        var selectedHandlers = from handler in _commandHandlers.Values
+                               let type = handler.GetType()
+                               where predicate(type)
+                               select handler;
+        CommandAutoCompleteHandler cmdAutoCmplHandler = new(selectedHandlers, () => _unknownHandler);
+        DispatchOptionsAutoCompleteHandler optionsAutoCmplHandler = new(selectedHandlers, () => _unknownHandler);
+        var autoCmplHandler = new MultipleAutoCompleteChainHandler();
+        autoCmplHandler.PushComponent(cmdAutoCmplHandler);
+        autoCmplHandler.PushComponent(new FilePathAutoCompleteHandler());
+        autoCmplHandler.PushComponent(optionsAutoCmplHandler);
+        return autoCmplHandler;
+    }
+
+    /// <summary>
+    /// Get the auto complete targetHandler at the view of the specified targetHandler.
+    /// </summary>
+    /// <param name="cmdIdentity">The instance to identify the targetHandler's type.</param>
+    /// <returns>A auto complete targetHandler compatiable with all features in the main CLI.</returns>
+    /// <remarks>This is used for forwarding handlers.</remarks>
+    public IAutoCompleteHandler GetAutoCompleteHandler(CommandHandlerBase cmdIdentity)
+    {
+        return GetDefaultAutoCompleteHandlerCore(handlerType => CheckNonUserInvokeCommandPermission(cmdIdentity, "", handlerType, false));
     }
 }

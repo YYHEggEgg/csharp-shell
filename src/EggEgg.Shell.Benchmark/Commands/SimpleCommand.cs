@@ -19,7 +19,7 @@ public class SimpleCommand : StandardCommandHandler<SimpleOption>
     public override string CommandName => "simple";
     public override string Description => "SImple command.";
 
-    public override Task HandleAsync(SimpleOption o)
+    public override Task<bool> HandleAsync(SimpleOption o, CancellationToken cancellationToken)
     {
         throw new System.NotImplementedException();
     }
