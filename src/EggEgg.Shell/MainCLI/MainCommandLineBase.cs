@@ -191,7 +191,7 @@ public abstract class MainCommandLineBase
         {
             outerCancellationToken.Register(_commandLineCancellationTokenSource.Cancel);
         }
-
+        PerformRegisteredCommandsCheck(_commandHandlers.Values);
         #endregion
 
         #region Auto Complete
@@ -207,6 +207,8 @@ public abstract class MainCommandLineBase
             try
             {
                 _unknownHandler = RefreshGeneralOperationHandler();
+                if (_unknownHandler != null)
+                    RegisteredCommandHandlerCheck(_unknownHandler);
             }
             catch (Exception ex)
             {
@@ -413,5 +415,37 @@ public abstract class MainCommandLineBase
     public IAutoCompleteHandler GetAutoCompleteHandler(CommandHandlerBase cmdIdentity)
     {
         return GetDefaultAutoCompleteHandlerCore(handlerType => CheckNonUserInvokeCommandPermission(cmdIdentity, "", handlerType, false));
+    }
+
+    private static void RegisteredCommandHandlerCheck(CommandHandlerBase handler)
+    {
+        try
+        {
+            _ = handler.CommandName;
+            _ = handler.Description;
+            _ = handler.UsageLines;
+        }
+        catch (NotImplementedException niex)
+        {
+            throw new InvalidOperationException($"Command '{handler.GetType()}' hasn't implemented essential methods.", niex);
+        }
+
+        if (handler.CommandName.IndexOfAny([' ', '"', '\\']) >= 0)
+        {
+            throw new InvalidOperationException($"Please, wipe out whitespace, quote and backslash from the name of Command '{handler.GetType()}'");
+        }
+    }
+
+    private static void PerformRegisteredCommandsCheck(IEnumerable<CommandHandlerBase> handlers)
+    {
+        HashSet<string> commandNameList = [];
+        foreach (var handler in handlers)
+        {
+            RegisteredCommandHandlerCheck(handler);
+            if (commandNameList.Contains(handler.CommandName))
+            {
+                throw new InvalidOperationException($"The name of Command '{handler.GetType()}' duplicates with another command.");
+            }
+        }
     }
 }

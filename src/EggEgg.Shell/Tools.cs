@@ -139,12 +139,12 @@ internal class Tools
     [RequiresUnreferencedCode("Require reflection on provided assemblies.")]
     internal static IEnumerable<Type> GetCommandHandlerTypesFromAssemblies(params Assembly?[] assemblies)
     {
-        return from assembly in assemblies
-               where assembly != null
-               from type in assembly.GetTypes()
-               where !type.IsAbstract && type.IsAssignableTo(typeof(CommandHandlerBase))
-               where type.GetCustomAttribute<DoNotRegisterCommandAttribute>() == null
-               select type;
+        return (from assembly in assemblies
+                where assembly != null
+                from type in assembly.GetTypes()
+                where !type.IsAbstract && type.IsAssignableTo(typeof(CommandHandlerBase))
+                where type.GetCustomAttribute<DoNotRegisterCommandAttribute>() == null
+                select type).Distinct();
     }
 
     [RequiresUnreferencedCode("Require reflection on provided assemblies.")]

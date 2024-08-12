@@ -47,13 +47,20 @@ public static class HostedCommandLineExtensions
     /// and register them in the DI container as <see cref="CommandHandlerBase"/>.
     /// </summary>
     /// <param name="services"></param>
+    /// <param name="addAsSingleton">
+    /// Specify whether the found types should be registered as singleton themselves.
+    /// If so, they will be registered both as themselves and as <see cref="CommandHandlerBase"/>
+    /// (can be accessed by <see cref="ServiceProviderServiceExtensions.GetRequiredService{T}(IServiceProvider)"/>
+    /// and <see cref="ServiceProviderServiceExtensions.GetServices{CommandHandlerBase}(IServiceProvider)"/>);
+    /// If not, it'll be registered only as <see cref="CommandHandlerBase"/>.
+    /// </param>
     /// <param name="assemblies">
     /// The scanning target assemblies list. If not providing, the default
     /// value is <see cref="Assembly.GetEntryAssembly()"/> and <see cref="Assembly.GetCallingAssembly()"/>.
     /// </param>
     /// <returns></returns>
     [RequiresUnreferencedCode("Require reflection on provided assemblies.")]
-    public static IServiceCollection AddAllCommands(this IServiceCollection services, params Assembly?[] assemblies)
+    public static IServiceCollection AddAllCommands(this IServiceCollection services, bool addAsSingleton = false, params Assembly?[] assemblies)
     {
         if (assemblies == null || assemblies.Length == 0)
         {
@@ -62,7 +69,12 @@ public static class HostedCommandLineExtensions
 
         foreach (var handlerType in Tools.GetCommandHandlerTypesFromAssemblies(assemblies))
         {
-            services.AddSingleton(typeof(CommandHandlerBase), handlerType);
+            if (addAsSingleton)
+            {
+                services.AddSingleton(handlerType);
+                services.AddSingleton(typeof(CommandHandlerBase), serviceProvider => serviceProvider.GetRequiredService(handlerType));
+            }
+            else services.AddSingleton(typeof(CommandHandlerBase), handlerType);
         }
         return services;
     }
