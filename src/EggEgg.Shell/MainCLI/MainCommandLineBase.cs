@@ -235,8 +235,16 @@ public abstract class MainCommandLineBase
             {
                 continue;
             }
+
             ConsoleWrapper.InputPrefix = string.Empty;
-            await InvokeCommandCoreAsync(cmdhandle, commandName, argList, cancellationToken);
+            try
+            {
+                await cmdhandle.HandleAsync(argList, cancellationToken);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Encountered error when handling command '{outCommandName}'.", commandName);
+            }
         }
     }
 
@@ -303,19 +311,6 @@ public abstract class MainCommandLineBase
         }
     }
 
-    private async Task<bool> InvokeCommandCoreAsync(CommandHandlerBase cmdhandle, string commandName, string argList, CancellationToken cancellationToken)
-    {
-        try
-        {
-            return await cmdhandle.HandleAsync(argList, cancellationToken);
-        }
-        catch (Exception ex)
-        {
-            _logger.LogError(ex, "Encountered error when handling command '{outCommandName}'.", commandName);
-            return false;
-        }
-    }
-
     private static bool CheckNonUserInvokeCommandPermission(CommandHandlerBase cmdIdentity, string throwExCommandName, Type targetHandlerType, bool throwOnNotPermitted)
     {
         var callAttribute = targetHandlerType.GetCustomAttribute<CommandNonUserCallAttribute>();
@@ -351,7 +346,7 @@ public abstract class MainCommandLineBase
 
         CheckNonUserInvokeCommandPermission(cmdIdentity, commandName, handler.GetType(), true);
 
-        return await InvokeCommandCoreAsync(handler, commandName, argList, cancellationToken);
+        return await handler.HandleAsync(argList, cancellationToken);
     }
 
     /// <summary>
