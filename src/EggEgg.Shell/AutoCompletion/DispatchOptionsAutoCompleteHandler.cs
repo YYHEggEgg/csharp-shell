@@ -9,13 +9,15 @@ namespace YYHEggEgg.Shell.AutoCompletion;
 /// <param name="getGeneralOpHandlerCallback"></param>
 public class DispatchOptionsAutoCompleteHandler(IEnumerable<CommandHandlerBase> handlers, Func<CommandHandlerBase?> getGeneralOpHandlerCallback) : IAutoCompleteHandler
 {
+    private readonly List<CommandHandlerBase> _handlers = handlers.ToList();
+
     /// <inheritdoc/>
     public SuggestionResult GetSuggestions(string text, int index)
     {
         var separatorIdx = text.IndexOf(' ');
         if (separatorIdx < 0) return new();
         var commandName = text[..separatorIdx];
-        var handler = handlers.Where(x => x.CommandName == commandName).FirstOrDefault();
+        var handler = _handlers.Where(x => x.CommandName == commandName).FirstOrDefault();
         if (handler != null) return handler.GetSuggestions(text, index);
         
         var generalOpHandler = getGeneralOpHandlerCallback();

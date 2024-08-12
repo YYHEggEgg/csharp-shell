@@ -1,9 +1,11 @@
 using CommandLine;
 using Microsoft.Extensions.Logging;
+using System.Collections.ObjectModel;
 using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 using System.Text;
 using YYHEggEgg.Logger;
+using YYHEggEgg.Shell.Attributes;
 using YYHEggEgg.Shell.Exceptions;
 using YYHEggEgg.Shell.MainCLI;
 using YYHEggEgg.Shell.Model;
@@ -198,10 +200,10 @@ public abstract class CommandHandlerBase(ILogger logger) : IAutoCompleteHandler
     /// <summary>
     /// The hardcoded string that are considered as seeking 'help'.
     /// </summary>
-    public static readonly HashSet<string> HelpStrings =
-    [
+    public static readonly ReadOnlyCollection<string> HelpStrings = new(new string[]
+    {
         "help", "?", "--help", "-h", "-?", "/h", "/?"
-    ];
+    });
 
     /// <summary>
     /// The method to output <see cref="Error"/> in log
@@ -408,8 +410,20 @@ public abstract class CommandHandlerBase(ILogger logger) : IAutoCompleteHandler
     /// </summary>
     /// <param name="cmd">The raw command input, with full command name and options.</param>
     /// <param name="cancellationToken"></param>
-    /// <returns>Whether the command succeeded. Notice that when the command don't want to be invoked from non-user caller, a <see cref="RejectedCommandCallException"/> is thrown instead of returning false.</returns>
-    /// <exception cref="RejectedCommandCallException">The invoked command rejected invocation because it is configured to do so.</exception>
+    /// <returns>
+    /// Whether the command succeeded. Notice that when the command don't want to
+    /// be invoked from non-user caller, a <see cref="RejectedCommandCallException"/>
+    /// is thrown instead of returning false.
+    /// </returns>
+    /// <remarks>
+    /// This method is thread-safe. However, if you mark your command handler with
+    /// <see cref="CommandNonUserCallAttribute"/>, theoritically you should
+    /// guarantee your <see cref="HandleAsync(string, CancellationToken)"/>
+    /// implementation is thread-safe as well.
+    /// </remarks>
+    /// <exception cref="RejectedCommandCallException">
+    /// The invoked command rejected invocation because it is configured to do so.
+    /// </exception>
     protected async Task<bool> InvokeCommandAsync(string cmd, CancellationToken cancellationToken = default)
     {
         if (OwnerCli == null)

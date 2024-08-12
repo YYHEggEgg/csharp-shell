@@ -11,7 +11,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ShellExample", "src\ShellEx
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ShellHostingExample", "src\ShellHostingExample\ShellHostingExample.csproj", "{2154AEC5-AD20-4CB6-AC0C-847A9E5C39BF}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EggEgg.Shell.Tests", "C:\Users\Admin\source\repos\YYHEggEgg\csharp-shell\src\EggEgg.Shell.Tests\EggEgg.Shell.Tests.csproj", "{F623361A-F590-4BFC-9FB0-C348B4B73EF6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EggEgg.Shell.Tests", "src\EggEgg.Shell.Tests\EggEgg.Shell.Tests.csproj", "{F623361A-F590-4BFC-9FB0-C348B4B73EF6}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EggEgg.Shell.Benchmark", "src\EggEgg.Shell.Benchmark\EggEgg.Shell.Benchmark.csproj", "{D25F633E-CEA3-462E-9AD4-A55B275335A7}"
 EndProject

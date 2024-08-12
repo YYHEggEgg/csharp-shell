@@ -123,18 +123,21 @@ public abstract class MainCommandLineBase
     /// </summary>
     public void ShowHelps()
     {
-        foreach (var handler in _commandHandlers.Values)
+        lock (_commandHandlers)
         {
-            try
+            foreach (var handler in _commandHandlers.Values)
             {
-                handler.ShowDescription();
+                try
+                {
+                    handler.ShowDescription();
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogError(ex, "Command '{outCommandName}' failed to load description.", handler.CommandName);
+                }
             }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "Command '{outCommandName}' failed to load description.", handler.CommandName);
-            }
+            _logger.LogInformation("Type [command] help to get more detailed usage.");
         }
-        _logger.LogInformation("Type [command] help to get more detailed usage.");
     }
 
     private void RefuseCommand(string commandName)
@@ -253,7 +256,12 @@ public abstract class MainCommandLineBase
         }
         else
         {
-            bool matchedHandler = _commandHandlers.TryGetValue(commandName, out var cmdhandle);
+            bool matchedHandler;
+            CommandHandlerBase? cmdhandle;
+            lock (_commandHandlers)
+            {
+                matchedHandler = _commandHandlers.TryGetValue(commandName, out cmdhandle);
+            }
             try
             {
                 if (cmdhandle == null)
@@ -378,12 +386,17 @@ public abstract class MainCommandLineBase
 
     private IAutoCompleteHandler GetDefaultAutoCompleteHandlerCore(Func<Type, bool> predicate)
     {
-        var selectedHandlers = from handler in _commandHandlers.Values
-                               let type = handler.GetType()
-                               where predicate(type)
-                               select handler;
-        CommandAutoCompleteHandler cmdAutoCmplHandler = new(selectedHandlers, () => _unknownHandler);
-        DispatchOptionsAutoCompleteHandler optionsAutoCmplHandler = new(selectedHandlers, () => _unknownHandler);
+        CommandAutoCompleteHandler cmdAutoCmplHandler;
+        DispatchOptionsAutoCompleteHandler optionsAutoCmplHandler;
+        lock (_commandHandlers)
+        {
+            var selectedHandlers = from handler in _commandHandlers.Values
+                                   let type = handler.GetType()
+                                   where predicate(type)
+                                   select handler;
+            cmdAutoCmplHandler = new(selectedHandlers, () => _unknownHandler);
+            optionsAutoCmplHandler = new(selectedHandlers, () => _unknownHandler);
+        }
         var autoCmplHandler = new MultipleAutoCompleteChainHandler();
         autoCmplHandler.PushComponent(cmdAutoCmplHandler);
         autoCmplHandler.PushComponent(new FilePathAutoCompleteHandler());
@@ -396,7 +409,7 @@ public abstract class MainCommandLineBase
     /// </summary>
     /// <param name="cmdIdentity">The instance to identify the targetHandler's type.</param>
     /// <returns>A auto complete targetHandler compatiable with all features in the main CLI.</returns>
-    /// <remarks>This is used for forwarding handlers.</remarks>
+    /// <remarks>Forwarding handlers use this to get a second-level auto completion. This method is thread-safe.</remarks>
     public IAutoCompleteHandler GetAutoCompleteHandler(CommandHandlerBase cmdIdentity)
     {
         return GetDefaultAutoCompleteHandlerCore(handlerType => CheckNonUserInvokeCommandPermission(cmdIdentity, "", handlerType, false));
