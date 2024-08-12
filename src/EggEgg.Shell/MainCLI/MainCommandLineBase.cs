@@ -1,5 +1,4 @@
 ﻿using Microsoft.Extensions.Logging;
-using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 using YYHEggEgg.Logger;
 using YYHEggEgg.Shell.Attributes;

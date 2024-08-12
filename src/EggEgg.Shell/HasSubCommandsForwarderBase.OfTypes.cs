@@ -1,13 +1,11 @@
 ﻿using CommandLine;
 using Microsoft.Extensions.Logging;
 using System.Diagnostics.CodeAnalysis;
-using YYHEggEgg.Shell.Model;
 
 namespace YYHEggEgg.Shell;
 
 /// <inheritdoc/>
 public abstract class HasSubCommandsForwarderBase<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties | DynamicallyAccessedMemberTypes.PublicConstructors)] TCmdOption1> : HasSubCommandsForwarderBase
-    where TCmdOption1 : ForwardCommandOptionBase, new()
 {
     /// <inheritdoc/>
     public HasSubCommandsForwarderBase() : this(null!)
@@ -36,7 +34,7 @@ public abstract class HasSubCommandsForwarderBase<[DynamicallyAccessedMembers(Dy
 
     private async Task<bool> HandleForwardShieldAsync(TCmdOption1 o, string? forwardedCmd, CancellationToken cancellationToken = default)
     {
-        if (!ForwardCmdArgumentShield(o, forwardedCmd)) return false;
+        if (!ForwardCmdArgumentShield<TCmdOption1>(forwardedCmd)) return false;
         return await HandleAsync(o, forwardedCmd, cancellationToken);
     }
 
@@ -60,8 +58,6 @@ public abstract class HasSubCommandsForwarderBase<[DynamicallyAccessedMembers(Dy
 #region Powered By SlaveGPT™
 /// <inheritdoc/>
 public abstract class HasSubCommandsForwarderBase<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties | DynamicallyAccessedMemberTypes.PublicConstructors)] TCmdOption1, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties | DynamicallyAccessedMemberTypes.PublicConstructors)] TCmdOption2> : HasSubCommandsForwarderBase
-    where TCmdOption1 : ForwardCommandOptionBase, new()
-    where TCmdOption2 : ForwardCommandOptionBase, new()
 {
     /// <inheritdoc/>
     public HasSubCommandsForwarderBase() : this(null!)
@@ -80,12 +76,12 @@ public abstract class HasSubCommandsForwarderBase<[DynamicallyAccessedMembers(Dy
     public abstract Task<bool> HandleAsync(TCmdOption2 o, string? forwardedCmd, CancellationToken cancellationToken = default);
     private async Task<bool> HandleForwardShieldAsync(TCmdOption1 o, string? forwardedCmd, CancellationToken cancellationToken = default)
     {
-        if (!ForwardCmdArgumentShield(o, forwardedCmd)) return false;
+        if (!ForwardCmdArgumentShield<TCmdOption1>(forwardedCmd)) return false;
         return await HandleAsync(o, forwardedCmd, cancellationToken);
     }
     private async Task<bool> HandleForwardShieldAsync(TCmdOption2 o, string? forwardedCmd, CancellationToken cancellationToken = default)
     {
-        if (!ForwardCmdArgumentShield(o, forwardedCmd)) return false;
+        if (!ForwardCmdArgumentShield<TCmdOption2>(forwardedCmd)) return false;
         return await HandleAsync(o, forwardedCmd, cancellationToken);
     }
 
@@ -108,9 +104,6 @@ public abstract class HasSubCommandsForwarderBase<[DynamicallyAccessedMembers(Dy
 
 /// <inheritdoc/>
 public abstract class HasSubCommandsForwarderBase<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties | DynamicallyAccessedMemberTypes.PublicConstructors)] TCmdOption1, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties | DynamicallyAccessedMemberTypes.PublicConstructors)] TCmdOption2, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties | DynamicallyAccessedMemberTypes.PublicConstructors)] TCmdOption3> : HasSubCommandsForwarderBase
-    where TCmdOption1 : ForwardCommandOptionBase, new()
-    where TCmdOption2 : ForwardCommandOptionBase, new()
-    where TCmdOption3 : ForwardCommandOptionBase, new()
 {
     /// <inheritdoc/>
     public HasSubCommandsForwarderBase() : this(null!)
@@ -131,17 +124,17 @@ public abstract class HasSubCommandsForwarderBase<[DynamicallyAccessedMembers(Dy
     public abstract Task<bool> HandleAsync(TCmdOption3 o, string? forwardedCmd, CancellationToken cancellationToken = default);
     private async Task<bool> HandleForwardShieldAsync(TCmdOption1 o, string? forwardedCmd, CancellationToken cancellationToken = default)
     {
-        if (!ForwardCmdArgumentShield(o, forwardedCmd)) return false;
+        if (!ForwardCmdArgumentShield<TCmdOption1>(forwardedCmd)) return false;
         return await HandleAsync(o, forwardedCmd, cancellationToken);
     }
     private async Task<bool> HandleForwardShieldAsync(TCmdOption2 o, string? forwardedCmd, CancellationToken cancellationToken = default)
     {
-        if (!ForwardCmdArgumentShield(o, forwardedCmd)) return false;
+        if (!ForwardCmdArgumentShield<TCmdOption2>(forwardedCmd)) return false;
         return await HandleAsync(o, forwardedCmd, cancellationToken);
     }
     private async Task<bool> HandleForwardShieldAsync(TCmdOption3 o, string? forwardedCmd, CancellationToken cancellationToken = default)
     {
-        if (!ForwardCmdArgumentShield(o, forwardedCmd)) return false;
+        if (!ForwardCmdArgumentShield<TCmdOption3>(forwardedCmd)) return false;
         return await HandleAsync(o, forwardedCmd, cancellationToken);
     }
 
@@ -165,10 +158,6 @@ public abstract class HasSubCommandsForwarderBase<[DynamicallyAccessedMembers(Dy
 
 /// <inheritdoc/>
 public abstract class HasSubCommandsForwarderBase<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties | DynamicallyAccessedMemberTypes.PublicConstructors)] TCmdOption1, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties | DynamicallyAccessedMemberTypes.PublicConstructors)] TCmdOption2, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties | DynamicallyAccessedMemberTypes.PublicConstructors)] TCmdOption3, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties | DynamicallyAccessedMemberTypes.PublicConstructors)] TCmdOption4> : HasSubCommandsForwarderBase
-    where TCmdOption1 : ForwardCommandOptionBase, new()
-    where TCmdOption2 : ForwardCommandOptionBase, new()
-    where TCmdOption3 : ForwardCommandOptionBase, new()
-    where TCmdOption4 : ForwardCommandOptionBase, new()
 {
     /// <inheritdoc/>
     public HasSubCommandsForwarderBase() : this(null!)
@@ -191,22 +180,22 @@ public abstract class HasSubCommandsForwarderBase<[DynamicallyAccessedMembers(Dy
     public abstract Task<bool> HandleAsync(TCmdOption4 o, string? forwardedCmd, CancellationToken cancellationToken = default);
     private async Task<bool> HandleForwardShieldAsync(TCmdOption1 o, string? forwardedCmd, CancellationToken cancellationToken = default)
     {
-        if (!ForwardCmdArgumentShield(o, forwardedCmd)) return false;
+        if (!ForwardCmdArgumentShield<TCmdOption1>(forwardedCmd)) return false;
         return await HandleAsync(o, forwardedCmd, cancellationToken);
     }
     private async Task<bool> HandleForwardShieldAsync(TCmdOption2 o, string? forwardedCmd, CancellationToken cancellationToken = default)
     {
-        if (!ForwardCmdArgumentShield(o, forwardedCmd)) return false;
+        if (!ForwardCmdArgumentShield<TCmdOption2>(forwardedCmd)) return false;
         return await HandleAsync(o, forwardedCmd, cancellationToken);
     }
     private async Task<bool> HandleForwardShieldAsync(TCmdOption3 o, string? forwardedCmd, CancellationToken cancellationToken = default)
     {
-        if (!ForwardCmdArgumentShield(o, forwardedCmd)) return false;
+        if (!ForwardCmdArgumentShield<TCmdOption3>(forwardedCmd)) return false;
         return await HandleAsync(o, forwardedCmd, cancellationToken);
     }
     private async Task<bool> HandleForwardShieldAsync(TCmdOption4 o, string? forwardedCmd, CancellationToken cancellationToken = default)
     {
-        if (!ForwardCmdArgumentShield(o, forwardedCmd)) return false;
+        if (!ForwardCmdArgumentShield<TCmdOption4>(forwardedCmd)) return false;
         return await HandleAsync(o, forwardedCmd, cancellationToken);
     }
 
@@ -231,11 +220,6 @@ public abstract class HasSubCommandsForwarderBase<[DynamicallyAccessedMembers(Dy
 
 /// <inheritdoc/>
 public abstract class HasSubCommandsForwarderBase<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties | DynamicallyAccessedMemberTypes.PublicConstructors)] TCmdOption1, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties | DynamicallyAccessedMemberTypes.PublicConstructors)] TCmdOption2, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties | DynamicallyAccessedMemberTypes.PublicConstructors)] TCmdOption3, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties | DynamicallyAccessedMemberTypes.PublicConstructors)] TCmdOption4, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties | DynamicallyAccessedMemberTypes.PublicConstructors)] TCmdOption5> : HasSubCommandsForwarderBase
-    where TCmdOption1 : ForwardCommandOptionBase, new()
-    where TCmdOption2 : ForwardCommandOptionBase, new()
-    where TCmdOption3 : ForwardCommandOptionBase, new()
-    where TCmdOption4 : ForwardCommandOptionBase, new()
-    where TCmdOption5 : ForwardCommandOptionBase, new()
 {
     /// <inheritdoc/>
     public HasSubCommandsForwarderBase() : this(null!)
@@ -261,27 +245,27 @@ public abstract class HasSubCommandsForwarderBase<[DynamicallyAccessedMembers(Dy
 
     private async Task<bool> HandleForwardShieldAsync(TCmdOption1 o, string? forwardedCmd, CancellationToken cancellationToken = default)
     {
-        if (!ForwardCmdArgumentShield(o, forwardedCmd)) return false;
+        if (!ForwardCmdArgumentShield<TCmdOption1>(forwardedCmd)) return false;
         return await HandleAsync(o, forwardedCmd, cancellationToken);
     }
     private async Task<bool> HandleForwardShieldAsync(TCmdOption2 o, string? forwardedCmd, CancellationToken cancellationToken = default)
     {
-        if (!ForwardCmdArgumentShield(o, forwardedCmd)) return false;
+        if (!ForwardCmdArgumentShield<TCmdOption2>(forwardedCmd)) return false;
         return await HandleAsync(o, forwardedCmd, cancellationToken);
     }
     private async Task<bool> HandleForwardShieldAsync(TCmdOption3 o, string? forwardedCmd, CancellationToken cancellationToken = default)
     {
-        if (!ForwardCmdArgumentShield(o, forwardedCmd)) return false;
+        if (!ForwardCmdArgumentShield<TCmdOption3>(forwardedCmd)) return false;
         return await HandleAsync(o, forwardedCmd, cancellationToken);
     }
     private async Task<bool> HandleForwardShieldAsync(TCmdOption4 o, string? forwardedCmd, CancellationToken cancellationToken = default)
     {
-        if (!ForwardCmdArgumentShield(o, forwardedCmd)) return false;
+        if (!ForwardCmdArgumentShield<TCmdOption4>(forwardedCmd)) return false;
         return await HandleAsync(o, forwardedCmd, cancellationToken);
     }
     private async Task<bool> HandleForwardShieldAsync(TCmdOption5 o, string? forwardedCmd, CancellationToken cancellationToken = default)
     {
-        if (!ForwardCmdArgumentShield(o, forwardedCmd)) return false;
+        if (!ForwardCmdArgumentShield<TCmdOption5>(forwardedCmd)) return false;
         return await HandleAsync(o, forwardedCmd, cancellationToken);
     }
 
@@ -307,12 +291,6 @@ public abstract class HasSubCommandsForwarderBase<[DynamicallyAccessedMembers(Dy
 
 /// <inheritdoc/>
 public abstract class HasSubCommandsForwarderBase<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties | DynamicallyAccessedMemberTypes.PublicConstructors)] TCmdOption1, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties | DynamicallyAccessedMemberTypes.PublicConstructors)] TCmdOption2, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties | DynamicallyAccessedMemberTypes.PublicConstructors)] TCmdOption3, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties | DynamicallyAccessedMemberTypes.PublicConstructors)] TCmdOption4, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties | DynamicallyAccessedMemberTypes.PublicConstructors)] TCmdOption5, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties | DynamicallyAccessedMemberTypes.PublicConstructors)] TCmdOption6> : HasSubCommandsForwarderBase
-    where TCmdOption1 : ForwardCommandOptionBase, new()
-    where TCmdOption2 : ForwardCommandOptionBase, new()
-    where TCmdOption3 : ForwardCommandOptionBase, new()
-    where TCmdOption4 : ForwardCommandOptionBase, new()
-    where TCmdOption5 : ForwardCommandOptionBase, new()
-    where TCmdOption6 : ForwardCommandOptionBase, new()
 {
     /// <inheritdoc/>
     public HasSubCommandsForwarderBase() : this(null!)
@@ -340,32 +318,32 @@ public abstract class HasSubCommandsForwarderBase<[DynamicallyAccessedMembers(Dy
 
     private async Task<bool> HandleForwardShieldAsync(TCmdOption1 o, string? forwardedCmd, CancellationToken cancellationToken = default)
     {
-        if (!ForwardCmdArgumentShield(o, forwardedCmd)) return false;
+        if (!ForwardCmdArgumentShield<TCmdOption1>(forwardedCmd)) return false;
         return await HandleAsync(o, forwardedCmd, cancellationToken);
     }
     private async Task<bool> HandleForwardShieldAsync(TCmdOption2 o, string? forwardedCmd, CancellationToken cancellationToken = default)
     {
-        if (!ForwardCmdArgumentShield(o, forwardedCmd)) return false;
+        if (!ForwardCmdArgumentShield<TCmdOption2>(forwardedCmd)) return false;
         return await HandleAsync(o, forwardedCmd, cancellationToken);
     }
     private async Task<bool> HandleForwardShieldAsync(TCmdOption3 o, string? forwardedCmd, CancellationToken cancellationToken = default)
     {
-        if (!ForwardCmdArgumentShield(o, forwardedCmd)) return false;
+        if (!ForwardCmdArgumentShield<TCmdOption3>(forwardedCmd)) return false;
         return await HandleAsync(o, forwardedCmd, cancellationToken);
     }
     private async Task<bool> HandleForwardShieldAsync(TCmdOption4 o, string? forwardedCmd, CancellationToken cancellationToken = default)
     {
-        if (!ForwardCmdArgumentShield(o, forwardedCmd)) return false;
+        if (!ForwardCmdArgumentShield<TCmdOption4>(forwardedCmd)) return false;
         return await HandleAsync(o, forwardedCmd, cancellationToken);
     }
     private async Task<bool> HandleForwardShieldAsync(TCmdOption5 o, string? forwardedCmd, CancellationToken cancellationToken = default)
     {
-        if (!ForwardCmdArgumentShield(o, forwardedCmd)) return false;
+        if (!ForwardCmdArgumentShield<TCmdOption5>(forwardedCmd)) return false;
         return await HandleAsync(o, forwardedCmd, cancellationToken);
     }
     private async Task<bool> HandleForwardShieldAsync(TCmdOption6 o, string? forwardedCmd, CancellationToken cancellationToken = default)
     {
-        if (!ForwardCmdArgumentShield(o, forwardedCmd)) return false;
+        if (!ForwardCmdArgumentShield<TCmdOption6>(forwardedCmd)) return false;
         return await HandleAsync(o, forwardedCmd, cancellationToken);
     }
 
@@ -392,13 +370,6 @@ public abstract class HasSubCommandsForwarderBase<[DynamicallyAccessedMembers(Dy
 
 /// <inheritdoc/>
 public abstract class HasSubCommandsForwarderBase<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties | DynamicallyAccessedMemberTypes.PublicConstructors)] TCmdOption1, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties | DynamicallyAccessedMemberTypes.PublicConstructors)] TCmdOption2, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties | DynamicallyAccessedMemberTypes.PublicConstructors)] TCmdOption3, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties | DynamicallyAccessedMemberTypes.PublicConstructors)] TCmdOption4, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties | DynamicallyAccessedMemberTypes.PublicConstructors)] TCmdOption5, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties | DynamicallyAccessedMemberTypes.PublicConstructors)] TCmdOption6, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties | DynamicallyAccessedMemberTypes.PublicConstructors)] TCmdOption7> : HasSubCommandsForwarderBase
-    where TCmdOption1 : ForwardCommandOptionBase, new()
-    where TCmdOption2 : ForwardCommandOptionBase, new()
-    where TCmdOption3 : ForwardCommandOptionBase, new()
-    where TCmdOption4 : ForwardCommandOptionBase, new()
-    where TCmdOption5 : ForwardCommandOptionBase, new()
-    where TCmdOption6 : ForwardCommandOptionBase, new()
-    where TCmdOption7 : ForwardCommandOptionBase, new()
 {
     /// <inheritdoc/>
     public HasSubCommandsForwarderBase() : this(null!)
@@ -427,37 +398,37 @@ public abstract class HasSubCommandsForwarderBase<[DynamicallyAccessedMembers(Dy
     public abstract Task<bool> HandleAsync(TCmdOption7 o, string? forwardedCmd, CancellationToken cancellationToken = default);
     private async Task<bool> HandleForwardShieldAsync(TCmdOption1 o, string? forwardedCmd, CancellationToken cancellationToken = default)
     {
-        if (!ForwardCmdArgumentShield(o, forwardedCmd)) return false;
+        if (!ForwardCmdArgumentShield<TCmdOption1>(forwardedCmd)) return false;
         return await HandleAsync(o, forwardedCmd, cancellationToken);
     }
     private async Task<bool> HandleForwardShieldAsync(TCmdOption2 o, string? forwardedCmd, CancellationToken cancellationToken = default)
     {
-        if (!ForwardCmdArgumentShield(o, forwardedCmd)) return false;
+        if (!ForwardCmdArgumentShield<TCmdOption2>(forwardedCmd)) return false;
         return await HandleAsync(o, forwardedCmd, cancellationToken);
     }
     private async Task<bool> HandleForwardShieldAsync(TCmdOption3 o, string? forwardedCmd, CancellationToken cancellationToken = default)
     {
-        if (!ForwardCmdArgumentShield(o, forwardedCmd)) return false;
+        if (!ForwardCmdArgumentShield<TCmdOption3>(forwardedCmd)) return false;
         return await HandleAsync(o, forwardedCmd, cancellationToken);
     }
     private async Task<bool> HandleForwardShieldAsync(TCmdOption4 o, string? forwardedCmd, CancellationToken cancellationToken = default)
     {
-        if (!ForwardCmdArgumentShield(o, forwardedCmd)) return false;
+        if (!ForwardCmdArgumentShield<TCmdOption4>(forwardedCmd)) return false;
         return await HandleAsync(o, forwardedCmd, cancellationToken);
     }
     private async Task<bool> HandleForwardShieldAsync(TCmdOption5 o, string? forwardedCmd, CancellationToken cancellationToken = default)
     {
-        if (!ForwardCmdArgumentShield(o, forwardedCmd)) return false;
+        if (!ForwardCmdArgumentShield<TCmdOption5>(forwardedCmd)) return false;
         return await HandleAsync(o, forwardedCmd, cancellationToken);
     }
     private async Task<bool> HandleForwardShieldAsync(TCmdOption6 o, string? forwardedCmd, CancellationToken cancellationToken = default)
     {
-        if (!ForwardCmdArgumentShield(o, forwardedCmd)) return false;
+        if (!ForwardCmdArgumentShield<TCmdOption6>(forwardedCmd)) return false;
         return await HandleAsync(o, forwardedCmd, cancellationToken);
     }
     private async Task<bool> HandleForwardShieldAsync(TCmdOption7 o, string? forwardedCmd, CancellationToken cancellationToken = default)
     {
-        if (!ForwardCmdArgumentShield(o, forwardedCmd)) return false;
+        if (!ForwardCmdArgumentShield<TCmdOption7>(forwardedCmd)) return false;
         return await HandleAsync(o, forwardedCmd, cancellationToken);
     }
 
@@ -485,14 +456,6 @@ public abstract class HasSubCommandsForwarderBase<[DynamicallyAccessedMembers(Dy
 
 /// <inheritdoc/>
 public abstract class HasSubCommandsForwarderBase<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties | DynamicallyAccessedMemberTypes.PublicConstructors)] TCmdOption1, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties | DynamicallyAccessedMemberTypes.PublicConstructors)] TCmdOption2, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties | DynamicallyAccessedMemberTypes.PublicConstructors)] TCmdOption3, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties | DynamicallyAccessedMemberTypes.PublicConstructors)] TCmdOption4, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties | DynamicallyAccessedMemberTypes.PublicConstructors)] TCmdOption5, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties | DynamicallyAccessedMemberTypes.PublicConstructors)] TCmdOption6, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties | DynamicallyAccessedMemberTypes.PublicConstructors)] TCmdOption7, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties | DynamicallyAccessedMemberTypes.PublicConstructors)] TCmdOption8> : HasSubCommandsForwarderBase
-    where TCmdOption1 : ForwardCommandOptionBase, new()
-    where TCmdOption2 : ForwardCommandOptionBase, new()
-    where TCmdOption3 : ForwardCommandOptionBase, new()
-    where TCmdOption4 : ForwardCommandOptionBase, new()
-    where TCmdOption5 : ForwardCommandOptionBase, new()
-    where TCmdOption6 : ForwardCommandOptionBase, new()
-    where TCmdOption7 : ForwardCommandOptionBase, new()
-    where TCmdOption8 : ForwardCommandOptionBase, new()
 {
     /// <inheritdoc/>
     public HasSubCommandsForwarderBase() : this(null!)
@@ -524,42 +487,42 @@ public abstract class HasSubCommandsForwarderBase<[DynamicallyAccessedMembers(Dy
 
     private async Task<bool> HandleForwardShieldAsync(TCmdOption1 o, string? forwardedCmd, CancellationToken cancellationToken = default)
     {
-        if (!ForwardCmdArgumentShield(o, forwardedCmd)) return false;
+        if (!ForwardCmdArgumentShield<TCmdOption1>(forwardedCmd)) return false;
         return await HandleAsync(o, forwardedCmd, cancellationToken);
     }
     private async Task<bool> HandleForwardShieldAsync(TCmdOption2 o, string? forwardedCmd, CancellationToken cancellationToken = default)
     {
-        if (!ForwardCmdArgumentShield(o, forwardedCmd)) return false;
+        if (!ForwardCmdArgumentShield<TCmdOption2>(forwardedCmd)) return false;
         return await HandleAsync(o, forwardedCmd, cancellationToken);
     }
     private async Task<bool> HandleForwardShieldAsync(TCmdOption3 o, string? forwardedCmd, CancellationToken cancellationToken = default)
     {
-        if (!ForwardCmdArgumentShield(o, forwardedCmd)) return false;
+        if (!ForwardCmdArgumentShield<TCmdOption3>(forwardedCmd)) return false;
         return await HandleAsync(o, forwardedCmd, cancellationToken);
     }
     private async Task<bool> HandleForwardShieldAsync(TCmdOption4 o, string? forwardedCmd, CancellationToken cancellationToken = default)
     {
-        if (!ForwardCmdArgumentShield(o, forwardedCmd)) return false;
+        if (!ForwardCmdArgumentShield<TCmdOption4>(forwardedCmd)) return false;
         return await HandleAsync(o, forwardedCmd, cancellationToken);
     }
     private async Task<bool> HandleForwardShieldAsync(TCmdOption5 o, string? forwardedCmd, CancellationToken cancellationToken = default)
     {
-        if (!ForwardCmdArgumentShield(o, forwardedCmd)) return false;
+        if (!ForwardCmdArgumentShield<TCmdOption5>(forwardedCmd)) return false;
         return await HandleAsync(o, forwardedCmd, cancellationToken);
     }
     private async Task<bool> HandleForwardShieldAsync(TCmdOption6 o, string? forwardedCmd, CancellationToken cancellationToken = default)
     {
-        if (!ForwardCmdArgumentShield(o, forwardedCmd)) return false;
+        if (!ForwardCmdArgumentShield<TCmdOption6>(forwardedCmd)) return false;
         return await HandleAsync(o, forwardedCmd, cancellationToken);
     }
     private async Task<bool> HandleForwardShieldAsync(TCmdOption7 o, string? forwardedCmd, CancellationToken cancellationToken = default)
     {
-        if (!ForwardCmdArgumentShield(o, forwardedCmd)) return false;
+        if (!ForwardCmdArgumentShield<TCmdOption7>(forwardedCmd)) return false;
         return await HandleAsync(o, forwardedCmd, cancellationToken);
     }
     private async Task<bool> HandleForwardShieldAsync(TCmdOption8 o, string? forwardedCmd, CancellationToken cancellationToken = default)
     {
-        if (!ForwardCmdArgumentShield(o, forwardedCmd)) return false;
+        if (!ForwardCmdArgumentShield<TCmdOption8>(forwardedCmd)) return false;
         return await HandleAsync(o, forwardedCmd, cancellationToken);
     }
 
@@ -588,15 +551,6 @@ public abstract class HasSubCommandsForwarderBase<[DynamicallyAccessedMembers(Dy
 
 /// <inheritdoc/>
 public abstract class HasSubCommandsForwarderBase<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties | DynamicallyAccessedMemberTypes.PublicConstructors)] TCmdOption1, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties | DynamicallyAccessedMemberTypes.PublicConstructors)] TCmdOption2, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties | DynamicallyAccessedMemberTypes.PublicConstructors)] TCmdOption3, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties | DynamicallyAccessedMemberTypes.PublicConstructors)] TCmdOption4, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties | DynamicallyAccessedMemberTypes.PublicConstructors)] TCmdOption5, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties | DynamicallyAccessedMemberTypes.PublicConstructors)] TCmdOption6, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties | DynamicallyAccessedMemberTypes.PublicConstructors)] TCmdOption7, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties | DynamicallyAccessedMemberTypes.PublicConstructors)] TCmdOption8, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties | DynamicallyAccessedMemberTypes.PublicConstructors)] TCmdOption9> : HasSubCommandsForwarderBase
-    where TCmdOption1 : ForwardCommandOptionBase, new()
-    where TCmdOption2 : ForwardCommandOptionBase, new()
-    where TCmdOption3 : ForwardCommandOptionBase, new()
-    where TCmdOption4 : ForwardCommandOptionBase, new()
-    where TCmdOption5 : ForwardCommandOptionBase, new()
-    where TCmdOption6 : ForwardCommandOptionBase, new()
-    where TCmdOption7 : ForwardCommandOptionBase, new()
-    where TCmdOption8 : ForwardCommandOptionBase, new()
-    where TCmdOption9 : ForwardCommandOptionBase, new()
 {
     /// <inheritdoc/>
     public HasSubCommandsForwarderBase() : this(null!)
@@ -630,47 +584,47 @@ public abstract class HasSubCommandsForwarderBase<[DynamicallyAccessedMembers(Dy
 
     private async Task<bool> HandleForwardShieldAsync(TCmdOption1 o, string? forwardedCmd, CancellationToken cancellationToken = default)
     {
-        if (!ForwardCmdArgumentShield(o, forwardedCmd)) return false;
+        if (!ForwardCmdArgumentShield<TCmdOption1>(forwardedCmd)) return false;
         return await HandleAsync(o, forwardedCmd, cancellationToken);
     }
     private async Task<bool> HandleForwardShieldAsync(TCmdOption2 o, string? forwardedCmd, CancellationToken cancellationToken = default)
     {
-        if (!ForwardCmdArgumentShield(o, forwardedCmd)) return false;
+        if (!ForwardCmdArgumentShield<TCmdOption2>(forwardedCmd)) return false;
         return await HandleAsync(o, forwardedCmd, cancellationToken);
     }
     private async Task<bool> HandleForwardShieldAsync(TCmdOption3 o, string? forwardedCmd, CancellationToken cancellationToken = default)
     {
-        if (!ForwardCmdArgumentShield(o, forwardedCmd)) return false;
+        if (!ForwardCmdArgumentShield<TCmdOption3>(forwardedCmd)) return false;
         return await HandleAsync(o, forwardedCmd, cancellationToken);
     }
     private async Task<bool> HandleForwardShieldAsync(TCmdOption4 o, string? forwardedCmd, CancellationToken cancellationToken = default)
     {
-        if (!ForwardCmdArgumentShield(o, forwardedCmd)) return false;
+        if (!ForwardCmdArgumentShield<TCmdOption4>(forwardedCmd)) return false;
         return await HandleAsync(o, forwardedCmd, cancellationToken);
     }
     private async Task<bool> HandleForwardShieldAsync(TCmdOption5 o, string? forwardedCmd, CancellationToken cancellationToken = default)
     {
-        if (!ForwardCmdArgumentShield(o, forwardedCmd)) return false;
+        if (!ForwardCmdArgumentShield<TCmdOption5>(forwardedCmd)) return false;
         return await HandleAsync(o, forwardedCmd, cancellationToken);
     }
     private async Task<bool> HandleForwardShieldAsync(TCmdOption6 o, string? forwardedCmd, CancellationToken cancellationToken = default)
     {
-        if (!ForwardCmdArgumentShield(o, forwardedCmd)) return false;
+        if (!ForwardCmdArgumentShield<TCmdOption6>(forwardedCmd)) return false;
         return await HandleAsync(o, forwardedCmd, cancellationToken);
     }
     private async Task<bool> HandleForwardShieldAsync(TCmdOption7 o, string? forwardedCmd, CancellationToken cancellationToken = default)
     {
-        if (!ForwardCmdArgumentShield(o, forwardedCmd)) return false;
+        if (!ForwardCmdArgumentShield<TCmdOption7>(forwardedCmd)) return false;
         return await HandleAsync(o, forwardedCmd, cancellationToken);
     }
     private async Task<bool> HandleForwardShieldAsync(TCmdOption8 o, string? forwardedCmd, CancellationToken cancellationToken = default)
     {
-        if (!ForwardCmdArgumentShield(o, forwardedCmd)) return false;
+        if (!ForwardCmdArgumentShield<TCmdOption8>(forwardedCmd)) return false;
         return await HandleAsync(o, forwardedCmd, cancellationToken);
     }
     private async Task<bool> HandleForwardShieldAsync(TCmdOption9 o, string? forwardedCmd, CancellationToken cancellationToken = default)
     {
-        if (!ForwardCmdArgumentShield(o, forwardedCmd)) return false;
+        if (!ForwardCmdArgumentShield<TCmdOption9>(forwardedCmd)) return false;
         return await HandleAsync(o, forwardedCmd, cancellationToken);
     }
 
@@ -700,16 +654,6 @@ public abstract class HasSubCommandsForwarderBase<[DynamicallyAccessedMembers(Dy
 
 /// <inheritdoc/>
 public abstract class HasSubCommandsForwarderBase<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties | DynamicallyAccessedMemberTypes.PublicConstructors)] TCmdOption1, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties | DynamicallyAccessedMemberTypes.PublicConstructors)] TCmdOption2, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties | DynamicallyAccessedMemberTypes.PublicConstructors)] TCmdOption3, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties | DynamicallyAccessedMemberTypes.PublicConstructors)] TCmdOption4, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties | DynamicallyAccessedMemberTypes.PublicConstructors)] TCmdOption5, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties | DynamicallyAccessedMemberTypes.PublicConstructors)] TCmdOption6, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties | DynamicallyAccessedMemberTypes.PublicConstructors)] TCmdOption7, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties | DynamicallyAccessedMemberTypes.PublicConstructors)] TCmdOption8, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties | DynamicallyAccessedMemberTypes.PublicConstructors)] TCmdOption9, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties | DynamicallyAccessedMemberTypes.PublicConstructors)] TCmdOption10> : HasSubCommandsForwarderBase
-    where TCmdOption1 : ForwardCommandOptionBase, new()
-    where TCmdOption2 : ForwardCommandOptionBase, new()
-    where TCmdOption3 : ForwardCommandOptionBase, new()
-    where TCmdOption4 : ForwardCommandOptionBase, new()
-    where TCmdOption5 : ForwardCommandOptionBase, new()
-    where TCmdOption6 : ForwardCommandOptionBase, new()
-    where TCmdOption7 : ForwardCommandOptionBase, new()
-    where TCmdOption8 : ForwardCommandOptionBase, new()
-    where TCmdOption9 : ForwardCommandOptionBase, new()
-    where TCmdOption10 : ForwardCommandOptionBase, new()
 {
     /// <inheritdoc/>
     public HasSubCommandsForwarderBase() : this(null!)
@@ -745,52 +689,52 @@ public abstract class HasSubCommandsForwarderBase<[DynamicallyAccessedMembers(Dy
 
     private async Task<bool> HandleForwardShieldAsync(TCmdOption1 o, string? forwardedCmd, CancellationToken cancellationToken = default)
     {
-        if (!ForwardCmdArgumentShield(o, forwardedCmd)) return false;
+        if (!ForwardCmdArgumentShield<TCmdOption1>(forwardedCmd)) return false;
         return await HandleAsync(o, forwardedCmd, cancellationToken);
     }
     private async Task<bool> HandleForwardShieldAsync(TCmdOption2 o, string? forwardedCmd, CancellationToken cancellationToken = default)
     {
-        if (!ForwardCmdArgumentShield(o, forwardedCmd)) return false;
+        if (!ForwardCmdArgumentShield<TCmdOption2>(forwardedCmd)) return false;
         return await HandleAsync(o, forwardedCmd, cancellationToken);
     }
     private async Task<bool> HandleForwardShieldAsync(TCmdOption3 o, string? forwardedCmd, CancellationToken cancellationToken = default)
     {
-        if (!ForwardCmdArgumentShield(o, forwardedCmd)) return false;
+        if (!ForwardCmdArgumentShield<TCmdOption3>(forwardedCmd)) return false;
         return await HandleAsync(o, forwardedCmd, cancellationToken);
     }
     private async Task<bool> HandleForwardShieldAsync(TCmdOption4 o, string? forwardedCmd, CancellationToken cancellationToken = default)
     {
-        if (!ForwardCmdArgumentShield(o, forwardedCmd)) return false;
+        if (!ForwardCmdArgumentShield<TCmdOption4>(forwardedCmd)) return false;
         return await HandleAsync(o, forwardedCmd, cancellationToken);
     }
     private async Task<bool> HandleForwardShieldAsync(TCmdOption5 o, string? forwardedCmd, CancellationToken cancellationToken = default)
     {
-        if (!ForwardCmdArgumentShield(o, forwardedCmd)) return false;
+        if (!ForwardCmdArgumentShield<TCmdOption5>(forwardedCmd)) return false;
         return await HandleAsync(o, forwardedCmd, cancellationToken);
     }
     private async Task<bool> HandleForwardShieldAsync(TCmdOption6 o, string? forwardedCmd, CancellationToken cancellationToken = default)
     {
-        if (!ForwardCmdArgumentShield(o, forwardedCmd)) return false;
+        if (!ForwardCmdArgumentShield<TCmdOption6>(forwardedCmd)) return false;
         return await HandleAsync(o, forwardedCmd, cancellationToken);
     }
     private async Task<bool> HandleForwardShieldAsync(TCmdOption7 o, string? forwardedCmd, CancellationToken cancellationToken = default)
     {
-        if (!ForwardCmdArgumentShield(o, forwardedCmd)) return false;
+        if (!ForwardCmdArgumentShield<TCmdOption7>(forwardedCmd)) return false;
         return await HandleAsync(o, forwardedCmd, cancellationToken);
     }
     private async Task<bool> HandleForwardShieldAsync(TCmdOption8 o, string? forwardedCmd, CancellationToken cancellationToken = default)
     {
-        if (!ForwardCmdArgumentShield(o, forwardedCmd)) return false;
+        if (!ForwardCmdArgumentShield<TCmdOption8>(forwardedCmd)) return false;
         return await HandleAsync(o, forwardedCmd, cancellationToken);
     }
     private async Task<bool> HandleForwardShieldAsync(TCmdOption9 o, string? forwardedCmd, CancellationToken cancellationToken = default)
     {
-        if (!ForwardCmdArgumentShield(o, forwardedCmd)) return false;
+        if (!ForwardCmdArgumentShield<TCmdOption9>(forwardedCmd)) return false;
         return await HandleAsync(o, forwardedCmd, cancellationToken);
     }
     private async Task<bool> HandleForwardShieldAsync(TCmdOption10 o, string? forwardedCmd, CancellationToken cancellationToken = default)
     {
-        if (!ForwardCmdArgumentShield(o, forwardedCmd)) return false;
+        if (!ForwardCmdArgumentShield<TCmdOption10>(forwardedCmd)) return false;
         return await HandleAsync(o, forwardedCmd, cancellationToken);
     }
 
@@ -821,17 +765,6 @@ public abstract class HasSubCommandsForwarderBase<[DynamicallyAccessedMembers(Dy
 
 /// <inheritdoc/>
 public abstract class HasSubCommandsForwarderBase<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties | DynamicallyAccessedMemberTypes.PublicConstructors)] TCmdOption1, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties | DynamicallyAccessedMemberTypes.PublicConstructors)] TCmdOption2, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties | DynamicallyAccessedMemberTypes.PublicConstructors)] TCmdOption3, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties | DynamicallyAccessedMemberTypes.PublicConstructors)] TCmdOption4, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties | DynamicallyAccessedMemberTypes.PublicConstructors)] TCmdOption5, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties | DynamicallyAccessedMemberTypes.PublicConstructors)] TCmdOption6, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties | DynamicallyAccessedMemberTypes.PublicConstructors)] TCmdOption7, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties | DynamicallyAccessedMemberTypes.PublicConstructors)] TCmdOption8, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties | DynamicallyAccessedMemberTypes.PublicConstructors)] TCmdOption9, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties | DynamicallyAccessedMemberTypes.PublicConstructors)] TCmdOption10, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties | DynamicallyAccessedMemberTypes.PublicConstructors)] TCmdOption11> : HasSubCommandsForwarderBase
-    where TCmdOption1 : ForwardCommandOptionBase, new()
-    where TCmdOption2 : ForwardCommandOptionBase, new()
-    where TCmdOption3 : ForwardCommandOptionBase, new()
-    where TCmdOption4 : ForwardCommandOptionBase, new()
-    where TCmdOption5 : ForwardCommandOptionBase, new()
-    where TCmdOption6 : ForwardCommandOptionBase, new()
-    where TCmdOption7 : ForwardCommandOptionBase, new()
-    where TCmdOption8 : ForwardCommandOptionBase, new()
-    where TCmdOption9 : ForwardCommandOptionBase, new()
-    where TCmdOption10 : ForwardCommandOptionBase, new()
-    where TCmdOption11 : ForwardCommandOptionBase, new()
 {
     /// <inheritdoc/>
     public HasSubCommandsForwarderBase() : this(null!)
@@ -869,57 +802,57 @@ public abstract class HasSubCommandsForwarderBase<[DynamicallyAccessedMembers(Dy
 
     private async Task<bool> HandleForwardShieldAsync(TCmdOption1 o, string? forwardedCmd, CancellationToken cancellationToken = default)
     {
-        if (!ForwardCmdArgumentShield(o, forwardedCmd)) return false;
+        if (!ForwardCmdArgumentShield<TCmdOption1>(forwardedCmd)) return false;
         return await HandleAsync(o, forwardedCmd, cancellationToken);
     }
     private async Task<bool> HandleForwardShieldAsync(TCmdOption2 o, string? forwardedCmd, CancellationToken cancellationToken = default)
     {
-        if (!ForwardCmdArgumentShield(o, forwardedCmd)) return false;
+        if (!ForwardCmdArgumentShield<TCmdOption2>(forwardedCmd)) return false;
         return await HandleAsync(o, forwardedCmd, cancellationToken);
     }
     private async Task<bool> HandleForwardShieldAsync(TCmdOption3 o, string? forwardedCmd, CancellationToken cancellationToken = default)
     {
-        if (!ForwardCmdArgumentShield(o, forwardedCmd)) return false;
+        if (!ForwardCmdArgumentShield<TCmdOption3>(forwardedCmd)) return false;
         return await HandleAsync(o, forwardedCmd, cancellationToken);
     }
     private async Task<bool> HandleForwardShieldAsync(TCmdOption4 o, string? forwardedCmd, CancellationToken cancellationToken = default)
     {
-        if (!ForwardCmdArgumentShield(o, forwardedCmd)) return false;
+        if (!ForwardCmdArgumentShield<TCmdOption4>(forwardedCmd)) return false;
         return await HandleAsync(o, forwardedCmd, cancellationToken);
     }
     private async Task<bool> HandleForwardShieldAsync(TCmdOption5 o, string? forwardedCmd, CancellationToken cancellationToken = default)
     {
-        if (!ForwardCmdArgumentShield(o, forwardedCmd)) return false;
+        if (!ForwardCmdArgumentShield<TCmdOption5>(forwardedCmd)) return false;
         return await HandleAsync(o, forwardedCmd, cancellationToken);
     }
     private async Task<bool> HandleForwardShieldAsync(TCmdOption6 o, string? forwardedCmd, CancellationToken cancellationToken = default)
     {
-        if (!ForwardCmdArgumentShield(o, forwardedCmd)) return false;
+        if (!ForwardCmdArgumentShield<TCmdOption6>(forwardedCmd)) return false;
         return await HandleAsync(o, forwardedCmd, cancellationToken);
     }
     private async Task<bool> HandleForwardShieldAsync(TCmdOption7 o, string? forwardedCmd, CancellationToken cancellationToken = default)
     {
-        if (!ForwardCmdArgumentShield(o, forwardedCmd)) return false;
+        if (!ForwardCmdArgumentShield<TCmdOption7>(forwardedCmd)) return false;
         return await HandleAsync(o, forwardedCmd, cancellationToken);
     }
     private async Task<bool> HandleForwardShieldAsync(TCmdOption8 o, string? forwardedCmd, CancellationToken cancellationToken = default)
     {
-        if (!ForwardCmdArgumentShield(o, forwardedCmd)) return false;
+        if (!ForwardCmdArgumentShield<TCmdOption8>(forwardedCmd)) return false;
         return await HandleAsync(o, forwardedCmd, cancellationToken);
     }
     private async Task<bool> HandleForwardShieldAsync(TCmdOption9 o, string? forwardedCmd, CancellationToken cancellationToken = default)
     {
-        if (!ForwardCmdArgumentShield(o, forwardedCmd)) return false;
+        if (!ForwardCmdArgumentShield<TCmdOption9>(forwardedCmd)) return false;
         return await HandleAsync(o, forwardedCmd, cancellationToken);
     }
     private async Task<bool> HandleForwardShieldAsync(TCmdOption10 o, string? forwardedCmd, CancellationToken cancellationToken = default)
     {
-        if (!ForwardCmdArgumentShield(o, forwardedCmd)) return false;
+        if (!ForwardCmdArgumentShield<TCmdOption10>(forwardedCmd)) return false;
         return await HandleAsync(o, forwardedCmd, cancellationToken);
     }
     private async Task<bool> HandleForwardShieldAsync(TCmdOption11 o, string? forwardedCmd, CancellationToken cancellationToken = default)
     {
-        if (!ForwardCmdArgumentShield(o, forwardedCmd)) return false;
+        if (!ForwardCmdArgumentShield<TCmdOption11>(forwardedCmd)) return false;
         return await HandleAsync(o, forwardedCmd, cancellationToken);
     }
 
@@ -951,18 +884,6 @@ public abstract class HasSubCommandsForwarderBase<[DynamicallyAccessedMembers(Dy
 
 /// <inheritdoc/>
 public abstract class HasSubCommandsForwarderBase<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties | DynamicallyAccessedMemberTypes.PublicConstructors)] TCmdOption1, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties | DynamicallyAccessedMemberTypes.PublicConstructors)] TCmdOption2, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties | DynamicallyAccessedMemberTypes.PublicConstructors)] TCmdOption3, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties | DynamicallyAccessedMemberTypes.PublicConstructors)] TCmdOption4, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties | DynamicallyAccessedMemberTypes.PublicConstructors)] TCmdOption5, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties | DynamicallyAccessedMemberTypes.PublicConstructors)] TCmdOption6, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties | DynamicallyAccessedMemberTypes.PublicConstructors)] TCmdOption7, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties | DynamicallyAccessedMemberTypes.PublicConstructors)] TCmdOption8, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties | DynamicallyAccessedMemberTypes.PublicConstructors)] TCmdOption9, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties | DynamicallyAccessedMemberTypes.PublicConstructors)] TCmdOption10, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties | DynamicallyAccessedMemberTypes.PublicConstructors)] TCmdOption11, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties | DynamicallyAccessedMemberTypes.PublicConstructors)] TCmdOption12> : HasSubCommandsForwarderBase
-    where TCmdOption1 : ForwardCommandOptionBase, new()
-    where TCmdOption2 : ForwardCommandOptionBase, new()
-    where TCmdOption3 : ForwardCommandOptionBase, new()
-    where TCmdOption4 : ForwardCommandOptionBase, new()
-    where TCmdOption5 : ForwardCommandOptionBase, new()
-    where TCmdOption6 : ForwardCommandOptionBase, new()
-    where TCmdOption7 : ForwardCommandOptionBase, new()
-    where TCmdOption8 : ForwardCommandOptionBase, new()
-    where TCmdOption9 : ForwardCommandOptionBase, new()
-    where TCmdOption10 : ForwardCommandOptionBase, new()
-    where TCmdOption11 : ForwardCommandOptionBase, new()
-    where TCmdOption12 : ForwardCommandOptionBase, new()
 {
     /// <inheritdoc/>
     public HasSubCommandsForwarderBase() : this(null!)
@@ -1002,62 +923,62 @@ public abstract class HasSubCommandsForwarderBase<[DynamicallyAccessedMembers(Dy
 
     private async Task<bool> HandleForwardShieldAsync(TCmdOption1 o, string? forwardedCmd, CancellationToken cancellationToken = default)
     {
-        if (!ForwardCmdArgumentShield(o, forwardedCmd)) return false;
+        if (!ForwardCmdArgumentShield<TCmdOption1>(forwardedCmd)) return false;
         return await HandleAsync(o, forwardedCmd, cancellationToken);
     }
     private async Task<bool> HandleForwardShieldAsync(TCmdOption2 o, string? forwardedCmd, CancellationToken cancellationToken = default)
     {
-        if (!ForwardCmdArgumentShield(o, forwardedCmd)) return false;
+        if (!ForwardCmdArgumentShield<TCmdOption2>(forwardedCmd)) return false;
         return await HandleAsync(o, forwardedCmd, cancellationToken);
     }
     private async Task<bool> HandleForwardShieldAsync(TCmdOption3 o, string? forwardedCmd, CancellationToken cancellationToken = default)
     {
-        if (!ForwardCmdArgumentShield(o, forwardedCmd)) return false;
+        if (!ForwardCmdArgumentShield<TCmdOption3>(forwardedCmd)) return false;
         return await HandleAsync(o, forwardedCmd, cancellationToken);
     }
     private async Task<bool> HandleForwardShieldAsync(TCmdOption4 o, string? forwardedCmd, CancellationToken cancellationToken = default)
     {
-        if (!ForwardCmdArgumentShield(o, forwardedCmd)) return false;
+        if (!ForwardCmdArgumentShield<TCmdOption4>(forwardedCmd)) return false;
         return await HandleAsync(o, forwardedCmd, cancellationToken);
     }
     private async Task<bool> HandleForwardShieldAsync(TCmdOption5 o, string? forwardedCmd, CancellationToken cancellationToken = default)
     {
-        if (!ForwardCmdArgumentShield(o, forwardedCmd)) return false;
+        if (!ForwardCmdArgumentShield<TCmdOption5>(forwardedCmd)) return false;
         return await HandleAsync(o, forwardedCmd, cancellationToken);
     }
     private async Task<bool> HandleForwardShieldAsync(TCmdOption6 o, string? forwardedCmd, CancellationToken cancellationToken = default)
     {
-        if (!ForwardCmdArgumentShield(o, forwardedCmd)) return false;
+        if (!ForwardCmdArgumentShield<TCmdOption6>(forwardedCmd)) return false;
         return await HandleAsync(o, forwardedCmd, cancellationToken);
     }
     private async Task<bool> HandleForwardShieldAsync(TCmdOption7 o, string? forwardedCmd, CancellationToken cancellationToken = default)
     {
-        if (!ForwardCmdArgumentShield(o, forwardedCmd)) return false;
+        if (!ForwardCmdArgumentShield<TCmdOption7>(forwardedCmd)) return false;
         return await HandleAsync(o, forwardedCmd, cancellationToken);
     }
     private async Task<bool> HandleForwardShieldAsync(TCmdOption8 o, string? forwardedCmd, CancellationToken cancellationToken = default)
     {
-        if (!ForwardCmdArgumentShield(o, forwardedCmd)) return false;
+        if (!ForwardCmdArgumentShield<TCmdOption8>(forwardedCmd)) return false;
         return await HandleAsync(o, forwardedCmd, cancellationToken);
     }
     private async Task<bool> HandleForwardShieldAsync(TCmdOption9 o, string? forwardedCmd, CancellationToken cancellationToken = default)
     {
-        if (!ForwardCmdArgumentShield(o, forwardedCmd)) return false;
+        if (!ForwardCmdArgumentShield<TCmdOption9>(forwardedCmd)) return false;
         return await HandleAsync(o, forwardedCmd, cancellationToken);
     }
     private async Task<bool> HandleForwardShieldAsync(TCmdOption10 o, string? forwardedCmd, CancellationToken cancellationToken = default)
     {
-        if (!ForwardCmdArgumentShield(o, forwardedCmd)) return false;
+        if (!ForwardCmdArgumentShield<TCmdOption10>(forwardedCmd)) return false;
         return await HandleAsync(o, forwardedCmd, cancellationToken);
     }
     private async Task<bool> HandleForwardShieldAsync(TCmdOption11 o, string? forwardedCmd, CancellationToken cancellationToken = default)
     {
-        if (!ForwardCmdArgumentShield(o, forwardedCmd)) return false;
+        if (!ForwardCmdArgumentShield<TCmdOption11>(forwardedCmd)) return false;
         return await HandleAsync(o, forwardedCmd, cancellationToken);
     }
     private async Task<bool> HandleForwardShieldAsync(TCmdOption12 o, string? forwardedCmd, CancellationToken cancellationToken = default)
     {
-        if (!ForwardCmdArgumentShield(o, forwardedCmd)) return false;
+        if (!ForwardCmdArgumentShield<TCmdOption12>(forwardedCmd)) return false;
         return await HandleAsync(o, forwardedCmd, cancellationToken);
     }
 
@@ -1091,19 +1012,6 @@ public abstract class HasSubCommandsForwarderBase<[DynamicallyAccessedMembers(Dy
 
 /// <inheritdoc/>
 public abstract class HasSubCommandsForwarderBase<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties | DynamicallyAccessedMemberTypes.PublicConstructors)] TCmdOption1, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties | DynamicallyAccessedMemberTypes.PublicConstructors)] TCmdOption2, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties | DynamicallyAccessedMemberTypes.PublicConstructors)] TCmdOption3, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties | DynamicallyAccessedMemberTypes.PublicConstructors)] TCmdOption4, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties | DynamicallyAccessedMemberTypes.PublicConstructors)] TCmdOption5, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties | DynamicallyAccessedMemberTypes.PublicConstructors)] TCmdOption6, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties | DynamicallyAccessedMemberTypes.PublicConstructors)] TCmdOption7, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties | DynamicallyAccessedMemberTypes.PublicConstructors)] TCmdOption8, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties | DynamicallyAccessedMemberTypes.PublicConstructors)] TCmdOption9, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties | DynamicallyAccessedMemberTypes.PublicConstructors)] TCmdOption10, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties | DynamicallyAccessedMemberTypes.PublicConstructors)] TCmdOption11, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties | DynamicallyAccessedMemberTypes.PublicConstructors)] TCmdOption12, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties | DynamicallyAccessedMemberTypes.PublicConstructors)] TCmdOption13> : HasSubCommandsForwarderBase
-    where TCmdOption1 : ForwardCommandOptionBase, new()
-    where TCmdOption2 : ForwardCommandOptionBase, new()
-    where TCmdOption3 : ForwardCommandOptionBase, new()
-    where TCmdOption4 : ForwardCommandOptionBase, new()
-    where TCmdOption5 : ForwardCommandOptionBase, new()
-    where TCmdOption6 : ForwardCommandOptionBase, new()
-    where TCmdOption7 : ForwardCommandOptionBase, new()
-    where TCmdOption8 : ForwardCommandOptionBase, new()
-    where TCmdOption9 : ForwardCommandOptionBase, new()
-    where TCmdOption10 : ForwardCommandOptionBase, new()
-    where TCmdOption11 : ForwardCommandOptionBase, new()
-    where TCmdOption12 : ForwardCommandOptionBase, new()
-    where TCmdOption13 : ForwardCommandOptionBase, new()
 {
     /// <inheritdoc/>
     public HasSubCommandsForwarderBase() : this(null!)
@@ -1145,67 +1053,67 @@ public abstract class HasSubCommandsForwarderBase<[DynamicallyAccessedMembers(Dy
 
     private async Task<bool> HandleForwardShieldAsync(TCmdOption1 o, string? forwardedCmd, CancellationToken cancellationToken = default)
     {
-        if (!ForwardCmdArgumentShield(o, forwardedCmd)) return false;
+        if (!ForwardCmdArgumentShield<TCmdOption1>(forwardedCmd)) return false;
         return await HandleAsync(o, forwardedCmd, cancellationToken);
     }
     private async Task<bool> HandleForwardShieldAsync(TCmdOption2 o, string? forwardedCmd, CancellationToken cancellationToken = default)
     {
-        if (!ForwardCmdArgumentShield(o, forwardedCmd)) return false;
+        if (!ForwardCmdArgumentShield<TCmdOption2>(forwardedCmd)) return false;
         return await HandleAsync(o, forwardedCmd, cancellationToken);
     }
     private async Task<bool> HandleForwardShieldAsync(TCmdOption3 o, string? forwardedCmd, CancellationToken cancellationToken = default)
     {
-        if (!ForwardCmdArgumentShield(o, forwardedCmd)) return false;
+        if (!ForwardCmdArgumentShield<TCmdOption3>(forwardedCmd)) return false;
         return await HandleAsync(o, forwardedCmd, cancellationToken);
     }
     private async Task<bool> HandleForwardShieldAsync(TCmdOption4 o, string? forwardedCmd, CancellationToken cancellationToken = default)
     {
-        if (!ForwardCmdArgumentShield(o, forwardedCmd)) return false;
+        if (!ForwardCmdArgumentShield<TCmdOption4>(forwardedCmd)) return false;
         return await HandleAsync(o, forwardedCmd, cancellationToken);
     }
     private async Task<bool> HandleForwardShieldAsync(TCmdOption5 o, string? forwardedCmd, CancellationToken cancellationToken = default)
     {
-        if (!ForwardCmdArgumentShield(o, forwardedCmd)) return false;
+        if (!ForwardCmdArgumentShield<TCmdOption5>(forwardedCmd)) return false;
         return await HandleAsync(o, forwardedCmd, cancellationToken);
     }
     private async Task<bool> HandleForwardShieldAsync(TCmdOption6 o, string? forwardedCmd, CancellationToken cancellationToken = default)
     {
-        if (!ForwardCmdArgumentShield(o, forwardedCmd)) return false;
+        if (!ForwardCmdArgumentShield<TCmdOption6>(forwardedCmd)) return false;
         return await HandleAsync(o, forwardedCmd, cancellationToken);
     }
     private async Task<bool> HandleForwardShieldAsync(TCmdOption7 o, string? forwardedCmd, CancellationToken cancellationToken = default)
     {
-        if (!ForwardCmdArgumentShield(o, forwardedCmd)) return false;
+        if (!ForwardCmdArgumentShield<TCmdOption7>(forwardedCmd)) return false;
         return await HandleAsync(o, forwardedCmd, cancellationToken);
     }
     private async Task<bool> HandleForwardShieldAsync(TCmdOption8 o, string? forwardedCmd, CancellationToken cancellationToken = default)
     {
-        if (!ForwardCmdArgumentShield(o, forwardedCmd)) return false;
+        if (!ForwardCmdArgumentShield<TCmdOption8>(forwardedCmd)) return false;
         return await HandleAsync(o, forwardedCmd, cancellationToken);
     }
     private async Task<bool> HandleForwardShieldAsync(TCmdOption9 o, string? forwardedCmd, CancellationToken cancellationToken = default)
     {
-        if (!ForwardCmdArgumentShield(o, forwardedCmd)) return false;
+        if (!ForwardCmdArgumentShield<TCmdOption9>(forwardedCmd)) return false;
         return await HandleAsync(o, forwardedCmd, cancellationToken);
     }
     private async Task<bool> HandleForwardShieldAsync(TCmdOption10 o, string? forwardedCmd, CancellationToken cancellationToken = default)
     {
-        if (!ForwardCmdArgumentShield(o, forwardedCmd)) return false;
+        if (!ForwardCmdArgumentShield<TCmdOption10>(forwardedCmd)) return false;
         return await HandleAsync(o, forwardedCmd, cancellationToken);
     }
     private async Task<bool> HandleForwardShieldAsync(TCmdOption11 o, string? forwardedCmd, CancellationToken cancellationToken = default)
     {
-        if (!ForwardCmdArgumentShield(o, forwardedCmd)) return false;
+        if (!ForwardCmdArgumentShield<TCmdOption11>(forwardedCmd)) return false;
         return await HandleAsync(o, forwardedCmd, cancellationToken);
     }
     private async Task<bool> HandleForwardShieldAsync(TCmdOption12 o, string? forwardedCmd, CancellationToken cancellationToken = default)
     {
-        if (!ForwardCmdArgumentShield(o, forwardedCmd)) return false;
+        if (!ForwardCmdArgumentShield<TCmdOption12>(forwardedCmd)) return false;
         return await HandleAsync(o, forwardedCmd, cancellationToken);
     }
     private async Task<bool> HandleForwardShieldAsync(TCmdOption13 o, string? forwardedCmd, CancellationToken cancellationToken = default)
     {
-        if (!ForwardCmdArgumentShield(o, forwardedCmd)) return false;
+        if (!ForwardCmdArgumentShield<TCmdOption13>(forwardedCmd)) return false;
         return await HandleAsync(o, forwardedCmd, cancellationToken);
     }
 
@@ -1239,20 +1147,6 @@ public abstract class HasSubCommandsForwarderBase<[DynamicallyAccessedMembers(Dy
 
 /// <inheritdoc/>
 public abstract class HasSubCommandsForwarderBase<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties | DynamicallyAccessedMemberTypes.PublicConstructors)] TCmdOption1, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties | DynamicallyAccessedMemberTypes.PublicConstructors)] TCmdOption2, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties | DynamicallyAccessedMemberTypes.PublicConstructors)] TCmdOption3, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties | DynamicallyAccessedMemberTypes.PublicConstructors)] TCmdOption4, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties | DynamicallyAccessedMemberTypes.PublicConstructors)] TCmdOption5, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties | DynamicallyAccessedMemberTypes.PublicConstructors)] TCmdOption6, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties | DynamicallyAccessedMemberTypes.PublicConstructors)] TCmdOption7, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties | DynamicallyAccessedMemberTypes.PublicConstructors)] TCmdOption8, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties | DynamicallyAccessedMemberTypes.PublicConstructors)] TCmdOption9, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties | DynamicallyAccessedMemberTypes.PublicConstructors)] TCmdOption10, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties | DynamicallyAccessedMemberTypes.PublicConstructors)] TCmdOption11, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties | DynamicallyAccessedMemberTypes.PublicConstructors)] TCmdOption12, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties | DynamicallyAccessedMemberTypes.PublicConstructors)] TCmdOption13, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties | DynamicallyAccessedMemberTypes.PublicConstructors)] TCmdOption14> : HasSubCommandsForwarderBase
-    where TCmdOption1 : ForwardCommandOptionBase, new()
-    where TCmdOption2 : ForwardCommandOptionBase, new()
-    where TCmdOption3 : ForwardCommandOptionBase, new()
-    where TCmdOption4 : ForwardCommandOptionBase, new()
-    where TCmdOption5 : ForwardCommandOptionBase, new()
-    where TCmdOption6 : ForwardCommandOptionBase, new()
-    where TCmdOption7 : ForwardCommandOptionBase, new()
-    where TCmdOption8 : ForwardCommandOptionBase, new()
-    where TCmdOption9 : ForwardCommandOptionBase, new()
-    where TCmdOption10 : ForwardCommandOptionBase, new()
-    where TCmdOption11 : ForwardCommandOptionBase, new()
-    where TCmdOption12 : ForwardCommandOptionBase, new()
-    where TCmdOption13 : ForwardCommandOptionBase, new()
-    where TCmdOption14 : ForwardCommandOptionBase, new()
 {
     /// <inheritdoc/>
     public HasSubCommandsForwarderBase() : this(null!)
@@ -1296,72 +1190,72 @@ public abstract class HasSubCommandsForwarderBase<[DynamicallyAccessedMembers(Dy
 
     private async Task<bool> HandleForwardShieldAsync(TCmdOption1 o, string? forwardedCmd, CancellationToken cancellationToken = default)
     {
-        if (!ForwardCmdArgumentShield(o, forwardedCmd)) return false;
+        if (!ForwardCmdArgumentShield<TCmdOption1>(forwardedCmd)) return false;
         return await HandleAsync(o, forwardedCmd, cancellationToken);
     }
     private async Task<bool> HandleForwardShieldAsync(TCmdOption2 o, string? forwardedCmd, CancellationToken cancellationToken = default)
     {
-        if (!ForwardCmdArgumentShield(o, forwardedCmd)) return false;
+        if (!ForwardCmdArgumentShield<TCmdOption2>(forwardedCmd)) return false;
         return await HandleAsync(o, forwardedCmd, cancellationToken);
     }
     private async Task<bool> HandleForwardShieldAsync(TCmdOption3 o, string? forwardedCmd, CancellationToken cancellationToken = default)
     {
-        if (!ForwardCmdArgumentShield(o, forwardedCmd)) return false;
+        if (!ForwardCmdArgumentShield<TCmdOption3>(forwardedCmd)) return false;
         return await HandleAsync(o, forwardedCmd, cancellationToken);
     }
     private async Task<bool> HandleForwardShieldAsync(TCmdOption4 o, string? forwardedCmd, CancellationToken cancellationToken = default)
     {
-        if (!ForwardCmdArgumentShield(o, forwardedCmd)) return false;
+        if (!ForwardCmdArgumentShield<TCmdOption4>(forwardedCmd)) return false;
         return await HandleAsync(o, forwardedCmd, cancellationToken);
     }
     private async Task<bool> HandleForwardShieldAsync(TCmdOption5 o, string? forwardedCmd, CancellationToken cancellationToken = default)
     {
-        if (!ForwardCmdArgumentShield(o, forwardedCmd)) return false;
+        if (!ForwardCmdArgumentShield<TCmdOption5>(forwardedCmd)) return false;
         return await HandleAsync(o, forwardedCmd, cancellationToken);
     }
     private async Task<bool> HandleForwardShieldAsync(TCmdOption6 o, string? forwardedCmd, CancellationToken cancellationToken = default)
     {
-        if (!ForwardCmdArgumentShield(o, forwardedCmd)) return false;
+        if (!ForwardCmdArgumentShield<TCmdOption6>(forwardedCmd)) return false;
         return await HandleAsync(o, forwardedCmd, cancellationToken);
     }
     private async Task<bool> HandleForwardShieldAsync(TCmdOption7 o, string? forwardedCmd, CancellationToken cancellationToken = default)
     {
-        if (!ForwardCmdArgumentShield(o, forwardedCmd)) return false;
+        if (!ForwardCmdArgumentShield<TCmdOption7>(forwardedCmd)) return false;
         return await HandleAsync(o, forwardedCmd, cancellationToken);
     }
     private async Task<bool> HandleForwardShieldAsync(TCmdOption8 o, string? forwardedCmd, CancellationToken cancellationToken = default)
     {
-        if (!ForwardCmdArgumentShield(o, forwardedCmd)) return false;
+        if (!ForwardCmdArgumentShield<TCmdOption8>(forwardedCmd)) return false;
         return await HandleAsync(o, forwardedCmd, cancellationToken);
     }
     private async Task<bool> HandleForwardShieldAsync(TCmdOption9 o, string? forwardedCmd, CancellationToken cancellationToken = default)
     {
-        if (!ForwardCmdArgumentShield(o, forwardedCmd)) return false;
+        if (!ForwardCmdArgumentShield<TCmdOption9>(forwardedCmd)) return false;
         return await HandleAsync(o, forwardedCmd, cancellationToken);
     }
     private async Task<bool> HandleForwardShieldAsync(TCmdOption10 o, string? forwardedCmd, CancellationToken cancellationToken = default)
     {
-        if (!ForwardCmdArgumentShield(o, forwardedCmd)) return false;
+        if (!ForwardCmdArgumentShield<TCmdOption10>(forwardedCmd)) return false;
         return await HandleAsync(o, forwardedCmd, cancellationToken);
     }
     private async Task<bool> HandleForwardShieldAsync(TCmdOption11 o, string? forwardedCmd, CancellationToken cancellationToken = default)
     {
-        if (!ForwardCmdArgumentShield(o, forwardedCmd)) return false;
+        if (!ForwardCmdArgumentShield<TCmdOption11>(forwardedCmd)) return false;
         return await HandleAsync(o, forwardedCmd, cancellationToken);
     }
     private async Task<bool> HandleForwardShieldAsync(TCmdOption12 o, string? forwardedCmd, CancellationToken cancellationToken = default)
     {
-        if (!ForwardCmdArgumentShield(o, forwardedCmd)) return false;
+        if (!ForwardCmdArgumentShield<TCmdOption12>(forwardedCmd)) return false;
         return await HandleAsync(o, forwardedCmd, cancellationToken);
     }
     private async Task<bool> HandleForwardShieldAsync(TCmdOption13 o, string? forwardedCmd, CancellationToken cancellationToken = default)
     {
-        if (!ForwardCmdArgumentShield(o, forwardedCmd)) return false;
+        if (!ForwardCmdArgumentShield<TCmdOption13>(forwardedCmd)) return false;
         return await HandleAsync(o, forwardedCmd, cancellationToken);
     }
     private async Task<bool> HandleForwardShieldAsync(TCmdOption14 o, string? forwardedCmd, CancellationToken cancellationToken = default)
     {
-        if (!ForwardCmdArgumentShield(o, forwardedCmd)) return false;
+        if (!ForwardCmdArgumentShield<TCmdOption14>(forwardedCmd)) return false;
         return await HandleAsync(o, forwardedCmd, cancellationToken);
     }
 
@@ -1396,21 +1290,6 @@ public abstract class HasSubCommandsForwarderBase<[DynamicallyAccessedMembers(Dy
 
 /// <inheritdoc/>
 public abstract class HasSubCommandsForwarderBase<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties | DynamicallyAccessedMemberTypes.PublicConstructors)] TCmdOption1, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties | DynamicallyAccessedMemberTypes.PublicConstructors)] TCmdOption2, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties | DynamicallyAccessedMemberTypes.PublicConstructors)] TCmdOption3, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties | DynamicallyAccessedMemberTypes.PublicConstructors)] TCmdOption4, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties | DynamicallyAccessedMemberTypes.PublicConstructors)] TCmdOption5, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties | DynamicallyAccessedMemberTypes.PublicConstructors)] TCmdOption6, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties | DynamicallyAccessedMemberTypes.PublicConstructors)] TCmdOption7, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties | DynamicallyAccessedMemberTypes.PublicConstructors)] TCmdOption8, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties | DynamicallyAccessedMemberTypes.PublicConstructors)] TCmdOption9, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties | DynamicallyAccessedMemberTypes.PublicConstructors)] TCmdOption10, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties | DynamicallyAccessedMemberTypes.PublicConstructors)] TCmdOption11, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties | DynamicallyAccessedMemberTypes.PublicConstructors)] TCmdOption12, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties | DynamicallyAccessedMemberTypes.PublicConstructors)] TCmdOption13, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties | DynamicallyAccessedMemberTypes.PublicConstructors)] TCmdOption14, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties | DynamicallyAccessedMemberTypes.PublicConstructors)] TCmdOption15> : HasSubCommandsForwarderBase
-    where TCmdOption1 : ForwardCommandOptionBase, new()
-    where TCmdOption2 : ForwardCommandOptionBase, new()
-    where TCmdOption3 : ForwardCommandOptionBase, new()
-    where TCmdOption4 : ForwardCommandOptionBase, new()
-    where TCmdOption5 : ForwardCommandOptionBase, new()
-    where TCmdOption6 : ForwardCommandOptionBase, new()
-    where TCmdOption7 : ForwardCommandOptionBase, new()
-    where TCmdOption8 : ForwardCommandOptionBase, new()
-    where TCmdOption9 : ForwardCommandOptionBase, new()
-    where TCmdOption10 : ForwardCommandOptionBase, new()
-    where TCmdOption11 : ForwardCommandOptionBase, new()
-    where TCmdOption12 : ForwardCommandOptionBase, new()
-    where TCmdOption13 : ForwardCommandOptionBase, new()
-    where TCmdOption14 : ForwardCommandOptionBase, new()
-    where TCmdOption15 : ForwardCommandOptionBase, new()
 {
     /// <inheritdoc/>
     public HasSubCommandsForwarderBase() : this(null!)
@@ -1456,77 +1335,77 @@ public abstract class HasSubCommandsForwarderBase<[DynamicallyAccessedMembers(Dy
 
     private async Task<bool> HandleForwardShieldAsync(TCmdOption1 o, string? forwardedCmd, CancellationToken cancellationToken = default)
     {
-        if (!ForwardCmdArgumentShield(o, forwardedCmd)) return false;
+        if (!ForwardCmdArgumentShield<TCmdOption1>(forwardedCmd)) return false;
         return await HandleAsync(o, forwardedCmd, cancellationToken);
     }
     private async Task<bool> HandleForwardShieldAsync(TCmdOption2 o, string? forwardedCmd, CancellationToken cancellationToken = default)
     {
-        if (!ForwardCmdArgumentShield(o, forwardedCmd)) return false;
+        if (!ForwardCmdArgumentShield<TCmdOption2>(forwardedCmd)) return false;
         return await HandleAsync(o, forwardedCmd, cancellationToken);
     }
     private async Task<bool> HandleForwardShieldAsync(TCmdOption3 o, string? forwardedCmd, CancellationToken cancellationToken = default)
     {
-        if (!ForwardCmdArgumentShield(o, forwardedCmd)) return false;
+        if (!ForwardCmdArgumentShield<TCmdOption3>(forwardedCmd)) return false;
         return await HandleAsync(o, forwardedCmd, cancellationToken);
     }
     private async Task<bool> HandleForwardShieldAsync(TCmdOption4 o, string? forwardedCmd, CancellationToken cancellationToken = default)
     {
-        if (!ForwardCmdArgumentShield(o, forwardedCmd)) return false;
+        if (!ForwardCmdArgumentShield<TCmdOption4>(forwardedCmd)) return false;
         return await HandleAsync(o, forwardedCmd, cancellationToken);
     }
     private async Task<bool> HandleForwardShieldAsync(TCmdOption5 o, string? forwardedCmd, CancellationToken cancellationToken = default)
     {
-        if (!ForwardCmdArgumentShield(o, forwardedCmd)) return false;
+        if (!ForwardCmdArgumentShield<TCmdOption5>(forwardedCmd)) return false;
         return await HandleAsync(o, forwardedCmd, cancellationToken);
     }
     private async Task<bool> HandleForwardShieldAsync(TCmdOption6 o, string? forwardedCmd, CancellationToken cancellationToken = default)
     {
-        if (!ForwardCmdArgumentShield(o, forwardedCmd)) return false;
+        if (!ForwardCmdArgumentShield<TCmdOption6>(forwardedCmd)) return false;
         return await HandleAsync(o, forwardedCmd, cancellationToken);
     }
     private async Task<bool> HandleForwardShieldAsync(TCmdOption7 o, string? forwardedCmd, CancellationToken cancellationToken = default)
     {
-        if (!ForwardCmdArgumentShield(o, forwardedCmd)) return false;
+        if (!ForwardCmdArgumentShield<TCmdOption7>(forwardedCmd)) return false;
         return await HandleAsync(o, forwardedCmd, cancellationToken);
     }
     private async Task<bool> HandleForwardShieldAsync(TCmdOption8 o, string? forwardedCmd, CancellationToken cancellationToken = default)
     {
-        if (!ForwardCmdArgumentShield(o, forwardedCmd)) return false;
+        if (!ForwardCmdArgumentShield<TCmdOption8>(forwardedCmd)) return false;
         return await HandleAsync(o, forwardedCmd, cancellationToken);
     }
     private async Task<bool> HandleForwardShieldAsync(TCmdOption9 o, string? forwardedCmd, CancellationToken cancellationToken = default)
     {
-        if (!ForwardCmdArgumentShield(o, forwardedCmd)) return false;
+        if (!ForwardCmdArgumentShield<TCmdOption9>(forwardedCmd)) return false;
         return await HandleAsync(o, forwardedCmd, cancellationToken);
     }
     private async Task<bool> HandleForwardShieldAsync(TCmdOption10 o, string? forwardedCmd, CancellationToken cancellationToken = default)
     {
-        if (!ForwardCmdArgumentShield(o, forwardedCmd)) return false;
+        if (!ForwardCmdArgumentShield<TCmdOption10>(forwardedCmd)) return false;
         return await HandleAsync(o, forwardedCmd, cancellationToken);
     }
     private async Task<bool> HandleForwardShieldAsync(TCmdOption11 o, string? forwardedCmd, CancellationToken cancellationToken = default)
     {
-        if (!ForwardCmdArgumentShield(o, forwardedCmd)) return false;
+        if (!ForwardCmdArgumentShield<TCmdOption11>(forwardedCmd)) return false;
         return await HandleAsync(o, forwardedCmd, cancellationToken);
     }
     private async Task<bool> HandleForwardShieldAsync(TCmdOption12 o, string? forwardedCmd, CancellationToken cancellationToken = default)
     {
-        if (!ForwardCmdArgumentShield(o, forwardedCmd)) return false;
+        if (!ForwardCmdArgumentShield<TCmdOption12>(forwardedCmd)) return false;
         return await HandleAsync(o, forwardedCmd, cancellationToken);
     }
     private async Task<bool> HandleForwardShieldAsync(TCmdOption13 o, string? forwardedCmd, CancellationToken cancellationToken = default)
     {
-        if (!ForwardCmdArgumentShield(o, forwardedCmd)) return false;
+        if (!ForwardCmdArgumentShield<TCmdOption13>(forwardedCmd)) return false;
         return await HandleAsync(o, forwardedCmd, cancellationToken);
     }
     private async Task<bool> HandleForwardShieldAsync(TCmdOption14 o, string? forwardedCmd, CancellationToken cancellationToken = default)
     {
-        if (!ForwardCmdArgumentShield(o, forwardedCmd)) return false;
+        if (!ForwardCmdArgumentShield<TCmdOption14>(forwardedCmd)) return false;
         return await HandleAsync(o, forwardedCmd, cancellationToken);
     }
     private async Task<bool> HandleForwardShieldAsync(TCmdOption15 o, string? forwardedCmd, CancellationToken cancellationToken = default)
     {
-        if (!ForwardCmdArgumentShield(o, forwardedCmd)) return false;
+        if (!ForwardCmdArgumentShield<TCmdOption15>(forwardedCmd)) return false;
         return await HandleAsync(o, forwardedCmd, cancellationToken);
     }
 
@@ -1562,22 +1441,6 @@ public abstract class HasSubCommandsForwarderBase<[DynamicallyAccessedMembers(Dy
 
 /// <inheritdoc/>
 public abstract class HasSubCommandsForwarderBase<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties | DynamicallyAccessedMemberTypes.PublicConstructors)] TCmdOption1, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties | DynamicallyAccessedMemberTypes.PublicConstructors)] TCmdOption2, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties | DynamicallyAccessedMemberTypes.PublicConstructors)] TCmdOption3, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties | DynamicallyAccessedMemberTypes.PublicConstructors)] TCmdOption4, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties | DynamicallyAccessedMemberTypes.PublicConstructors)] TCmdOption5, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties | DynamicallyAccessedMemberTypes.PublicConstructors)] TCmdOption6, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties | DynamicallyAccessedMemberTypes.PublicConstructors)] TCmdOption7, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties | DynamicallyAccessedMemberTypes.PublicConstructors)] TCmdOption8, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties | DynamicallyAccessedMemberTypes.PublicConstructors)] TCmdOption9, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties | DynamicallyAccessedMemberTypes.PublicConstructors)] TCmdOption10, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties | DynamicallyAccessedMemberTypes.PublicConstructors)] TCmdOption11, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties | DynamicallyAccessedMemberTypes.PublicConstructors)] TCmdOption12, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties | DynamicallyAccessedMemberTypes.PublicConstructors)] TCmdOption13, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties | DynamicallyAccessedMemberTypes.PublicConstructors)] TCmdOption14, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties | DynamicallyAccessedMemberTypes.PublicConstructors)] TCmdOption15, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties | DynamicallyAccessedMemberTypes.PublicConstructors)] TCmdOption16> : HasSubCommandsForwarderBase
-    where TCmdOption1 : ForwardCommandOptionBase, new()
-    where TCmdOption2 : ForwardCommandOptionBase, new()
-    where TCmdOption3 : ForwardCommandOptionBase, new()
-    where TCmdOption4 : ForwardCommandOptionBase, new()
-    where TCmdOption5 : ForwardCommandOptionBase, new()
-    where TCmdOption6 : ForwardCommandOptionBase, new()
-    where TCmdOption7 : ForwardCommandOptionBase, new()
-    where TCmdOption8 : ForwardCommandOptionBase, new()
-    where TCmdOption9 : ForwardCommandOptionBase, new()
-    where TCmdOption10 : ForwardCommandOptionBase, new()
-    where TCmdOption11 : ForwardCommandOptionBase, new()
-    where TCmdOption12 : ForwardCommandOptionBase, new()
-    where TCmdOption13 : ForwardCommandOptionBase, new()
-    where TCmdOption14 : ForwardCommandOptionBase, new()
-    where TCmdOption15 : ForwardCommandOptionBase, new()
-    where TCmdOption16 : ForwardCommandOptionBase, new()
 {
     /// <inheritdoc/>
     public HasSubCommandsForwarderBase() : this(null!)
@@ -1625,82 +1488,82 @@ public abstract class HasSubCommandsForwarderBase<[DynamicallyAccessedMembers(Dy
 
     private async Task<bool> HandleForwardShieldAsync(TCmdOption1 o, string? forwardedCmd, CancellationToken cancellationToken = default)
     {
-        if (!ForwardCmdArgumentShield(o, forwardedCmd)) return false;
+        if (!ForwardCmdArgumentShield<TCmdOption1>(forwardedCmd)) return false;
         return await HandleAsync(o, forwardedCmd, cancellationToken);
     }
     private async Task<bool> HandleForwardShieldAsync(TCmdOption2 o, string? forwardedCmd, CancellationToken cancellationToken = default)
     {
-        if (!ForwardCmdArgumentShield(o, forwardedCmd)) return false;
+        if (!ForwardCmdArgumentShield<TCmdOption2>(forwardedCmd)) return false;
         return await HandleAsync(o, forwardedCmd, cancellationToken);
     }
     private async Task<bool> HandleForwardShieldAsync(TCmdOption3 o, string? forwardedCmd, CancellationToken cancellationToken = default)
     {
-        if (!ForwardCmdArgumentShield(o, forwardedCmd)) return false;
+        if (!ForwardCmdArgumentShield<TCmdOption3>(forwardedCmd)) return false;
         return await HandleAsync(o, forwardedCmd, cancellationToken);
     }
     private async Task<bool> HandleForwardShieldAsync(TCmdOption4 o, string? forwardedCmd, CancellationToken cancellationToken = default)
     {
-        if (!ForwardCmdArgumentShield(o, forwardedCmd)) return false;
+        if (!ForwardCmdArgumentShield<TCmdOption4>(forwardedCmd)) return false;
         return await HandleAsync(o, forwardedCmd, cancellationToken);
     }
     private async Task<bool> HandleForwardShieldAsync(TCmdOption5 o, string? forwardedCmd, CancellationToken cancellationToken = default)
     {
-        if (!ForwardCmdArgumentShield(o, forwardedCmd)) return false;
+        if (!ForwardCmdArgumentShield<TCmdOption5>(forwardedCmd)) return false;
         return await HandleAsync(o, forwardedCmd, cancellationToken);
     }
     private async Task<bool> HandleForwardShieldAsync(TCmdOption6 o, string? forwardedCmd, CancellationToken cancellationToken = default)
     {
-        if (!ForwardCmdArgumentShield(o, forwardedCmd)) return false;
+        if (!ForwardCmdArgumentShield<TCmdOption6>(forwardedCmd)) return false;
         return await HandleAsync(o, forwardedCmd, cancellationToken);
     }
     private async Task<bool> HandleForwardShieldAsync(TCmdOption7 o, string? forwardedCmd, CancellationToken cancellationToken = default)
     {
-        if (!ForwardCmdArgumentShield(o, forwardedCmd)) return false;
+        if (!ForwardCmdArgumentShield<TCmdOption7>(forwardedCmd)) return false;
         return await HandleAsync(o, forwardedCmd, cancellationToken);
     }
     private async Task<bool> HandleForwardShieldAsync(TCmdOption8 o, string? forwardedCmd, CancellationToken cancellationToken = default)
     {
-        if (!ForwardCmdArgumentShield(o, forwardedCmd)) return false;
+        if (!ForwardCmdArgumentShield<TCmdOption8>(forwardedCmd)) return false;
         return await HandleAsync(o, forwardedCmd, cancellationToken);
     }
     private async Task<bool> HandleForwardShieldAsync(TCmdOption9 o, string? forwardedCmd, CancellationToken cancellationToken = default)
     {
-        if (!ForwardCmdArgumentShield(o, forwardedCmd)) return false;
+        if (!ForwardCmdArgumentShield<TCmdOption9>(forwardedCmd)) return false;
         return await HandleAsync(o, forwardedCmd, cancellationToken);
     }
     private async Task<bool> HandleForwardShieldAsync(TCmdOption10 o, string? forwardedCmd, CancellationToken cancellationToken = default)
     {
-        if (!ForwardCmdArgumentShield(o, forwardedCmd)) return false;
+        if (!ForwardCmdArgumentShield<TCmdOption10>(forwardedCmd)) return false;
         return await HandleAsync(o, forwardedCmd, cancellationToken);
     }
     private async Task<bool> HandleForwardShieldAsync(TCmdOption11 o, string? forwardedCmd, CancellationToken cancellationToken = default)
     {
-        if (!ForwardCmdArgumentShield(o, forwardedCmd)) return false;
+        if (!ForwardCmdArgumentShield<TCmdOption11>(forwardedCmd)) return false;
         return await HandleAsync(o, forwardedCmd, cancellationToken);
     }
     private async Task<bool> HandleForwardShieldAsync(TCmdOption12 o, string? forwardedCmd, CancellationToken cancellationToken = default)
     {
-        if (!ForwardCmdArgumentShield(o, forwardedCmd)) return false;
+        if (!ForwardCmdArgumentShield<TCmdOption12>(forwardedCmd)) return false;
         return await HandleAsync(o, forwardedCmd, cancellationToken);
     }
     private async Task<bool> HandleForwardShieldAsync(TCmdOption13 o, string? forwardedCmd, CancellationToken cancellationToken = default)
     {
-        if (!ForwardCmdArgumentShield(o, forwardedCmd)) return false;
+        if (!ForwardCmdArgumentShield<TCmdOption13>(forwardedCmd)) return false;
         return await HandleAsync(o, forwardedCmd, cancellationToken);
     }
     private async Task<bool> HandleForwardShieldAsync(TCmdOption14 o, string? forwardedCmd, CancellationToken cancellationToken = default)
     {
-        if (!ForwardCmdArgumentShield(o, forwardedCmd)) return false;
+        if (!ForwardCmdArgumentShield<TCmdOption14>(forwardedCmd)) return false;
         return await HandleAsync(o, forwardedCmd, cancellationToken);
     }
     private async Task<bool> HandleForwardShieldAsync(TCmdOption15 o, string? forwardedCmd, CancellationToken cancellationToken = default)
     {
-        if (!ForwardCmdArgumentShield(o, forwardedCmd)) return false;
+        if (!ForwardCmdArgumentShield<TCmdOption15>(forwardedCmd)) return false;
         return await HandleAsync(o, forwardedCmd, cancellationToken);
     }
     private async Task<bool> HandleForwardShieldAsync(TCmdOption16 o, string? forwardedCmd, CancellationToken cancellationToken = default)
     {
-        if (!ForwardCmdArgumentShield(o, forwardedCmd)) return false;
+        if (!ForwardCmdArgumentShield<TCmdOption16>(forwardedCmd)) return false;
         return await HandleAsync(o, forwardedCmd, cancellationToken);
     }
 

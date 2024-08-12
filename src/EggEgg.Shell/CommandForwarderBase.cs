@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Logging;
-using System.Diagnostics.CodeAnalysis;
+using System.Reflection;
 using YYHEggEgg.Logger;
+using YYHEggEgg.Shell.Attributes;
 using YYHEggEgg.Shell.Model;
 
 namespace YYHEggEgg.Shell;
@@ -97,23 +98,26 @@ public abstract class CommandForwarderBase(ILogger logger) : CommandHandlerBase(
         }
     }
 
-    internal static string GetCommandUsageIntroLine([DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] Type optionType, string commandName, string separator)
+    internal static string GetCommandUsageIntroLine(Type optionType, string commandName, string separator)
     {
-        if (!optionType.IsAssignableTo(typeof(ForwardCommandOptionBase)))
-        {
-            throw new ArgumentException("Unexpected error: Option of command forwarder is not inherited from ForwardCommandOptionBase.");
-        }
-        var ctor = optionType.GetConstructor([]) ?? throw new ArgumentException("Unexpected error: Option of command forwarder doesn't have paramless constructor.");
-        ForwardCommandOptionBase instance = (ForwardCommandOptionBase)ctor.Invoke(null);
         var result = $"{commandName} [options]";
-        switch (instance.AllowForwardCmd)
+        var attr = optionType.GetCustomAttribute<RequiresForwardCmdAttribute>();
+        if (attr != null)
         {
-            case ArgumentStatus.Optional:
-                result += $" [{separator} <command>]";
-                break;
-            case ArgumentStatus.Required:
-                result += $" {separator} <command>";
-                break;
+            switch (attr.AllowForwardCmd)
+            {
+                case ArgumentStatus.Optional:
+                    result += $" [{separator} <command>]";
+                    break;
+                case ArgumentStatus.Required:
+                    result += $" {separator} <command>";
+                    break;
+            }
+        }
+        else
+        {
+            // Treat as Optional
+            result += $" [{separator} <command>]";
         }
         return result;
     }

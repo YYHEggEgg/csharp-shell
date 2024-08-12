@@ -1,7 +1,9 @@
 ﻿using CommandLine;
 using Microsoft.Extensions.Logging;
 using System.Diagnostics.CodeAnalysis;
+using System.Reflection;
 using YYHEggEgg.Logger;
+using YYHEggEgg.Shell.Attributes;
 using YYHEggEgg.Shell.AutoCompletion;
 using YYHEggEgg.Shell.Model;
 
@@ -13,7 +15,6 @@ namespace YYHEggEgg.Shell;
 /// </summary>
 /// <typeparam name="TCmdOption"></typeparam>
 public abstract class StandardCommandForwarder<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties | DynamicallyAccessedMemberTypes.PublicConstructors)] TCmdOption>(ILogger logger) : CommandForwarderBase(logger)
-    where TCmdOption : ForwardCommandOptionBase, new()
 {
     /// <inheritdoc/>
     public StandardCommandForwarder() : this(null!)
@@ -41,15 +42,16 @@ public abstract class StandardCommandForwarder<[DynamicallyAccessedMembers(Dynam
 
     /// <summary>
     /// Check if <paramref name="forwardedCmd"/>'s status is acceptable under
-    /// <typeparamref name="TCmdOption"/>'s <see cref="ForwardCommandOptionBase.AllowForwardCmd"/>,
+    /// <typeparamref name="TCmdOption"/>'s <see cref="RequiresForwardCmdAttribute"/>,
     /// and output warnings or interrupt the process.
     /// </summary>
-    /// <param name="o"></param>
     /// <param name="forwardedCmd"></param>
     /// <returns>Whether the process should continue.</returns>
-    protected virtual bool ForwardCmdArgumentShield(TCmdOption o, string? forwardedCmd)
+    protected virtual bool ForwardCmdArgumentShield(string? forwardedCmd)
     {
-        switch (o.AllowForwardCmd)
+        var attr = typeof(TCmdOption).GetCustomAttribute<RequiresForwardCmdAttribute>();
+        if (attr == null) return true;
+        switch (attr.AllowForwardCmd)
         {
             case ArgumentStatus.Disallowed:
                 if (!string.IsNullOrWhiteSpace(forwardedCmd))
@@ -68,7 +70,7 @@ public abstract class StandardCommandForwarder<[DynamicallyAccessedMembers(Dynam
 
     private async Task<bool> HandleForwardShieldAsync(TCmdOption o, string? forwardedCmd, CancellationToken cancellationToken = default)
     {
-        if (!ForwardCmdArgumentShield(o, forwardedCmd)) return false;
+        if (!ForwardCmdArgumentShield(forwardedCmd)) return false;
         return await HandleAsync(o, forwardedCmd, cancellationToken);
     }
 

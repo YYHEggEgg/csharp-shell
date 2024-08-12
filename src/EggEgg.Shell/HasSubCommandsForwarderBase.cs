@@ -101,11 +101,12 @@ public abstract class HasSubCommandsForwarderBase : CommandForwarderBase
         }
     }
 
-    /// <inheritdoc cref="StandardCommandForwarder{TCmdOption}.ForwardCmdArgumentShield(TCmdOption, string?)"/>
-    protected virtual bool ForwardCmdArgumentShield<TCmdOption>(TCmdOption o, string? forwardedCmd)
-        where TCmdOption : ForwardCommandOptionBase, new()
+    /// <inheritdoc cref="StandardCommandForwarder{TCmdOption}.ForwardCmdArgumentShield(string?)"/>
+    protected virtual bool ForwardCmdArgumentShield<TCmdOption>(string? forwardedCmd)
     {
-        switch (o.AllowForwardCmd)
+        var attr = typeof(TCmdOption).GetCustomAttribute<RequiresForwardCmdAttribute>();
+        if (attr == null) return true;
+        switch (attr.AllowForwardCmd)
         {
             case ArgumentStatus.Disallowed:
                 if (!string.IsNullOrWhiteSpace(forwardedCmd))
