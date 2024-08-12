@@ -49,7 +49,7 @@ public abstract class StandardCommandHandler<[DynamicallyAccessedMembers(Dynamic
                 .WithNotParsed(errs => HandleInvalidUsage(errs))
                 .WithParsedAsync(async (opt) =>
                 {
-                    result = await HandleAsync(opt);
+                    result = await HandleAsync(opt, cancellationToken);
                 });
         }
         catch (AccessViolationException) { }

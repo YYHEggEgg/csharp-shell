@@ -37,7 +37,7 @@ public abstract class HasSubCommandsHandlerBase<[DynamicallyAccessedMembers(Dyna
         var args = ParseAsArgs(argList);
         return await DefaultCommandsParser.ParseArguments<TCmdOption1>(args)
             .MapResult(
-                async (TCmdOption1 opt) => await HandleAsync(opt),
+                async (TCmdOption1 opt) => await HandleAsync(opt, cancellationToken),
                 error =>
                 {
                     OutputInvalidUsage(error);
@@ -73,8 +73,8 @@ public abstract class HasSubCommandsHandlerBase<[DynamicallyAccessedMembers(Dyna
         var args = ParseAsArgs(argList);
         return await DefaultCommandsParser.ParseArguments<TCmdOption1, TCmdOption2>(args)
             .MapResult(
-                async (TCmdOption1 opt) => await HandleAsync(opt),
-                async (TCmdOption2 opt) => await HandleAsync(opt),
+                async (TCmdOption1 opt) => await HandleAsync(opt, cancellationToken),
+                async (TCmdOption2 opt) => await HandleAsync(opt, cancellationToken),
                 error =>
                 {
                     OutputInvalidUsage(error);
@@ -111,9 +111,9 @@ public abstract class HasSubCommandsHandlerBase<[DynamicallyAccessedMembers(Dyna
         var args = ParseAsArgs(argList);
         return await DefaultCommandsParser.ParseArguments<TCmdOption1, TCmdOption2, TCmdOption3>(args)
             .MapResult(
-                async (TCmdOption1 opt) => await HandleAsync(opt),
-                async (TCmdOption2 opt) => await HandleAsync(opt),
-                async (TCmdOption3 opt) => await HandleAsync(opt),
+                async (TCmdOption1 opt) => await HandleAsync(opt, cancellationToken),
+                async (TCmdOption2 opt) => await HandleAsync(opt, cancellationToken),
+                async (TCmdOption3 opt) => await HandleAsync(opt, cancellationToken),
                 error =>
                 {
                     OutputInvalidUsage(error);
@@ -158,10 +158,10 @@ public abstract class HasSubCommandsHandlerBase<[DynamicallyAccessedMembers(Dyna
         var args = ParseAsArgs(argList);
         return await DefaultCommandsParser.ParseArguments<TCmdOption1, TCmdOption2, TCmdOption3, TCmdOption4>(args)
             .MapResult(
-                async (TCmdOption1 opt) => await HandleAsync(opt),
-                async (TCmdOption2 opt) => await HandleAsync(opt),
-                async (TCmdOption3 opt) => await HandleAsync(opt),
-                async (TCmdOption4 opt) => await HandleAsync(opt),
+                async (TCmdOption1 opt) => await HandleAsync(opt, cancellationToken),
+                async (TCmdOption2 opt) => await HandleAsync(opt, cancellationToken),
+                async (TCmdOption3 opt) => await HandleAsync(opt, cancellationToken),
+                async (TCmdOption4 opt) => await HandleAsync(opt, cancellationToken),
                 error =>
                 {
                     OutputInvalidUsage(error);
@@ -209,11 +209,11 @@ public abstract class HasSubCommandsHandlerBase<[DynamicallyAccessedMembers(Dyna
         var args = ParseAsArgs(argList);
         return await DefaultCommandsParser.ParseArguments<TCmdOption1, TCmdOption2, TCmdOption3, TCmdOption4, TCmdOption5>(args)
             .MapResult(
-                async (TCmdOption1 opt) => await HandleAsync(opt),
-                async (TCmdOption2 opt) => await HandleAsync(opt),
-                async (TCmdOption3 opt) => await HandleAsync(opt),
-                async (TCmdOption4 opt) => await HandleAsync(opt),
-                async (TCmdOption5 opt) => await HandleAsync(opt),
+                async (TCmdOption1 opt) => await HandleAsync(opt, cancellationToken),
+                async (TCmdOption2 opt) => await HandleAsync(opt, cancellationToken),
+                async (TCmdOption3 opt) => await HandleAsync(opt, cancellationToken),
+                async (TCmdOption4 opt) => await HandleAsync(opt, cancellationToken),
+                async (TCmdOption5 opt) => await HandleAsync(opt, cancellationToken),
                 error =>
                 {
                     OutputInvalidUsage(error);
@@ -264,12 +264,12 @@ public abstract class HasSubCommandsHandlerBase<[DynamicallyAccessedMembers(Dyna
         var args = ParseAsArgs(argList);
         return await DefaultCommandsParser.ParseArguments<TCmdOption1, TCmdOption2, TCmdOption3, TCmdOption4, TCmdOption5, TCmdOption6>(args)
             .MapResult(
-                async (TCmdOption1 opt) => await HandleAsync(opt),
-                async (TCmdOption2 opt) => await HandleAsync(opt),
-                async (TCmdOption3 opt) => await HandleAsync(opt),
-                async (TCmdOption4 opt) => await HandleAsync(opt),
-                async (TCmdOption5 opt) => await HandleAsync(opt),
-                async (TCmdOption6 opt) => await HandleAsync(opt),
+                async (TCmdOption1 opt) => await HandleAsync(opt, cancellationToken),
+                async (TCmdOption2 opt) => await HandleAsync(opt, cancellationToken),
+                async (TCmdOption3 opt) => await HandleAsync(opt, cancellationToken),
+                async (TCmdOption4 opt) => await HandleAsync(opt, cancellationToken),
+                async (TCmdOption5 opt) => await HandleAsync(opt, cancellationToken),
+                async (TCmdOption6 opt) => await HandleAsync(opt, cancellationToken),
                 error =>
                 {
                     OutputInvalidUsage(error);
@@ -323,13 +323,13 @@ public abstract class HasSubCommandsHandlerBase<[DynamicallyAccessedMembers(Dyna
         var args = ParseAsArgs(argList);
         return await DefaultCommandsParser.ParseArguments<TCmdOption1, TCmdOption2, TCmdOption3, TCmdOption4, TCmdOption5, TCmdOption6, TCmdOption7>(args)
             .MapResult(
-                async (TCmdOption1 opt) => await HandleAsync(opt),
-                async (TCmdOption2 opt) => await HandleAsync(opt),
-                async (TCmdOption3 opt) => await HandleAsync(opt),
-                async (TCmdOption4 opt) => await HandleAsync(opt),
-                async (TCmdOption5 opt) => await HandleAsync(opt),
-                async (TCmdOption6 opt) => await HandleAsync(opt),
-                async (TCmdOption7 opt) => await HandleAsync(opt),
+                async (TCmdOption1 opt) => await HandleAsync(opt, cancellationToken),
+                async (TCmdOption2 opt) => await HandleAsync(opt, cancellationToken),
+                async (TCmdOption3 opt) => await HandleAsync(opt, cancellationToken),
+                async (TCmdOption4 opt) => await HandleAsync(opt, cancellationToken),
+                async (TCmdOption5 opt) => await HandleAsync(opt, cancellationToken),
+                async (TCmdOption6 opt) => await HandleAsync(opt, cancellationToken),
+                async (TCmdOption7 opt) => await HandleAsync(opt, cancellationToken),
                 error =>
                 {
                     OutputInvalidUsage(error);
@@ -386,14 +386,14 @@ public abstract class HasSubCommandsHandlerBase<[DynamicallyAccessedMembers(Dyna
         var args = ParseAsArgs(argList);
         return await DefaultCommandsParser.ParseArguments<TCmdOption1, TCmdOption2, TCmdOption3, TCmdOption4, TCmdOption5, TCmdOption6, TCmdOption7, TCmdOption8>(args)
             .MapResult(
-                async (TCmdOption1 opt) => await HandleAsync(opt),
-                async (TCmdOption2 opt) => await HandleAsync(opt),
-                async (TCmdOption3 opt) => await HandleAsync(opt),
-                async (TCmdOption4 opt) => await HandleAsync(opt),
-                async (TCmdOption5 opt) => await HandleAsync(opt),
-                async (TCmdOption6 opt) => await HandleAsync(opt),
-                async (TCmdOption7 opt) => await HandleAsync(opt),
-                async (TCmdOption8 opt) => await HandleAsync(opt),
+                async (TCmdOption1 opt) => await HandleAsync(opt, cancellationToken),
+                async (TCmdOption2 opt) => await HandleAsync(opt, cancellationToken),
+                async (TCmdOption3 opt) => await HandleAsync(opt, cancellationToken),
+                async (TCmdOption4 opt) => await HandleAsync(opt, cancellationToken),
+                async (TCmdOption5 opt) => await HandleAsync(opt, cancellationToken),
+                async (TCmdOption6 opt) => await HandleAsync(opt, cancellationToken),
+                async (TCmdOption7 opt) => await HandleAsync(opt, cancellationToken),
+                async (TCmdOption8 opt) => await HandleAsync(opt, cancellationToken),
                 error =>
                 {
                     OutputInvalidUsage(error);
@@ -453,15 +453,15 @@ public abstract class HasSubCommandsHandlerBase<[DynamicallyAccessedMembers(Dyna
         var args = ParseAsArgs(argList);
         return await DefaultCommandsParser.ParseArguments<TCmdOption1, TCmdOption2, TCmdOption3, TCmdOption4, TCmdOption5, TCmdOption6, TCmdOption7, TCmdOption8, TCmdOption9>(args)
             .MapResult(
-                async (TCmdOption1 opt) => await HandleAsync(opt),
-                async (TCmdOption2 opt) => await HandleAsync(opt),
-                async (TCmdOption3 opt) => await HandleAsync(opt),
-                async (TCmdOption4 opt) => await HandleAsync(opt),
-                async (TCmdOption5 opt) => await HandleAsync(opt),
-                async (TCmdOption6 opt) => await HandleAsync(opt),
-                async (TCmdOption7 opt) => await HandleAsync(opt),
-                async (TCmdOption8 opt) => await HandleAsync(opt),
-                async (TCmdOption9 opt) => await HandleAsync(opt),
+                async (TCmdOption1 opt) => await HandleAsync(opt, cancellationToken),
+                async (TCmdOption2 opt) => await HandleAsync(opt, cancellationToken),
+                async (TCmdOption3 opt) => await HandleAsync(opt, cancellationToken),
+                async (TCmdOption4 opt) => await HandleAsync(opt, cancellationToken),
+                async (TCmdOption5 opt) => await HandleAsync(opt, cancellationToken),
+                async (TCmdOption6 opt) => await HandleAsync(opt, cancellationToken),
+                async (TCmdOption7 opt) => await HandleAsync(opt, cancellationToken),
+                async (TCmdOption8 opt) => await HandleAsync(opt, cancellationToken),
+                async (TCmdOption9 opt) => await HandleAsync(opt, cancellationToken),
                 error =>
                 {
                     OutputInvalidUsage(error);
@@ -524,16 +524,16 @@ public abstract class HasSubCommandsHandlerBase<[DynamicallyAccessedMembers(Dyna
         var args = ParseAsArgs(argList);
         return await DefaultCommandsParser.ParseArguments<TCmdOption1, TCmdOption2, TCmdOption3, TCmdOption4, TCmdOption5, TCmdOption6, TCmdOption7, TCmdOption8, TCmdOption9, TCmdOption10>(args)
             .MapResult(
-                async (TCmdOption1 opt) => await HandleAsync(opt),
-                async (TCmdOption2 opt) => await HandleAsync(opt),
-                async (TCmdOption3 opt) => await HandleAsync(opt),
-                async (TCmdOption4 opt) => await HandleAsync(opt),
-                async (TCmdOption5 opt) => await HandleAsync(opt),
-                async (TCmdOption6 opt) => await HandleAsync(opt),
-                async (TCmdOption7 opt) => await HandleAsync(opt),
-                async (TCmdOption8 opt) => await HandleAsync(opt),
-                async (TCmdOption9 opt) => await HandleAsync(opt),
-                async (TCmdOption10 opt) => await HandleAsync(opt),
+                async (TCmdOption1 opt) => await HandleAsync(opt, cancellationToken),
+                async (TCmdOption2 opt) => await HandleAsync(opt, cancellationToken),
+                async (TCmdOption3 opt) => await HandleAsync(opt, cancellationToken),
+                async (TCmdOption4 opt) => await HandleAsync(opt, cancellationToken),
+                async (TCmdOption5 opt) => await HandleAsync(opt, cancellationToken),
+                async (TCmdOption6 opt) => await HandleAsync(opt, cancellationToken),
+                async (TCmdOption7 opt) => await HandleAsync(opt, cancellationToken),
+                async (TCmdOption8 opt) => await HandleAsync(opt, cancellationToken),
+                async (TCmdOption9 opt) => await HandleAsync(opt, cancellationToken),
+                async (TCmdOption10 opt) => await HandleAsync(opt, cancellationToken),
                 error =>
                 {
                     OutputInvalidUsage(error);
@@ -599,17 +599,17 @@ public abstract class HasSubCommandsHandlerBase<[DynamicallyAccessedMembers(Dyna
         var args = ParseAsArgs(argList);
         return await DefaultCommandsParser.ParseArguments<TCmdOption1, TCmdOption2, TCmdOption3, TCmdOption4, TCmdOption5, TCmdOption6, TCmdOption7, TCmdOption8, TCmdOption9, TCmdOption10, TCmdOption11>(args)
             .MapResult(
-                async (TCmdOption1 opt) => await HandleAsync(opt),
-                async (TCmdOption2 opt) => await HandleAsync(opt),
-                async (TCmdOption3 opt) => await HandleAsync(opt),
-                async (TCmdOption4 opt) => await HandleAsync(opt),
-                async (TCmdOption5 opt) => await HandleAsync(opt),
-                async (TCmdOption6 opt) => await HandleAsync(opt),
-                async (TCmdOption7 opt) => await HandleAsync(opt),
-                async (TCmdOption8 opt) => await HandleAsync(opt),
-                async (TCmdOption9 opt) => await HandleAsync(opt),
-                async (TCmdOption10 opt) => await HandleAsync(opt),
-                async (TCmdOption11 opt) => await HandleAsync(opt),
+                async (TCmdOption1 opt) => await HandleAsync(opt, cancellationToken),
+                async (TCmdOption2 opt) => await HandleAsync(opt, cancellationToken),
+                async (TCmdOption3 opt) => await HandleAsync(opt, cancellationToken),
+                async (TCmdOption4 opt) => await HandleAsync(opt, cancellationToken),
+                async (TCmdOption5 opt) => await HandleAsync(opt, cancellationToken),
+                async (TCmdOption6 opt) => await HandleAsync(opt, cancellationToken),
+                async (TCmdOption7 opt) => await HandleAsync(opt, cancellationToken),
+                async (TCmdOption8 opt) => await HandleAsync(opt, cancellationToken),
+                async (TCmdOption9 opt) => await HandleAsync(opt, cancellationToken),
+                async (TCmdOption10 opt) => await HandleAsync(opt, cancellationToken),
+                async (TCmdOption11 opt) => await HandleAsync(opt, cancellationToken),
                 error =>
                 {
                     OutputInvalidUsage(error);
@@ -678,18 +678,18 @@ public abstract class HasSubCommandsHandlerBase<[DynamicallyAccessedMembers(Dyna
         var args = ParseAsArgs(argList);
         return await DefaultCommandsParser.ParseArguments<TCmdOption1, TCmdOption2, TCmdOption3, TCmdOption4, TCmdOption5, TCmdOption6, TCmdOption7, TCmdOption8, TCmdOption9, TCmdOption10, TCmdOption11, TCmdOption12>(args)
             .MapResult(
-                async (TCmdOption1 opt) => await HandleAsync(opt),
-                async (TCmdOption2 opt) => await HandleAsync(opt),
-                async (TCmdOption3 opt) => await HandleAsync(opt),
-                async (TCmdOption4 opt) => await HandleAsync(opt),
-                async (TCmdOption5 opt) => await HandleAsync(opt),
-                async (TCmdOption6 opt) => await HandleAsync(opt),
-                async (TCmdOption7 opt) => await HandleAsync(opt),
-                async (TCmdOption8 opt) => await HandleAsync(opt),
-                async (TCmdOption9 opt) => await HandleAsync(opt),
-                async (TCmdOption10 opt) => await HandleAsync(opt),
-                async (TCmdOption11 opt) => await HandleAsync(opt),
-                async (TCmdOption12 opt) => await HandleAsync(opt),
+                async (TCmdOption1 opt) => await HandleAsync(opt, cancellationToken),
+                async (TCmdOption2 opt) => await HandleAsync(opt, cancellationToken),
+                async (TCmdOption3 opt) => await HandleAsync(opt, cancellationToken),
+                async (TCmdOption4 opt) => await HandleAsync(opt, cancellationToken),
+                async (TCmdOption5 opt) => await HandleAsync(opt, cancellationToken),
+                async (TCmdOption6 opt) => await HandleAsync(opt, cancellationToken),
+                async (TCmdOption7 opt) => await HandleAsync(opt, cancellationToken),
+                async (TCmdOption8 opt) => await HandleAsync(opt, cancellationToken),
+                async (TCmdOption9 opt) => await HandleAsync(opt, cancellationToken),
+                async (TCmdOption10 opt) => await HandleAsync(opt, cancellationToken),
+                async (TCmdOption11 opt) => await HandleAsync(opt, cancellationToken),
+                async (TCmdOption12 opt) => await HandleAsync(opt, cancellationToken),
                 error =>
                 {
                     OutputInvalidUsage(error);
@@ -761,19 +761,19 @@ public abstract class HasSubCommandsHandlerBase<[DynamicallyAccessedMembers(Dyna
         var args = ParseAsArgs(argList);
         return await DefaultCommandsParser.ParseArguments<TCmdOption1, TCmdOption2, TCmdOption3, TCmdOption4, TCmdOption5, TCmdOption6, TCmdOption7, TCmdOption8, TCmdOption9, TCmdOption10, TCmdOption11, TCmdOption12, TCmdOption13>(args)
             .MapResult(
-                async (TCmdOption1 opt) => await HandleAsync(opt),
-                async (TCmdOption2 opt) => await HandleAsync(opt),
-                async (TCmdOption3 opt) => await HandleAsync(opt),
-                async (TCmdOption4 opt) => await HandleAsync(opt),
-                async (TCmdOption5 opt) => await HandleAsync(opt),
-                async (TCmdOption6 opt) => await HandleAsync(opt),
-                async (TCmdOption7 opt) => await HandleAsync(opt),
-                async (TCmdOption8 opt) => await HandleAsync(opt),
-                async (TCmdOption9 opt) => await HandleAsync(opt),
-                async (TCmdOption10 opt) => await HandleAsync(opt),
-                async (TCmdOption11 opt) => await HandleAsync(opt),
-                async (TCmdOption12 opt) => await HandleAsync(opt),
-                async (TCmdOption13 opt) => await HandleAsync(opt),
+                async (TCmdOption1 opt) => await HandleAsync(opt, cancellationToken),
+                async (TCmdOption2 opt) => await HandleAsync(opt, cancellationToken),
+                async (TCmdOption3 opt) => await HandleAsync(opt, cancellationToken),
+                async (TCmdOption4 opt) => await HandleAsync(opt, cancellationToken),
+                async (TCmdOption5 opt) => await HandleAsync(opt, cancellationToken),
+                async (TCmdOption6 opt) => await HandleAsync(opt, cancellationToken),
+                async (TCmdOption7 opt) => await HandleAsync(opt, cancellationToken),
+                async (TCmdOption8 opt) => await HandleAsync(opt, cancellationToken),
+                async (TCmdOption9 opt) => await HandleAsync(opt, cancellationToken),
+                async (TCmdOption10 opt) => await HandleAsync(opt, cancellationToken),
+                async (TCmdOption11 opt) => await HandleAsync(opt, cancellationToken),
+                async (TCmdOption12 opt) => await HandleAsync(opt, cancellationToken),
+                async (TCmdOption13 opt) => await HandleAsync(opt, cancellationToken),
                 error =>
                 {
                     OutputInvalidUsage(error);
@@ -848,20 +848,20 @@ public abstract class HasSubCommandsHandlerBase<[DynamicallyAccessedMembers(Dyna
         var args = ParseAsArgs(argList);
         return await DefaultCommandsParser.ParseArguments<TCmdOption1, TCmdOption2, TCmdOption3, TCmdOption4, TCmdOption5, TCmdOption6, TCmdOption7, TCmdOption8, TCmdOption9, TCmdOption10, TCmdOption11, TCmdOption12, TCmdOption13, TCmdOption14>(args)
             .MapResult(
-                async (TCmdOption1 opt) => await HandleAsync(opt),
-                async (TCmdOption2 opt) => await HandleAsync(opt),
-                async (TCmdOption3 opt) => await HandleAsync(opt),
-                async (TCmdOption4 opt) => await HandleAsync(opt),
-                async (TCmdOption5 opt) => await HandleAsync(opt),
-                async (TCmdOption6 opt) => await HandleAsync(opt),
-                async (TCmdOption7 opt) => await HandleAsync(opt),
-                async (TCmdOption8 opt) => await HandleAsync(opt),
-                async (TCmdOption9 opt) => await HandleAsync(opt),
-                async (TCmdOption10 opt) => await HandleAsync(opt),
-                async (TCmdOption11 opt) => await HandleAsync(opt),
-                async (TCmdOption12 opt) => await HandleAsync(opt),
-                async (TCmdOption13 opt) => await HandleAsync(opt),
-                async (TCmdOption14 opt) => await HandleAsync(opt),
+                async (TCmdOption1 opt) => await HandleAsync(opt, cancellationToken),
+                async (TCmdOption2 opt) => await HandleAsync(opt, cancellationToken),
+                async (TCmdOption3 opt) => await HandleAsync(opt, cancellationToken),
+                async (TCmdOption4 opt) => await HandleAsync(opt, cancellationToken),
+                async (TCmdOption5 opt) => await HandleAsync(opt, cancellationToken),
+                async (TCmdOption6 opt) => await HandleAsync(opt, cancellationToken),
+                async (TCmdOption7 opt) => await HandleAsync(opt, cancellationToken),
+                async (TCmdOption8 opt) => await HandleAsync(opt, cancellationToken),
+                async (TCmdOption9 opt) => await HandleAsync(opt, cancellationToken),
+                async (TCmdOption10 opt) => await HandleAsync(opt, cancellationToken),
+                async (TCmdOption11 opt) => await HandleAsync(opt, cancellationToken),
+                async (TCmdOption12 opt) => await HandleAsync(opt, cancellationToken),
+                async (TCmdOption13 opt) => await HandleAsync(opt, cancellationToken),
+                async (TCmdOption14 opt) => await HandleAsync(opt, cancellationToken),
                 error =>
                 {
                     OutputInvalidUsage(error);
@@ -939,21 +939,21 @@ public abstract class HasSubCommandsHandlerBase<[DynamicallyAccessedMembers(Dyna
         var args = ParseAsArgs(argList);
         return await DefaultCommandsParser.ParseArguments<TCmdOption1, TCmdOption2, TCmdOption3, TCmdOption4, TCmdOption5, TCmdOption6, TCmdOption7, TCmdOption8, TCmdOption9, TCmdOption10, TCmdOption11, TCmdOption12, TCmdOption13, TCmdOption14, TCmdOption15>(args)
             .MapResult(
-                async (TCmdOption1 opt) => await HandleAsync(opt),
-                async (TCmdOption2 opt) => await HandleAsync(opt),
-                async (TCmdOption3 opt) => await HandleAsync(opt),
-                async (TCmdOption4 opt) => await HandleAsync(opt),
-                async (TCmdOption5 opt) => await HandleAsync(opt),
-                async (TCmdOption6 opt) => await HandleAsync(opt),
-                async (TCmdOption7 opt) => await HandleAsync(opt),
-                async (TCmdOption8 opt) => await HandleAsync(opt),
-                async (TCmdOption9 opt) => await HandleAsync(opt),
-                async (TCmdOption10 opt) => await HandleAsync(opt),
-                async (TCmdOption11 opt) => await HandleAsync(opt),
-                async (TCmdOption12 opt) => await HandleAsync(opt),
-                async (TCmdOption13 opt) => await HandleAsync(opt),
-                async (TCmdOption14 opt) => await HandleAsync(opt),
-                async (TCmdOption15 opt) => await HandleAsync(opt),
+                async (TCmdOption1 opt) => await HandleAsync(opt, cancellationToken),
+                async (TCmdOption2 opt) => await HandleAsync(opt, cancellationToken),
+                async (TCmdOption3 opt) => await HandleAsync(opt, cancellationToken),
+                async (TCmdOption4 opt) => await HandleAsync(opt, cancellationToken),
+                async (TCmdOption5 opt) => await HandleAsync(opt, cancellationToken),
+                async (TCmdOption6 opt) => await HandleAsync(opt, cancellationToken),
+                async (TCmdOption7 opt) => await HandleAsync(opt, cancellationToken),
+                async (TCmdOption8 opt) => await HandleAsync(opt, cancellationToken),
+                async (TCmdOption9 opt) => await HandleAsync(opt, cancellationToken),
+                async (TCmdOption10 opt) => await HandleAsync(opt, cancellationToken),
+                async (TCmdOption11 opt) => await HandleAsync(opt, cancellationToken),
+                async (TCmdOption12 opt) => await HandleAsync(opt, cancellationToken),
+                async (TCmdOption13 opt) => await HandleAsync(opt, cancellationToken),
+                async (TCmdOption14 opt) => await HandleAsync(opt, cancellationToken),
+                async (TCmdOption15 opt) => await HandleAsync(opt, cancellationToken),
                 error =>
                 {
                     OutputInvalidUsage(error);
@@ -1034,22 +1034,22 @@ public abstract class HasSubCommandsHandlerBase<[DynamicallyAccessedMembers(Dyna
         var args = ParseAsArgs(argList);
         return await DefaultCommandsParser.ParseArguments<TCmdOption1, TCmdOption2, TCmdOption3, TCmdOption4, TCmdOption5, TCmdOption6, TCmdOption7, TCmdOption8, TCmdOption9, TCmdOption10, TCmdOption11, TCmdOption12, TCmdOption13, TCmdOption14, TCmdOption15, TCmdOption16>(args)
             .MapResult(
-                async (TCmdOption1 opt) => await HandleAsync(opt),
-                async (TCmdOption2 opt) => await HandleAsync(opt),
-                async (TCmdOption3 opt) => await HandleAsync(opt),
-                async (TCmdOption4 opt) => await HandleAsync(opt),
-                async (TCmdOption5 opt) => await HandleAsync(opt),
-                async (TCmdOption6 opt) => await HandleAsync(opt),
-                async (TCmdOption7 opt) => await HandleAsync(opt),
-                async (TCmdOption8 opt) => await HandleAsync(opt),
-                async (TCmdOption9 opt) => await HandleAsync(opt),
-                async (TCmdOption10 opt) => await HandleAsync(opt),
-                async (TCmdOption11 opt) => await HandleAsync(opt),
-                async (TCmdOption12 opt) => await HandleAsync(opt),
-                async (TCmdOption13 opt) => await HandleAsync(opt),
-                async (TCmdOption14 opt) => await HandleAsync(opt),
-                async (TCmdOption15 opt) => await HandleAsync(opt),
-                async (TCmdOption16 opt) => await HandleAsync(opt),
+                async (TCmdOption1 opt) => await HandleAsync(opt, cancellationToken),
+                async (TCmdOption2 opt) => await HandleAsync(opt, cancellationToken),
+                async (TCmdOption3 opt) => await HandleAsync(opt, cancellationToken),
+                async (TCmdOption4 opt) => await HandleAsync(opt, cancellationToken),
+                async (TCmdOption5 opt) => await HandleAsync(opt, cancellationToken),
+                async (TCmdOption6 opt) => await HandleAsync(opt, cancellationToken),
+                async (TCmdOption7 opt) => await HandleAsync(opt, cancellationToken),
+                async (TCmdOption8 opt) => await HandleAsync(opt, cancellationToken),
+                async (TCmdOption9 opt) => await HandleAsync(opt, cancellationToken),
+                async (TCmdOption10 opt) => await HandleAsync(opt, cancellationToken),
+                async (TCmdOption11 opt) => await HandleAsync(opt, cancellationToken),
+                async (TCmdOption12 opt) => await HandleAsync(opt, cancellationToken),
+                async (TCmdOption13 opt) => await HandleAsync(opt, cancellationToken),
+                async (TCmdOption14 opt) => await HandleAsync(opt, cancellationToken),
+                async (TCmdOption15 opt) => await HandleAsync(opt, cancellationToken),
+                async (TCmdOption16 opt) => await HandleAsync(opt, cancellationToken),
                 error =>
                 {
                     OutputInvalidUsage(error);
