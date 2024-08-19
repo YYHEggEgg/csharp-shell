@@ -106,6 +106,7 @@ public abstract class HasSubCommandsForwarderBase : CommandForwarderBase
     {
         var attr = typeof(TCmdOption).GetCustomAttribute<RequiresForwardCmdAttribute>();
         if (attr == null) return true;
+        var alertWrongSubCommand = typeof(TCmdOption).GetCustomAttribute<VerbAttribute>()?.IsDefault == true;
         switch (attr.AllowForwardCmd)
         {
             case ArgumentStatus.Disallowed:
@@ -116,6 +117,10 @@ public abstract class HasSubCommandsForwarderBase : CommandForwarderBase
                 if (string.IsNullOrWhiteSpace(forwardedCmd))
                 {
                     _logger.LogError("This command requires value for forwarded command, but it does not exist. Please join separator '{separator}' and add a command after it.", Separator);
+                    if (alertWrongSubCommand)
+                    {
+                        _logger.LogWarning("Are you typing a wrong subcommand? Type '{command} help' to get help about subcommands and their options.", CommandName);
+                    }
                     return false;
                 }
                 break;
