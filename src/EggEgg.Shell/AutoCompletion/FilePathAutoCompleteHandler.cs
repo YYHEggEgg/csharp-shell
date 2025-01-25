@@ -30,24 +30,24 @@ public class FilePathAutoCompleteHandler : IAutoCompleteHandler
 
         // unclosed " trigger the file-name completions
         var leftCount = left.Count(c => c == '"');
-        Log.Info($"left: '{left}', right: '{right}', endlimit: '{endlimit}', leftCount: '{leftCount}'");
+        // Log.Info($"left: '{left}', right: '{right}', endlimit: '{endlimit}', leftCount: '{leftCount}'");
         if (leftCount % 2 != 1) return new();
         if (endlimit.IndexOfAny(GetPathSeparators()) >= 0) return new();
 
         var startIndex = left.LastIndexOf('"') + 1;
         Debug.Assert(startIndex > 0);
         var endIndex = text.IndexOf('"', index);
-        Log.Info($"index: [{startIndex}, {endIndex})");
+        // Log.Info($"index: [{startIndex}, {endIndex})");
 
         var requestedPath = left[startIndex..];
         var separatorIdx = requestedPath.LastIndexOfAny(GetPathSeparators());
-        Log.Info($"requestedPath: '{requestedPath}', separatorIdx: {separatorIdx}");
+        // Log.Info($"requestedPath: '{requestedPath}', separatorIdx: {separatorIdx}");
         var inputDir = requestedPath[..(separatorIdx + 1)];
         if (inputDir == string.Empty) inputDir = $".{Path.DirectorySeparatorChar}";
 
         var parentDir = Path.GetFullPath(inputDir, CurrentPath);
         var startlimit = requestedPath[(separatorIdx + 1)..];
-        Log.Info($"parentDir: '{parentDir}'', startlimit: {startlimit}");
+        // Log.Info($"parentDir: '{parentDir}'', startlimit: {startlimit}");
 
         try
         {
@@ -57,7 +57,7 @@ public class FilePathAutoCompleteHandler : IAutoCompleteHandler
             var names = from name in enumeratedNames
                         where name.StartsWith(startlimit, StringComparison.OrdinalIgnoreCase) && name.EndsWith(endlimit)
                         select $"{inputDir[..^1]}{Path.DirectorySeparatorChar}{name}";
-            Log.Info($"names: {string.Join(',', names)}");
+            // Log.Info($"names: {string.Join(',', names)}");
             return new()
             {
                 Suggestions = names.ToList(),
